@@ -16,7 +16,8 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <Link to="/" className="font-rubik text-2xl font-bold text-heading">
+        <Link to="/" className="flex items-center gap-2 font-rubik text-2xl font-bold text-heading">
+          <img src="/images/logo.jpeg" alt="סטודיו דוריאן" className="h-10 w-auto" />
           סטודיו דוריאן
         </Link>
 
