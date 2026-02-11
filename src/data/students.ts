@@ -1,0 +1,133 @@
+export interface StudentContact {
+  email: string;
+  phone: string;
+  socials?: {
+    instagram?: string;
+    facebook?: string;
+    tiktok?: string;
+  };
+}
+
+export interface Student {
+  id: string;
+  name: string;
+  shortDescription: string;
+  longDescription: string;
+  image: string;
+  categories: string[];
+  services: string[];
+  contact: StudentContact;
+}
+
+export const students: Student[] = [
+  {
+    id: "miyael",
+    name: "מיאל",
+    shortDescription: "מוזיקאי רב-תחומי, יוצר תכשיטים ומאמן כוח וקונג פו",
+    longDescription: "מיאל הוא מוזיקאי מגוון המנגן גיטרה, שר וכותב שירים מקוריים. לצד המוזיקה, הוא עוסק בתכשיטנות יצירתית ומלמד קונג פו ואימוני כוח. הוא מאמין בשילוב בין אמנות לגוף ומביא גישה ייחודית לכל פרויקט.",
+    image: "/placeholder.svg",
+    categories: ["מוזיקה", "אמנות", "ספורט ותנועה"],
+    services: ["נגינה בגיטרה", "שירה", "כתיבת שירים", "תכשיטנות", "קונג פו", "אימוני כוח"],
+    contact: { email: "miyael@studio-dorian.co.il", phone: "050-0000001" },
+  },
+  {
+    id: "emma",
+    name: "אמה",
+    shortDescription: "מנהיגה, זמרת, כותבת ויוצרת קרושה",
+    longDescription: "אמה משלבת בין כישורי מנהיגות לכישרון אמנותי. היא מנהלת צוותים, כותבת טקסטים ושירים, שרה ויוצרת עבודות קרושה ייחודיות. היא מביאה אנרגיה חיובית ומקצועיות לכל פרויקט.",
+    image: "/placeholder.svg",
+    categories: ["מוזיקה", "אמנות", "תפירה וסריגה"],
+    services: ["ניהול צוות", "שירה", "כתיבה יצירתית", "קרושה"],
+    contact: { email: "emma@studio-dorian.co.il", phone: "050-0000002" },
+  },
+  {
+    id: "moriah",
+    name: "מוריה",
+    shortDescription: "אמנית, מעצבת גרפית, מאפרת ובשלנית יצירתית",
+    longDescription: "מוריה היא יוצרת ויזואלית רב-תחומית. היא מציירת, מעצבת גרפיקה, עוסקת באופנה ואיפור, ואוהבת לבשל ולאפות. היא מביאה עין אמנותית לכל דבר שהיא נוגעת בו.",
+    image: "/placeholder.svg",
+    categories: ["אמנות", "בישול ואפייה"],
+    services: ["ציור", "עיצוב גרפי", "אופנה", "איפור", "בישול"],
+    contact: { email: "moriah@studio-dorian.co.il", phone: "050-0000003" },
+  },
+  {
+    id: "noga",
+    name: "נוגה",
+    shortDescription: "תופרת, יוצרת תכשיטים, מדריכת סיורים ובשלנית",
+    longDescription: "נוגה יוצרת ביצירתיות ובאהבה. היא תופרת בגדים ואקססוריז, מעצבת תכשיטים, מדריכה סיורים ייחודיים ומבשלת ארוחות מיוחדות. היא מחברת בין מסורת לחדשנות.",
+    image: "/placeholder.svg",
+    categories: ["תפירה וסריגה", "אמנות", "בישול ואפייה"],
+    services: ["תפירה", "תכשיטנות", "הדרכת סיורים", "בישול"],
+    contact: { email: "noga@studio-dorian.co.il", phone: "050-0000004" },
+  },
+  {
+    id: "tzvi",
+    name: "צבי",
+    shortDescription: "מפיק מוזיקלי, מהנדס סאונד ועורך וידאו",
+    longDescription: "צבי הוא הקול מאחורי הקלעים. הוא מפיק מוזיקה, מתכנן ובונה אולפנים, עורך וידאו ומנהל סאונד והגברה באירועים. הידע הטכני שלו משולב עם אוזן מוזיקלית מפותחת.",
+    image: "/placeholder.svg",
+    categories: ["מוזיקה", "עריכה והפקה"],
+    services: ["הפקה מוזיקלית", "סאונד והגברה", "עריכת וידאו", "בניית אולפנים"],
+    contact: { email: "tzvi@studio-dorian.co.il", phone: "050-0000005" },
+  },
+  {
+    id: "ido",
+    name: "עידו",
+    shortDescription: "בנאי עץ מיומן – מתמחה בכלובים מעוצבים מעץ",
+    longDescription: "עידו בונה כלובים ומבנים מעץ בעבודת יד מדויקת. הוא משלב בין פונקציונליות לאסתטיקה, ויוצר מוצרים ייחודיים ואיכותיים. כל פרויקט הוא מלאכת מחשבת.",
+    image: "/placeholder.svg",
+    categories: ["בנייה ונגרות"],
+    services: ["בניית כלובים מעץ"],
+    contact: { email: "ido@studio-dorian.co.il", phone: "050-0000006" },
+  },
+  {
+    id: "yaara",
+    name: "יערה",
+    shortDescription: "אמנית ויטראז׳ – יוצרת יצירות זכוכית צבעוניות",
+    longDescription: "יערה מתמחה באמנות הוויטראז׳ ויוצרת חלונות ויצירות זכוכית צבעוניות ומרהיבות. כל עבודה שלה היא ייחודית ומשלבת בין מסורת עתיקה לעיצוב מודרני.",
+    image: "/placeholder.svg",
+    categories: ["אמנות"],
+    services: ["ויטראז׳"],
+    contact: { email: "yaara@studio-dorian.co.il", phone: "050-0000007" },
+  },
+  {
+    id: "alon",
+    name: "אלון",
+    shortDescription: "בונה ריהוט ומעצב תלת מימד",
+    longDescription: "אלון משלב בין נגרות מעשית לעיצוב דיגיטלי. הוא בונה ריהוט בהתאמה אישית ומעצב מודלים תלת ממדיים. הגישה שלו מחברת בין חומרים פיזיים לעולם הווירטואלי.",
+    image: "/placeholder.svg",
+    categories: ["בנייה ונגרות", "מחשבים וטכנולוגיה"],
+    services: ["בניית ריהוט", "עיצוב תלת מימד"],
+    contact: { email: "alon@studio-dorian.co.il", phone: "050-0000008" },
+  },
+  {
+    id: "binyamin",
+    name: "בנימין",
+    shortDescription: "עורך סרטונים מקצועי עם עין לפרטים",
+    longDescription: "בנימין עורך סרטונים ברמה גבוהה. הוא מתמחה בעריכת תוכן לרשתות חברתיות, סרטוני תדמית ופרויקטים יצירתיים. הוא מביא סיפור ויזואלי מרתק לכל פרויקט.",
+    image: "/placeholder.svg",
+    categories: ["עריכה והפקה"],
+    services: ["עריכת סרטונים"],
+    contact: { email: "binyamin@studio-dorian.co.il", phone: "050-0000009" },
+  },
+  {
+    id: "idan",
+    name: "עידן",
+    shortDescription: "מהנדס רובוטיקה ואלקטרוניקה צעיר ויצירתי",
+    longDescription: "עידן בונה רובוטים ומערכות אלקטרוניות מאפס. הוא משלב בין תכנות, חומרה ויצירתיות כדי ליצור פתרונות טכנולוגיים חדשניים. התשוקה שלו לטכנולוגיה מניעה אותו ליצור דברים מדהימים.",
+    image: "/placeholder.svg",
+    categories: ["מחשבים וטכנולוגיה"],
+    services: ["רובוטיקה", "אלקטרוניקה"],
+    contact: { email: "idan@studio-dorian.co.il", phone: "050-0000010" },
+  },
+  {
+    id: "maya",
+    name: "מאיה",
+    shortDescription: "אמנית אקרובטיקה אווירית – ביצועים מרהיבים בגובה",
+    longDescription: "מאיה מתמחה באקרובטיקה אווירית ומופיעה בביצועים מרהיבים. היא משלבת כוח, גמישות וביטוי אמנותי בגובה רב. ההופעות שלה הן חוויה ויזואלית בלתי נשכחת.",
+    image: "/placeholder.svg",
+    categories: ["ספורט ותנועה"],
+    services: ["אקרובטיקה אווירית"],
+    contact: { email: "maya@studio-dorian.co.il", phone: "050-0000011" },
+  },
+];
