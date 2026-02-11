@@ -232,9 +232,9 @@ export const students: Student[] = [
   },
   {
     id: "hillel",
-    name: "הילל",
+    name: "הלל",
     shortDescription: "תיאור קצר - בקרוב",
-    longDescription: "תיאור מלא של הילל יתעדכן בקרוב.",
+    longDescription: "תיאור מלא של הלל יתעדכן בקרוב.",
     image: "/images/hillel.jpeg",
     categories: ["ללא קטגוריה"],
     services: [],
