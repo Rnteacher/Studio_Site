@@ -45,7 +45,7 @@ export const students: Student[] = [
     name: "מוריה",
     shortDescription: "אמנית, מעצבת גרפית, מאפרת ובשלנית יצירתית",
     longDescription: "מוריה היא יוצרת ויזואלית רב-תחומית. היא מציירת, מעצבת גרפיקה, עוסקת באופנה ואיפור, ואוהבת לבשל ולאפות. היא מביאה עין אמנותית לכל דבר שהיא נוגעת בו.",
-    image: "/placeholder.svg",
+    image: "/images/moriah.png",
     categories: ["אמנות", "בישול ואפייה"],
     services: ["ציור", "עיצוב גרפי", "אופנה", "איפור", "בישול"],
     contact: { email: "moriah@studio-dorian.co.il", phone: "050-0000003" },
