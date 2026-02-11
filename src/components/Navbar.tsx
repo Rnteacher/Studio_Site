@@ -8,32 +8,32 @@ const Navbar = () => {
   const location = useLocation();
 
   const links = [
-    { to: "/", label: "בית" },
-    { to: "/about", label: "אודות" },
-    { to: "/contact", label: "יצירת קשר" },
-  ];
+  { to: "/", label: "בית" },
+  { to: "/about", label: "אודות" },
+  { to: "/contact", label: "יצירת קשר" }];
+
 
   return (
     <nav className="sticky top-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 font-rubik text-2xl font-bold text-heading">
-          <img src="/images/logo.png" alt="סטודיו דוריאן" className="h-10 w-auto mix-blend-multiply" />
+          <img alt="סטודיו דוריאן" className="h-10 w-auto mix-blend-multiply" src="/lovable-uploads/7dd05dcf-56df-4ab1-9241-faba25333bc7.jpg" />
           סטודיו דוריאן
         </Link>
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-6">
-          {links.map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className={`font-medium transition-colors hover:text-primary ${
-                location.pathname === link.to ? "text-primary" : "text-foreground"
-              }`}
-            >
+          {links.map((link) =>
+          <Link
+            key={link.to}
+            to={link.to}
+            className={`font-medium transition-colors hover:text-primary ${
+            location.pathname === link.to ? "text-primary" : "text-foreground"}`
+            }>
+
               {link.label}
             </Link>
-          ))}
+          )}
         </div>
 
         {/* Mobile toggle */}
@@ -41,31 +41,31 @@ const Navbar = () => {
           variant="ghost"
           size="icon"
           className="md:hidden"
-          onClick={() => setIsOpen(!isOpen)}
-        >
+          onClick={() => setIsOpen(!isOpen)}>
+
           {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </Button>
       </div>
 
       {/* Mobile menu */}
-      {isOpen && (
-        <div className="md:hidden border-t border-border bg-background px-4 py-4 flex flex-col gap-3 animate-fade-in">
-          {links.map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              onClick={() => setIsOpen(false)}
-              className={`font-medium py-2 transition-colors ${
-                location.pathname === link.to ? "text-primary" : "text-foreground"
-              }`}
-            >
+      {isOpen &&
+      <div className="md:hidden border-t border-border bg-background px-4 py-4 flex flex-col gap-3 animate-fade-in">
+          {links.map((link) =>
+        <Link
+          key={link.to}
+          to={link.to}
+          onClick={() => setIsOpen(false)}
+          className={`font-medium py-2 transition-colors ${
+          location.pathname === link.to ? "text-primary" : "text-foreground"}`
+          }>
+
               {link.label}
             </Link>
-          ))}
+        )}
         </div>
-      )}
-    </nav>
-  );
+      }
+    </nav>);
+
 };
 
 export default Navbar;

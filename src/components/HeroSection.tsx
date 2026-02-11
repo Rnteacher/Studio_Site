@@ -24,7 +24,7 @@ const HeroSection = () => {
           <Wrench className="h-6 w-6 text-heading" />
         </div>
 
-        <img src="/images/logo.png" alt="סטודיו דוריאן" className="h-36 md:h-48 w-auto mx-auto mb-6 mix-blend-multiply" />
+        <img alt="סטודיו דוריאן" className="h-36 md:h-48 w-auto mx-auto mb-6 mix-blend-multiply" src="/lovable-uploads/26cde093-9e8f-43ac-b26a-eb2b64ea0e5e.png" />
         <h1 className="font-rubik text-5xl md:text-7xl font-extrabold text-heading mb-6 leading-tight">
           סטודיו דוריאן
         </h1>
@@ -40,8 +40,8 @@ const HeroSection = () => {
           </Button>
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default HeroSection;
