@@ -155,7 +155,7 @@ export const students: Student[] = [
     name: "עדן",
     shortDescription: "תיאור קצר - בקרוב",
     longDescription: "תיאור מלא של עדן יתעדכן בקרוב.",
-    image: "/placeholder.svg",
+    image: "/images/eden.jpeg",
     categories: ["ללא קטגוריה"],
     services: [],
     contact: { email: "eden@studio-dorian.co.il", phone: "050-0000014" },
