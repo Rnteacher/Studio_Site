@@ -54,7 +54,7 @@ const HeroSection = () => {
               <br />
               <span className="text-primary">לבין צרכים של העולם האמיתי.</span>
             </p>
-            <p className="text-sm md:text-base leading-relaxed text-muted-foreground mb-6 max-w-xl">
+            <p className="text-sm md:text-base leading-relaxed text-muted-foreground mb-6 max-w-xl mx-auto text-center">
               אנחנו מציעים שירותים מקצועיים לעמותות ולעסקים קטנים — מתוך רצון ללמוד, להתפתח ולהשפיע.
             </p>
             <div className="flex flex-wrap gap-2 mb-5 justify-center">
