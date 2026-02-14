@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Input } from "@/components/ui/input";
@@ -12,6 +13,7 @@ const Contact = () => {
   const { toast } = useToast();
   const { data: services = [] } = useServices();
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [sending, setSending] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -20,11 +22,30 @@ const Contact = () => {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({ title: "ההודעה נשלחה!", description: "תודה שפנית אלינו, נחזור אליך בהקדם." });
-    setFormData({ name: "", email: "", phone: "", service: "", message: "" });
-    setSelectedCategory("");
+    setSending(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("send-contact-email", {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          category: selectedCategory === "__other__" ? "אחר" : selectedCategory,
+          service: formData.service === "__other__" ? "" : formData.service,
+          message: formData.message,
+        },
+      });
+      if (error) throw error;
+      toast({ title: "ההודעה נשלחה!", description: "תודה שפנית אלינו, נחזור אליך בהקדם." });
+      setFormData({ name: "", email: "", phone: "", service: "", message: "" });
+      setSelectedCategory("");
+    } catch (err) {
+      console.error("Failed to send email:", err);
+      toast({ title: "שגיאה בשליחה", description: "משהו השתבש, נסו שוב מאוחר יותר.", variant: "destructive" });
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -129,8 +150,8 @@ const Contact = () => {
               rows={5}
               className="bg-card"
             />
-            <Button type="submit" className="w-full bg-primary hover:bg-heading text-lg h-12">
-              שליחה
+            <Button type="submit" disabled={sending} className="w-full bg-primary hover:bg-heading text-lg h-12">
+              {sending ? "שולח..." : "שליחה"}
             </Button>
           </form>
         </div>
