@@ -26,7 +26,7 @@ export type Database = {
           long_description: string
           name: string
           phone: string
-          services: string[]
+          services: Json
           short_description: string
           tiktok: string | null
           updated_at: string
@@ -42,7 +42,7 @@ export type Database = {
           long_description?: string
           name: string
           phone?: string
-          services?: string[]
+          services?: Json
           short_description?: string
           tiktok?: string | null
           updated_at?: string
@@ -58,7 +58,7 @@ export type Database = {
           long_description?: string
           name?: string
           phone?: string
-          services?: string[]
+          services?: Json
           short_description?: string
           tiktok?: string | null
           updated_at?: string

@@ -8,7 +8,7 @@ export interface Student {
   longDescription: string;
   image: string;
   categories: string[];
-  services: string[];
+  services: Record<string, string[]>;
   contact: {
     email: string;
     phone: string;
@@ -28,7 +28,7 @@ function mapRow(row: any): Student {
     longDescription: row.long_description,
     image: row.image,
     categories: row.categories || [],
-    services: row.services || [],
+    services: (row.services as Record<string, string[]>) || {},
     contact: {
       email: row.email,
       phone: row.phone,
@@ -53,6 +53,11 @@ export function useStudents() {
       return (data || []).map(mapRow);
     },
   });
+}
+
+/** Get all services as a flat array for search/display */
+export function getAllServices(services: Record<string, string[]>): string[] {
+  return Object.values(services).flat();
 }
 
 export function useStudent(id: string | undefined) {

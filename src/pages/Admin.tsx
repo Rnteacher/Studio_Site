@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useStudents } from "@/hooks/useStudents";
+import { getAllServices } from "@/hooks/useStudents";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
@@ -12,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Pencil, Trash2, Plus, LogOut } from "lucide-react";
+import { Pencil, Trash2, Plus, LogOut, X } from "lucide-react";
 
 interface StudentForm {
   id: string;
@@ -21,7 +22,7 @@ interface StudentForm {
   long_description: string;
   image: string;
   categories: string;
-  services: string;
+  services: Record<string, string[]>;
   email: string;
   phone: string;
   instagram: string;
@@ -31,7 +32,7 @@ interface StudentForm {
 
 const emptyForm: StudentForm = {
   id: "", name: "", short_description: "", long_description: "",
-  image: "/placeholder.svg", categories: "", services: "",
+  image: "/placeholder.svg", categories: "", services: {},
   email: "", phone: "", instagram: "", facebook: "", tiktok: "",
 };
 
@@ -41,6 +42,7 @@ const Admin = () => {
   const [editOpen, setEditOpen] = useState(false);
   const [form, setForm] = useState<StudentForm>(emptyForm);
   const [isNew, setIsNew] = useState(false);
+  const [newServiceInputs, setNewServiceInputs] = useState<Record<string, string>>({});
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -57,6 +59,8 @@ const Admin = () => {
     </div>
   );
 
+  const categoriesList = form.categories.split(",").map(s => s.trim()).filter(Boolean);
+
   const openEdit = (student: any) => {
     setForm({
       id: student.id,
@@ -65,32 +69,66 @@ const Admin = () => {
       long_description: student.longDescription,
       image: student.image,
       categories: student.categories.join(", "),
-      services: student.services.join(", "),
+      services: student.services,
       email: student.contact.email,
       phone: student.contact.phone,
       instagram: student.contact.socials?.instagram || "",
       facebook: student.contact.socials?.facebook || "",
       tiktok: student.contact.socials?.tiktok || "",
     });
+    setNewServiceInputs({});
     setIsNew(false);
     setEditOpen(true);
   };
 
   const openNew = () => {
     setForm(emptyForm);
+    setNewServiceInputs({});
     setIsNew(true);
     setEditOpen(true);
   };
 
+  const addService = (category: string) => {
+    const value = (newServiceInputs[category] || "").trim();
+    if (!value) return;
+    setForm(prev => ({
+      ...prev,
+      services: {
+        ...prev.services,
+        [category]: [...(prev.services[category] || []), value],
+      },
+    }));
+    setNewServiceInputs(prev => ({ ...prev, [category]: "" }));
+  };
+
+  const removeService = (category: string, service: string) => {
+    setForm(prev => ({
+      ...prev,
+      services: {
+        ...prev.services,
+        [category]: (prev.services[category] || []).filter(s => s !== service),
+      },
+    }));
+  };
+
   const handleSave = async () => {
+    const cats = categoriesList;
+    // Only keep services for categories that exist
+    const cleanServices: Record<string, string[]> = {};
+    cats.forEach(cat => {
+      if (form.services[cat]?.length) {
+        cleanServices[cat] = form.services[cat];
+      }
+    });
+
     const payload = {
       id: form.id,
       name: form.name,
       short_description: form.short_description,
       long_description: form.long_description,
       image: form.image,
-      categories: form.categories.split(",").map(s => s.trim()).filter(Boolean),
-      services: form.services.split(",").map(s => s.trim()).filter(Boolean),
+      categories: cats,
+      services: cleanServices,
       email: form.email,
       phone: form.phone,
       instagram: form.instagram || null,
@@ -176,7 +214,39 @@ const Admin = () => {
               <Textarea placeholder="תיאור מלא" value={form.long_description} onChange={e => setForm({...form, long_description: e.target.value})} rows={3} />
               <Input placeholder="קישור תמונה" value={form.image} onChange={e => setForm({...form, image: e.target.value})} dir="ltr" />
               <Input placeholder="קטגוריות (מופרדות בפסיק)" value={form.categories} onChange={e => setForm({...form, categories: e.target.value})} />
-              <Input placeholder="שירותים (מופרדים בפסיק)" value={form.services} onChange={e => setForm({...form, services: e.target.value})} />
+              
+              {/* Services per category */}
+              {categoriesList.length > 0 && (
+                <div className="space-y-4 border rounded-lg p-3">
+                  <p className="text-sm font-semibold text-heading">שירותים לפי קטגוריה:</p>
+                  {categoriesList.map(cat => (
+                    <div key={cat} className="space-y-2">
+                      <p className="text-sm font-medium text-muted-foreground">{cat}</p>
+                      <div className="flex flex-wrap gap-1">
+                        {(form.services[cat] || []).map(service => (
+                          <Badge key={service} variant="secondary" className="gap-1 cursor-pointer" onClick={() => removeService(cat, service)}>
+                            {service}
+                            <X className="h-3 w-3" />
+                          </Badge>
+                        ))}
+                      </div>
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="הוסף שירות..."
+                          value={newServiceInputs[cat] || ""}
+                          onChange={e => setNewServiceInputs(prev => ({ ...prev, [cat]: e.target.value }))}
+                          onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); addService(cat); } }}
+                          className="text-sm"
+                        />
+                        <Button type="button" size="sm" variant="outline" onClick={() => addService(cat)}>
+                          <Plus className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
               <Input placeholder="אימייל" value={form.email} onChange={e => setForm({...form, email: e.target.value})} dir="ltr" />
               <Input placeholder="טלפון" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} dir="ltr" />
               <Input placeholder="אינסטגרם (אופציונלי)" value={form.instagram} onChange={e => setForm({...form, instagram: e.target.value})} dir="ltr" />
