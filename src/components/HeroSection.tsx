@@ -45,23 +45,23 @@ const HeroSection = () => {
         {/* Mission banner */}
         <div className="max-w-3xl mx-auto relative">
           {/* Tilted background layers */}
-          <div className="absolute inset-0 bg-primary/15 rounded-2xl rotate-1 scale-[1.02]" />
-          <div className="absolute inset-0 bg-heading rounded-2xl -rotate-[0.5deg]" />
+          <div className="absolute inset-0 bg-heading/10 rounded-2xl rotate-1 scale-[1.02]" />
+          <div className="absolute inset-0 bg-card rounded-2xl -rotate-[0.5deg] border border-border" />
           
-          <div className="relative z-10 p-8 md:p-10 text-primary-foreground">
-            <p className="text-xl md:text-2xl font-extrabold leading-snug mb-3 tracking-tight">
+          <div className="relative z-10 p-8 md:p-10 text-foreground">
+            <p className="text-xl md:text-2xl font-extrabold leading-snug mb-3 tracking-tight text-heading">
               סטודיו דוריאן מחבר בין יכולות של נוער
               <br />
-              <span className="text-tag">לבין צרכים של העולם האמיתי.</span>
+              <span className="text-primary">לבין צרכים של העולם האמיתי.</span>
             </p>
-            <p className="text-sm md:text-base leading-relaxed opacity-80 mb-6 max-w-xl">
+            <p className="text-sm md:text-base leading-relaxed text-muted-foreground mb-6 max-w-xl">
               אנחנו מציעים שירותים מקצועיים לעמותות ולעסקים קטנים — מתוך רצון ללמוד, להתפתח ולהשפיע.
             </p>
-            <div className="flex flex-wrap gap-2 mb-5">
-              <span className="bg-primary/30 px-4 py-1 rounded-sm text-xs font-bold uppercase tracking-widest border-r-2 border-primary">עובדים עם קהילה</span>
-              <span className="bg-primary/30 px-4 py-1 rounded-sm text-xs font-bold uppercase tracking-widest border-r-2 border-primary">לומדים דרך אחריות</span>
+            <div className="flex flex-wrap gap-2 mb-5 justify-center">
+              <span className="bg-soft-bg/60 px-4 py-1 rounded-sm text-xs font-bold uppercase tracking-widest border-r-2 border-primary text-heading">עובדים עם קהילה</span>
+              <span className="bg-soft-bg/60 px-4 py-1 rounded-sm text-xs font-bold uppercase tracking-widest border-r-2 border-primary text-heading">לומדים דרך אחריות</span>
             </div>
-            <p className="text-lg md:text-xl font-black text-tag italic">
+            <p className="text-lg md:text-xl font-black text-primary italic">
               גיל הוא לא מגבלה — אלא יתרון.
             </p>
           </div>
