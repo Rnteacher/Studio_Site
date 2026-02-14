@@ -25,43 +25,48 @@ export function useAuth() {
   useEffect(() => {
     let isMounted = true;
 
-    console.log("[useAuth] effect started");
+    // Safety timeout - if loading doesn't resolve in 5 seconds, force it
+    const timeout = setTimeout(() => {
+      if (isMounted && loading) {
+        console.warn("[useAuth] Timeout - forcing loading to false");
+        setLoading(false);
+      }
+    }, 5000);
 
-    // Set up listener FIRST per Supabase docs
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, newSession) => {
-        console.log("[useAuth] onAuthStateChange", _event, !!newSession?.user);
+      async (_event, newSession) => {
         if (!isMounted) return;
         setSession(newSession);
         setUser(newSession?.user ?? null);
-        if (!newSession?.user) {
+        if (newSession?.user) {
+          const admin = await checkAdmin(newSession.user.id);
+          if (isMounted) {
+            setIsAdmin(admin);
+            setLoading(false);
+          }
+        } else {
           setIsAdmin(false);
           setLoading(false);
         }
-        // Don't do async work inside onAuthStateChange callback per Supabase recommendations
       }
     );
 
-    // Then get the session - this is the primary path for loading state
     supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
-      console.log("[useAuth] getSession resolved", !!currentSession?.user);
       if (!isMounted) return;
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
       if (currentSession?.user) {
-        console.log("[useAuth] checking admin for", currentSession.user.id);
         const admin = await checkAdmin(currentSession.user.id);
-        console.log("[useAuth] admin check result:", admin);
         if (isMounted) setIsAdmin(admin);
       }
-      if (isMounted) {
-        console.log("[useAuth] setting loading to false");
-        setLoading(false);
-      }
+      if (isMounted) setLoading(false);
+    }).catch(() => {
+      if (isMounted) setLoading(false);
     });
 
     return () => {
       isMounted = false;
+      clearTimeout(timeout);
       subscription.unsubscribe();
     };
   }, []);
