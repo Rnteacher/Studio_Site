@@ -33,13 +33,30 @@ const HeroSection = () => {
         <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
           כישרונות צעירים. שירותים אמיתיים. השפעה אמיתית.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
           <Button asChild size="lg" className="text-lg px-8 bg-primary hover:bg-heading">
             <a href="#services">גלו את השירותים שלנו</a>
           </Button>
           <Button asChild variant="outline" size="lg" className="text-lg px-8 border-primary text-primary hover:bg-primary hover:text-primary-foreground">
             <Link to="/students">החניכים שלנו</Link>
           </Button>
+        </div>
+
+        {/* Mission statement */}
+        <div className="max-w-2xl mx-auto text-right space-y-6">
+          <p className="text-lg md:text-xl text-foreground leading-relaxed font-medium">
+            סטודיו דוריאן מחבר בין יכולות של נוער לבין צרכים של העולם האמיתי.
+          </p>
+          <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+            אנחנו מציעים שירותים מקצועיים לעמותות ולעסקים קטנים – מתוך רצון ללמוד, להתפתח ולהשפיע.
+          </p>
+          <div className="flex flex-col gap-2 pr-4 border-r-4 border-primary/40">
+            <p className="text-base text-foreground font-medium">אנחנו עובדים עם קהילה.</p>
+            <p className="text-base text-foreground font-medium">אנחנו לומדים דרך אחריות.</p>
+          </div>
+          <p className="text-base md:text-lg text-heading font-bold">
+            ואנחנו מאמינים שגיל הוא לא מגבלה – אלא יתרון.
+          </p>
         </div>
       </div>
     </section>);
