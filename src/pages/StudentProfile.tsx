@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, ArrowRight, ExternalLink, FileText } from "lucide-react";
+import { Mail, ArrowRight, ExternalLink, FileText } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -17,6 +18,7 @@ const StudentProfile = () => {
   const { data: linkedServices = [] } = useStudentServices(id);
   const { toast } = useToast();
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [sending, setSending] = useState(false);
 
   if (isLoading) {
     return (
@@ -47,10 +49,27 @@ const StudentProfile = () => {
     );
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({ title: "ההודעה נשלחה!", description: `תודה ${formData.name}, נחזור אליך בהקדם.` });
-    setFormData({ name: "", email: "", message: "" });
+    setSending(true);
+    try {
+      const { error } = await supabase.functions.invoke("send-contact-email", {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          message: `[פנייה מדף החניך/ה: ${student.name}]\n\n${formData.message}`,
+        },
+      });
+      if (error) throw error;
+      toast({ title: "ההודעה נשלחה!", description: `תודה ${formData.name}, נחזור אליך בהקדם.` });
+      setFormData({ name: "", email: "", message: "" });
+    } catch (err) {
+      console.error("Failed to send email:", err);
+      toast({ title: "שגיאה בשליחה", description: "משהו השתבש, נסו שוב מאוחר יותר.", variant: "destructive" });
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -139,15 +158,9 @@ const StudentProfile = () => {
           <div className="container mx-auto px-4 max-w-2xl">
             <h2 className="font-rubik text-2xl font-bold text-heading mb-6">יצירת קשר</h2>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <div className="flex items-center gap-2 bg-card rounded-xl p-4 shadow-sm flex-1">
-                <Mail className="h-5 w-5 text-primary" />
-                <span className="text-sm">{student.contact.email}</span>
-              </div>
-              <div className="flex items-center gap-2 bg-card rounded-xl p-4 shadow-sm flex-1">
-                <Phone className="h-5 w-5 text-primary" />
-                <span className="text-sm">{student.contact.phone}</span>
-              </div>
+            <div className="flex items-center justify-center gap-2 bg-card rounded-xl p-4 shadow-sm mb-8">
+              <Mail className="h-5 w-5 text-primary" />
+              <span className="text-sm">studio@chamama.org</span>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -174,8 +187,8 @@ const StudentProfile = () => {
                 rows={4}
                 className="bg-card"
               />
-              <Button type="submit" className="w-full bg-primary hover:bg-heading">
-                שליחה
+              <Button type="submit" disabled={sending} className="w-full bg-primary hover:bg-heading">
+                {sending ? "שולח..." : "שליחה"}
               </Button>
             </form>
           </div>
