@@ -59,13 +59,13 @@ const About = () => {
               מאחורי הקלעים
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[1, 2, 3].map((i) => (
-                <div
+              {["/images/behind-1.jpg", "/images/behind-2.jpg", "/images/behind-3.jpg"].map((src, i) => (
+                <img
                   key={i}
-                  className="aspect-[4/3] rounded-2xl bg-soft-bg flex items-center justify-center text-muted-foreground"
-                >
-                  <span className="text-sm">תמונה {i}</span>
-                </div>
+                  src={src}
+                  alt={`מאחורי הקלעים ${i + 1}`}
+                  className="aspect-[4/3] rounded-2xl object-cover w-full"
+                />
               ))}
             </div>
           </div>
