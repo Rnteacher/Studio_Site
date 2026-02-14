@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,9 +11,35 @@ const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
+  const [loginAttempted, setLoginAttempted] = useState(false);
+  const { signIn, user, isAdmin, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // If already logged in as admin, redirect
+  useEffect(() => {
+    if (!authLoading && user && isAdmin) {
+      navigate("/admin", { replace: true });
+    }
+  }, [authLoading, user, isAdmin, navigate]);
+
+  // After login attempt, wait for isAdmin to resolve
+  useEffect(() => {
+    if (loginAttempted && !authLoading && user) {
+      if (isAdmin) {
+        navigate("/admin", { replace: true });
+      } else {
+        // Give a moment for the deferred admin check
+        const timer = setTimeout(() => {
+          if (!isAdmin) {
+            toast({ title: "שגיאה", description: "אין לך הרשאות מנהל", variant: "destructive" });
+            setLoginAttempted(false);
+          }
+        }, 2000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [loginAttempted, authLoading, user, isAdmin, navigate, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +49,7 @@ const AdminLogin = () => {
     if (error) {
       toast({ title: "שגיאת התחברות", description: error.message, variant: "destructive" });
     } else {
-      navigate("/admin");
+      setLoginAttempted(true);
     }
   };
 
