@@ -1,8 +1,25 @@
+import { useState, useMemo } from "react";
 import { useServices } from "@/hooks/useServices";
 import ServiceCard from "@/components/ServiceCard";
 
 const ServicesSection = () => {
   const { data: services = [], isLoading } = useServices();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const categories = useMemo(() => {
+    const cats = new Set<string>();
+    services.forEach((s) => {
+      if (s.category) cats.add(s.category);
+    });
+    return [...cats].sort((a, b) => a.localeCompare(b, "he"));
+  }, [services]);
+
+  const filtered = useMemo(() => {
+    const list = selectedCategory
+      ? services.filter((s) => s.category === selectedCategory)
+      : services;
+    return [...list].sort((a, b) => a.title.localeCompare(b.title, "he"));
+  }, [services, selectedCategory]);
 
   return (
     <section className="py-16" id="services">
@@ -10,17 +27,48 @@ const ServicesSection = () => {
         <h2 className="font-rubik text-3xl md:text-4xl font-extrabold text-heading text-center mb-4">
           השירותים שלנו
         </h2>
-        <p className="text-center text-muted-foreground mb-12 max-w-xl mx-auto">
+        <p className="text-center text-muted-foreground mb-8 max-w-xl mx-auto">
           שירותים מקצועיים מכישרונות צעירים — בחרו שירות וגלו מה אנחנו יכולים לעשות בשבילכם
         </p>
+
+        {/* Category Filter */}
+        {categories.length > 0 && (
+          <div className="flex flex-wrap justify-center gap-2 mb-10">
+            <button
+              onClick={() => setSelectedCategory(null)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                selectedCategory === null
+                  ? "bg-primary text-primary-foreground shadow-md"
+                  : "bg-tag text-foreground hover:bg-primary/10"
+              }`}
+            >
+              הכל
+            </button>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() =>
+                  setSelectedCategory(selectedCategory === cat ? null : cat)
+                }
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                  selectedCategory === cat
+                    ? "bg-primary text-primary-foreground shadow-md"
+                    : "bg-tag text-foreground hover:bg-primary/10"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        )}
 
         {isLoading ? (
           <div className="text-center py-16">
             <p className="text-xl text-muted-foreground">טוען...</p>
           </div>
-        ) : services.length > 0 ? (
+        ) : filtered.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service) => (
+            {filtered.map((service) => (
               <div key={service.id} className="animate-fade-in">
                 <ServiceCard service={service} />
               </div>
@@ -28,7 +76,7 @@ const ServicesSection = () => {
           </div>
         ) : (
           <div className="text-center py-16">
-            <p className="text-xl text-muted-foreground">אין שירותים כרגע</p>
+            <p className="text-xl text-muted-foreground">אין שירותים בקטגוריה זו</p>
           </div>
         )}
       </div>
