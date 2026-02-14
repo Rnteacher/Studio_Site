@@ -43,25 +43,28 @@ const HeroSection = () => {
         </div>
 
         {/* Mission banner */}
-        <div className="max-w-3xl mx-auto bg-heading/95 text-primary-foreground rounded-3xl p-8 md:p-10 shadow-xl relative overflow-hidden">
-          {/* Decorative accent */}
-          <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-tag to-primary" />
-          <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-primary/20 blur-xl" />
-          <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-tag/20 blur-lg" />
+        <div className="max-w-3xl mx-auto relative">
+          {/* Tilted background layers */}
+          <div className="absolute inset-0 bg-primary/15 rounded-2xl rotate-1 scale-[1.02]" />
+          <div className="absolute inset-0 bg-heading rounded-2xl -rotate-[0.5deg]" />
           
-          <p className="text-lg md:text-xl leading-relaxed font-bold mb-4 relative z-10">
-            סטודיו דוריאן מחבר בין יכולות של נוער לבין צרכים של העולם האמיתי. 💥
-          </p>
-          <p className="text-sm md:text-base leading-relaxed opacity-85 mb-6 relative z-10">
-            אנחנו מציעים שירותים מקצועיים לעמותות ולעסקים קטנים – מתוך רצון ללמוד, להתפתח ולהשפיע.
-          </p>
-          <div className="flex flex-wrap gap-3 mb-6 relative z-10">
-            <span className="bg-primary/25 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm font-bold">🤝 עובדים עם קהילה</span>
-            <span className="bg-primary/25 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm font-bold">📚 לומדים דרך אחריות</span>
+          <div className="relative z-10 p-8 md:p-10 text-primary-foreground">
+            <p className="text-xl md:text-2xl font-extrabold leading-snug mb-3 tracking-tight">
+              סטודיו דוריאן מחבר בין יכולות של נוער
+              <br />
+              <span className="text-tag">לבין צרכים של העולם האמיתי.</span>
+            </p>
+            <p className="text-sm md:text-base leading-relaxed opacity-80 mb-6 max-w-xl">
+              אנחנו מציעים שירותים מקצועיים לעמותות ולעסקים קטנים — מתוך רצון ללמוד, להתפתח ולהשפיע.
+            </p>
+            <div className="flex flex-wrap gap-2 mb-5">
+              <span className="bg-primary/30 px-4 py-1 rounded-sm text-xs font-bold uppercase tracking-widest border-r-2 border-primary">עובדים עם קהילה</span>
+              <span className="bg-primary/30 px-4 py-1 rounded-sm text-xs font-bold uppercase tracking-widest border-r-2 border-primary">לומדים דרך אחריות</span>
+            </div>
+            <p className="text-lg md:text-xl font-black text-tag italic">
+              גיל הוא לא מגבלה — אלא יתרון.
+            </p>
           </div>
-          <p className="text-base md:text-lg font-extrabold relative z-10 text-tag">
-            גיל הוא לא מגבלה – אלא יתרון. ⚡
-          </p>
         </div>
       </div>
     </section>);
