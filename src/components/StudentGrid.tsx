@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useStudents } from "@/hooks/useStudents";
+import { useStudents, getAllServices } from "@/hooks/useStudents";
 import StudentCard from "@/components/StudentCard";
 import SearchFilter from "@/components/SearchFilter";
 
@@ -17,16 +17,17 @@ const StudentGrid = () => {
   const filteredStudents = useMemo(() => {
     return students.filter((student) => {
       const q = searchQuery.trim().toLowerCase();
+      const allServices = getAllServices(student.services);
       const matchesSearch =
         !q ||
         student.name.toLowerCase().includes(q) ||
-        student.services.some((s) => s.toLowerCase().includes(q)) ||
+        allServices.some((s) => s.toLowerCase().includes(q)) ||
         student.categories.some((c) => c.toLowerCase().includes(q)) ||
         student.shortDescription.toLowerCase().includes(q);
 
       const matchesTags =
         selectedTags.length === 0 ||
-        selectedTags.some((tag) => student.services.includes(tag));
+        selectedTags.some((tag) => allServices.includes(tag));
 
       return matchesSearch && matchesTags;
     });

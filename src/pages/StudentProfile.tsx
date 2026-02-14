@@ -90,11 +90,14 @@ const StudentProfile = () => {
                 <div key={cat} className="bg-card rounded-xl p-5 shadow-sm">
                   <h3 className="font-rubik font-semibold text-heading mb-3">{cat}</h3>
                   <div className="flex flex-wrap gap-2">
-                    {student.services.map((service) => (
+                    {(student.services[cat] || []).map((service) => (
                       <Badge key={service} variant="secondary" className="bg-tag text-foreground">
                         {service}
                       </Badge>
                     ))}
+                    {(!student.services[cat] || student.services[cat].length === 0) && (
+                      <span className="text-sm text-muted-foreground">אין שירותים בקטגוריה זו</span>
+                    )}
                   </div>
                 </div>
               ))}

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Student } from "@/hooks/useStudents";
+import { getAllServices } from "@/hooks/useStudents";
 
 interface StudentCardProps {
   student: Student;
@@ -27,7 +28,7 @@ const StudentCard = ({ student }: StudentCardProps) => {
             {student.shortDescription}
           </p>
           <div className="flex flex-wrap gap-1.5">
-            {student.services.slice(0, 3).map((service) => (
+            {getAllServices(student.services).slice(0, 3).map((service) => (
               <Badge
                 key={service}
                 variant="secondary"
