@@ -42,20 +42,25 @@ const HeroSection = () => {
           </Button>
         </div>
 
-        {/* Mission statement */}
-        <div className="max-w-2xl mx-auto text-right space-y-6">
-          <p className="text-lg md:text-xl text-foreground leading-relaxed font-medium">
-            סטודיו דוריאן מחבר בין יכולות של נוער לבין צרכים של העולם האמיתי.
+        {/* Mission banner */}
+        <div className="max-w-3xl mx-auto bg-heading/95 text-primary-foreground rounded-3xl p-8 md:p-10 shadow-xl relative overflow-hidden">
+          {/* Decorative accent */}
+          <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-tag to-primary" />
+          <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-primary/20 blur-xl" />
+          <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-tag/20 blur-lg" />
+          
+          <p className="text-lg md:text-xl leading-relaxed font-bold mb-4 relative z-10">
+            סטודיו דוריאן מחבר בין יכולות של נוער לבין צרכים של העולם האמיתי. 💥
           </p>
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+          <p className="text-sm md:text-base leading-relaxed opacity-85 mb-6 relative z-10">
             אנחנו מציעים שירותים מקצועיים לעמותות ולעסקים קטנים – מתוך רצון ללמוד, להתפתח ולהשפיע.
           </p>
-          <div className="flex flex-col gap-2 pr-4 border-r-4 border-primary/40">
-            <p className="text-base text-foreground font-medium">אנחנו עובדים עם קהילה.</p>
-            <p className="text-base text-foreground font-medium">אנחנו לומדים דרך אחריות.</p>
+          <div className="flex flex-wrap gap-3 mb-6 relative z-10">
+            <span className="bg-primary/25 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm font-bold">🤝 עובדים עם קהילה</span>
+            <span className="bg-primary/25 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm font-bold">📚 לומדים דרך אחריות</span>
           </div>
-          <p className="text-base md:text-lg text-heading font-bold">
-            ואנחנו מאמינים שגיל הוא לא מגבלה – אלא יתרון.
+          <p className="text-base md:text-lg font-extrabold relative z-10 text-tag">
+            גיל הוא לא מגבלה – אלא יתרון. ⚡
           </p>
         </div>
       </div>
