@@ -1,5 +1,7 @@
+"use client";
+
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 export interface Student {
   id: string;
@@ -49,6 +51,7 @@ export function useStudents() {
   return useQuery({
     queryKey: ["students"],
     queryFn: async () => {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("students")
         .select("*")
@@ -69,6 +72,7 @@ export function useStudent(id: string | undefined) {
     queryKey: ["students", id],
     enabled: !!id,
     queryFn: async () => {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("students")
         .select("*")

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useMemo } from "react";
 import { useServices } from "@/hooks/useServices";
 import ServiceCard from "@/components/ServiceCard";

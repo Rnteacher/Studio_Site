@@ -1,10 +1,17 @@
+"use client";
+
 import { useState, useEffect, createContext, useContext, type ReactNode } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
 import React from "react";
 
+function getSupabase() {
+  return createClient();
+}
+
 async function checkAdmin(userId: string): Promise<boolean> {
   try {
+    const supabase = getSupabase();
     const { data, error } = await supabase.rpc("has_role", {
       _user_id: userId,
       _role: "admin",
@@ -25,8 +32,8 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   isAdmin: boolean;
-  signIn: (email: string, password: string) => ReturnType<typeof supabase.auth.signInWithPassword>;
-  signOut: () => ReturnType<typeof supabase.auth.signOut>;
+  signIn: (email: string, password: string) => ReturnType<ReturnType<typeof createClient>["auth"]["signInWithPassword"]>;
+  signOut: () => ReturnType<ReturnType<typeof createClient>["auth"]["signOut"]>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -39,6 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let isMounted = true;
+    const supabase = getSupabase();
 
     const timeout = setTimeout(() => {
       if (isMounted) setLoading(false);
@@ -54,7 +62,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setLoading(false);
           return;
         }
-        // Defer admin check so the client has updated its auth headers
         setTimeout(async () => {
           if (!isMounted) return;
           const admin = await checkAdmin(newSession.user.id);
@@ -86,10 +93,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const signIn = (email: string, password: string) =>
-    supabase.auth.signInWithPassword({ email, password });
+  const signIn = (email: string, password: string) => {
+    const supabase = getSupabase();
+    return supabase.auth.signInWithPassword({ email, password });
+  };
 
-  const signOut = () => supabase.auth.signOut();
+  const signOut = () => {
+    const supabase = getSupabase();
+    return supabase.auth.signOut();
+  };
 
   return React.createElement(AuthContext.Provider, {
     value: { user, session, loading, isAdmin, signIn, signOut },

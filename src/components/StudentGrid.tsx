@@ -1,7 +1,9 @@
+"use client";
+
 import { useMemo, useState } from "react";
 import { useStudents } from "@/hooks/useStudents";
 import { useServices } from "@/hooks/useServices";
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import StudentCard from "@/components/StudentCard";
 import SearchFilter from "@/components/SearchFilter";
@@ -16,6 +18,7 @@ const StudentGrid = () => {
   const { data: allLinks = [] } = useQuery({
     queryKey: ["all-service-student-links"],
     queryFn: async () => {
+      const supabase = createClient();
       const { data } = await supabase.from("service_students").select("service_id, student_id");
       return data || [];
     },

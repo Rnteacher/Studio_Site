@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Palette, Music, Camera, Wrench } from "lucide-react";
 
@@ -38,7 +38,7 @@ const HeroSection = () => {
             <a href="#services">גלו את השירותים שלנו</a>
           </Button>
           <Button asChild variant="outline" size="lg" className="text-lg px-8 border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-            <Link to="/students">החניכים שלנו</Link>
+            <Link href="/students">החניכים שלנו</Link>
           </Button>
         </div>
 
@@ -47,7 +47,7 @@ const HeroSection = () => {
           {/* Tilted background layers */}
           <div className="absolute inset-0 bg-heading/10 rounded-2xl rotate-1 scale-[1.02]" />
           <div className="absolute inset-0 bg-card rounded-2xl -rotate-[0.5deg] border border-border" />
-          
+
           <div className="relative z-10 p-8 md:p-10 text-foreground">
             <p className="text-xl md:text-2xl font-extrabold leading-snug mb-3 tracking-tight text-heading">
               סטודיו דוריאן מחבר בין יכולות של נוער
