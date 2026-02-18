@@ -1,5 +1,7 @@
+"use client";
+
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 export interface Service {
   id: string;
@@ -31,6 +33,7 @@ export function useServices() {
   return useQuery({
     queryKey: ["services"],
     queryFn: async () => {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("services")
         .select("*")
@@ -46,6 +49,7 @@ export function useServiceBySlug(slug: string | undefined) {
     queryKey: ["services", slug],
     enabled: !!slug,
     queryFn: async () => {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("services")
         .select("*")
@@ -85,6 +89,7 @@ export function useStudentServices(studentId: string | undefined) {
     queryKey: ["student-services", studentId],
     enabled: !!studentId,
     queryFn: async () => {
+      const supabase = createClient();
       const { data: links, error } = await supabase
         .from("service_students")
         .select("service_id")
