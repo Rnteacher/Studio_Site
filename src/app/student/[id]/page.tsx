@@ -10,9 +10,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, ArrowRight, ExternalLink, FileText } from "lucide-react";
+import { Mail, ArrowRight, ExternalLink, FileText, Briefcase } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useQuery } from "@tanstack/react-query";
+import { createClient } from "@/lib/supabase/client";
 
 export default function StudentProfilePage() {
   const params = useParams<{ id: string }>();
@@ -20,6 +22,20 @@ export default function StudentProfilePage() {
   const { data: student, isLoading } = useStudent(id);
   const { data: linkedServices = [] } = useStudentServices(id);
   const { toast } = useToast();
+  const { data: portfolioSlug } = useQuery({
+    queryKey: ["student-portfolio-slug", id],
+    queryFn: async () => {
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("portfolios")
+        .select("slug")
+        .eq("student_id", id)
+        .eq("status", "published")
+        .single();
+      return data?.slug ?? null;
+    },
+    enabled: !!id,
+  });
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [sending, setSending] = useState(false);
 
@@ -110,6 +126,13 @@ export default function StudentProfilePage() {
                   </div>
                 )}
                 <div className="flex flex-wrap gap-3 mb-4">
+                  {portfolioSlug && (
+                    <Link href={`/p/${portfolioSlug}`}>
+                      <Button variant="default" size="sm" className="gap-1.5">
+                        <Briefcase className="h-4 w-4" />פורטפוליו
+                      </Button>
+                    </Link>
+                  )}
                   {student.portfolioUrl && (
                     <a href={student.portfolioUrl} target="_blank" rel="noopener noreferrer">
                       <Button variant="outline" size="sm" className="gap-1.5">

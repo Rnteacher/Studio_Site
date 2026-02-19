@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(npm install:*)",
+      "Bash(dir:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx next --version)",
+      "Bash(cmd /c \"dir D:\\\\Projects\\\\studio_durian\\\\src\\\\app\\\\api\\\\contact\\\\ /a\")",
+      "Bash(node:*)",
+      "Bash(npx next build:*)",
+      "Bash(npx tsc:*)",
+      "Bash(NODE_OPTIONS='--no-experimental-require-module' npm run build:*)",
+      "Bash(cmd /c \"fsutil reparsepoint query D:\\\\Projects\\\\studio_durian\")",
+      "Bash(cmd /c \"fsutil reparsepoint query D:\\\\Projects\\\\studio_durian\\\\node_modules\\\\styled-jsx\")",
+      "Bash(cmd /c \"dir D:\\\\Projects\\\\studio_durian\\\\node_modules\\\\styled-jsx /a\")",
+      "Bash(timeout 15 npx next dev:*)",
+      "Bash(timeout 20 npx next dev:*)",
+      "Bash(\"D:/Projects/studio_durian/scripts/generate-seed.cjs\" << 'SCRIPT_EOF'\nconst fs = require\\('fs'\\);\nconst path = require\\('path'\\);\n\nconst data = JSON.parse\\(fs.readFileSync\\('C:/Users/ronen/Downloads/studio-dorian-export.json', 'utf-8'\\)\\);\n\nfunction esc\\(val\\) {\n  if \\(val === null || val === undefined\\) return 'NULL';\n  if \\(typeof val === 'object'\\) return \"'\" + JSON.stringify\\(val\\).replace\\(/'/g, \"''\"\\) + \"'\";\n  return \"'\" + String\\(val\\).replace\\(/'/g, \"''\"\\) + \"'\";\n}\n\nfunction toArray\\(arr\\) {\n  if \\(!arr || !Array.isArray\\(arr\\) || arr.length === 0\\) return \"'{}'\";\n  return \"'{\" + arr.map\\(a => '\"' + String\\(a\\).replace\\(/\"/g, '\\\\\\\\\"'\\) + '\"'\\).join\\(','\\) + \"}'\";\n}\n\nlet sql = '-- Auto-generated seed data\\\\nBEGIN;\\\\n\\\\n';\nsql += 'ALTER TABLE students DISABLE ROW LEVEL SECURITY;\\\\n';\nsql += 'ALTER TABLE services DISABLE ROW LEVEL SECURITY;\\\\n';\nsql += 'ALTER TABLE service_students DISABLE ROW LEVEL SECURITY;\\\\n\\\\n';\n\n// Students\nfor \\(const s of data.students\\) {\n  sql += 'INSERT INTO students \\(id, name, short_description, long_description, image, categories, services, email, phone, instagram, facebook, tiktok, portfolio_url, resume_url\\) VALUES \\(';\n  sql += [\n    esc\\(s.id\\), esc\\(s.name\\), esc\\(s.short_description\\), esc\\(s.long_description\\),\n    esc\\(s.image\\), toArray\\(s.categories\\),\n    esc\\(s.services\\),\n    esc\\(s.email || ''\\), esc\\(s.phone || ''\\),\n    s.instagram ? esc\\(s.instagram\\) : 'NULL',\n    s.facebook ? esc\\(s.facebook\\) : 'NULL',\n    s.tiktok ? esc\\(s.tiktok\\) : 'NULL',\n    s.portfolio_url ? esc\\(s.portfolio_url\\) : 'NULL',\n    s.resume_url ? esc\\(s.resume_url\\) : 'NULL'\n  ].join\\(', '\\);\n  sql += '\\) ON CONFLICT \\(id\\) DO NOTHING;\\\\n';\n}\n\nsql += '\\\\n';\n\n// Services\nfor \\(const s of data.services\\) {\n  sql += 'INSERT INTO services \\(id, title, slug, short_description, long_description, image, category\\) VALUES \\(';\n  sql += [\n    esc\\(s.id\\), esc\\(s.title\\), esc\\(s.slug\\), esc\\(s.short_description\\),\n    esc\\(s.long_description\\), esc\\(s.image\\), esc\\(s.category || ''\\)\n  ].join\\(', '\\);\n  sql += '\\) ON CONFLICT \\(id\\) DO NOTHING;\\\\n';\n}\n\nsql += '\\\\n';\n\n// Service students\nfor \\(const l of data.service_students\\) {\n  sql += 'INSERT INTO service_students \\(id, service_id, student_id\\) VALUES \\(';\n  sql += [esc\\(l.id\\), esc\\(l.service_id\\), esc\\(l.student_id\\)].join\\(', '\\);\n  sql += '\\) ON CONFLICT \\(id\\) DO NOTHING;\\\\n';\n}\n\nsql += '\\\\nALTER TABLE students ENABLE ROW LEVEL SECURITY;\\\\n';\nsql += 'ALTER TABLE services ENABLE ROW LEVEL SECURITY;\\\\n';\nsql += 'ALTER TABLE service_students ENABLE ROW LEVEL SECURITY;\\\\n\\\\n';\nsql += 'COMMIT;\\\\n';\n\nconst outPath = path.join\\(__dirname, 'seed.sql'\\);\nfs.writeFileSync\\(outPath, sql, 'utf-8'\\);\nconsole.log\\('Generated seed.sql with', data.students.length, 'students,', data.services.length, 'services,', data.service_students.length, 'links'\\);\nconsole.log\\('Output:', outPath\\);\nSCRIPT_EOF)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nMigrate from Vite + React Router to Next.js 15 App Router\n\n- Replace Vite with Next.js 15 \\(Turbopack\\)\n- Convert React Router pages to App Router file-system routing\n- Add dual Supabase client architecture \\(browser + server via @supabase/ssr\\)\n- Add middleware for auth session refresh and admin route protection\n- Convert Supabase Edge Function to Next.js API route \\(/api/contact\\)\n- Add \"use client\" directives to all interactive components\n- Update imports: next/link, next/navigation, next/font\n- Consolidate 5 SQL migrations into single schema file\n- Add seed script \\(TypeScript + SQL\\) for database population\n- Update Tailwind/PostCSS config for Next.js compatibility\n- Preserve all Hebrew RTL design, shadcn/ui components, and functionality\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(gh api:*)",
+      "WebFetch(domain:durian-studio-site-9mu1xnjwo-durains-projects.vercel.app)",
+      "mcp__Windows-MCP__Shell",
+      "mcp__Desktop_Commander__edit_block",
+      "mcp__Desktop_Commander__start_process"
+    ]
+  }
+}

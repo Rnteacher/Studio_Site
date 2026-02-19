@@ -43,6 +43,15 @@ export async function middleware(request: NextRequest) {
       }
     }
 
+    // Protect /dashboard routes (require auth)
+    if (request.nextUrl.pathname.startsWith("/dashboard")) {
+      if (!user) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/auth/login";
+        return NextResponse.redirect(url);
+      }
+    }
+
     return supabaseResponse;
   } catch (e) {
     // If middleware fails, allow the request to continue

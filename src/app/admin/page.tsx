@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useStudents } from "@/hooks/useStudents";
 import { useServices } from "@/hooks/useServices";
+import { useAllPortfolios, useUpdatePortfolio } from "@/hooks/usePortfolio";
 import { createClient } from "@/lib/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
@@ -17,7 +18,8 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Pencil, Trash2, Plus, LogOut, Upload, Loader2 } from "lucide-react";
+import { Pencil, Trash2, Plus, LogOut, Upload, Loader2, Globe, GlobeLock, ExternalLink } from "lucide-react";
+import Link from "next/link";
 
 // ─── Student Form ───
 interface StudentForm {
@@ -75,6 +77,8 @@ export default function AdminPage() {
   const { user, loading: authLoading, isAdmin, signOut } = useAuth();
   const { data: students, isLoading: studentsLoading } = useStudents();
   const { data: services, isLoading: servicesLoading } = useServices();
+  const { data: portfolios, isLoading: portfoliosLoading } = useAllPortfolios();
+  const updatePortfolio = useUpdatePortfolio();
   const queryClient = useQueryClient();
   const router = useRouter();
   const { toast } = useToast();
@@ -303,6 +307,7 @@ export default function AdminPage() {
           <TabsList className="mb-6">
             <TabsTrigger value="services">שירותים</TabsTrigger>
             <TabsTrigger value="students">חניכים</TabsTrigger>
+            <TabsTrigger value="portfolios">פורטפוליו</TabsTrigger>
           </TabsList>
 
           {/* ─── Services Tab ─── */}
@@ -324,6 +329,60 @@ export default function AdminPage() {
                     <div className="flex gap-1 shrink-0">
                       <Button size="icon" variant="ghost" onClick={() => openEditService(s)}><Pencil className="h-4 w-4" /></Button>
                       <Button size="icon" variant="ghost" onClick={() => handleDeleteService(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          {/* ─── Portfolios Tab ─── */}
+          <TabsContent value="portfolios">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="font-rubik text-xl font-semibold text-heading">פורטפוליו</h2>
+            </div>
+            {portfoliosLoading ? <p>טוען...</p> : (
+              <div className="grid gap-3">
+                {(!portfolios || portfolios.length === 0) && (
+                  <p className="text-muted-foreground text-center py-8">אין פורטפוליו עדיין. חניכים שיתחברו עם Google יקבלו פורטפוליו אוטומטית.</p>
+                )}
+                {portfolios?.map((p) => (
+                  <div key={p.id} className="flex items-center gap-4 bg-card rounded-xl p-4 shadow-sm">
+                    {p.studentImage && (
+                      <img src={p.studentImage} alt={p.studentName} className="w-10 h-10 rounded-full object-cover" />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-heading">{p.studentName || "ללא שם"}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {p.slug ? `/p/${p.slug}` : "ללא כתובת"}
+                      </p>
+                    </div>
+                    <Badge
+                      variant={p.status === "published" ? "default" : "secondary"}
+                      className="text-xs"
+                    >
+                      {p.status === "published" ? "פורסם" : "טיוטה"}
+                    </Badge>
+                    <div className="flex gap-1 shrink-0">
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        onClick={async () => {
+                          const newStatus = p.status === "published" ? "draft" : "published";
+                          await updatePortfolio.mutateAsync({ id: p.id, status: newStatus });
+                          toast({ title: newStatus === "published" ? "פורסם" : "הוסתר" });
+                        }}
+                        title={p.status === "published" ? "הסתר" : "פרסם"}
+                      >
+                        {p.status === "published" ? <GlobeLock className="h-4 w-4" /> : <Globe className="h-4 w-4" />}
+                      </Button>
+                      {p.slug && (
+                        <Link href={`/p/${p.slug}`} target="_blank">
+                          <Button size="icon" variant="ghost">
+                            <ExternalLink className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                      )}
                     </div>
                   </div>
                 ))}

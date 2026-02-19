@@ -27,12 +27,29 @@ async function checkAdmin(userId: string): Promise<boolean> {
   }
 }
 
+async function checkStudent(userId: string): Promise<boolean> {
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase
+      .from("portfolios")
+      .select("id")
+      .eq("user_id", userId)
+      .single();
+    if (error) return false;
+    return !!data;
+  } catch {
+    return false;
+  }
+}
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
   isAdmin: boolean;
+  isStudent: boolean;
   signIn: (email: string, password: string) => ReturnType<ReturnType<typeof createClient>["auth"]["signInWithPassword"]>;
+  signInWithGoogle: () => ReturnType<ReturnType<typeof createClient>["auth"]["signInWithOAuth"]>;
   signOut: () => ReturnType<ReturnType<typeof createClient>["auth"]["signOut"]>;
 }
 
@@ -43,6 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isStudent, setIsStudent] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -59,14 +77,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(newSession?.user ?? null);
         if (!newSession?.user) {
           setIsAdmin(false);
+          setIsStudent(false);
           setLoading(false);
           return;
         }
         setTimeout(async () => {
           if (!isMounted) return;
-          const admin = await checkAdmin(newSession.user.id);
+          const [admin, student] = await Promise.all([
+            checkAdmin(newSession.user.id),
+            checkStudent(newSession.user.id),
+          ]);
           if (isMounted) {
             setIsAdmin(admin);
+            setIsStudent(student);
             setLoading(false);
           }
         }, 0);
@@ -78,8 +101,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(s);
       setUser(s?.user ?? null);
       if (s?.user) {
-        const admin = await checkAdmin(s.user.id);
-        if (isMounted) setIsAdmin(admin);
+        const [admin, student] = await Promise.all([
+          checkAdmin(s.user.id),
+          checkStudent(s.user.id),
+        ]);
+        if (isMounted) {
+          setIsAdmin(admin);
+          setIsStudent(student);
+        }
       }
       if (isMounted) setLoading(false);
     }).catch(() => {
@@ -98,13 +127,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return supabase.auth.signInWithPassword({ email, password });
   };
 
+  const signInWithGoogle = () => {
+    const supabase = getSupabase();
+    return supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+  };
+
   const signOut = () => {
     const supabase = getSupabase();
     return supabase.auth.signOut();
   };
 
   return React.createElement(AuthContext.Provider, {
-    value: { user, session, loading, isAdmin, signIn, signOut },
+    value: { user, session, loading, isAdmin, isStudent, signIn, signInWithGoogle, signOut },
     children,
   });
 }
