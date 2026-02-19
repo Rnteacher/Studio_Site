@@ -163,3 +163,9 @@ USING (bucket_id = 'images' AND public.has_role(auth.uid(), 'admin'));
 CREATE POLICY "Admins can delete images"
 ON storage.objects FOR DELETE
 USING (bucket_id = 'images' AND public.has_role(auth.uid(), 'admin'));
+
+-- ─── Grants ───
+GRANT USAGE ON SCHEMA public TO anon, authenticated;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO anon;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO authenticated;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO authenticated;

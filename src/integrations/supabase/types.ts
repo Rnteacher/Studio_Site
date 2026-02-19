@@ -12,6 +12,204 @@ export type Database = {
   }
   public: {
     Tables: {
+      cv_sections: {
+        Row: {
+          id: string
+          portfolio_id: string
+          section_type: string
+          title: string
+          entries: Json
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          portfolio_id: string
+          section_type: string
+          title?: string
+          entries?: Json
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          portfolio_id?: string
+          section_type?: string
+          title?: string
+          entries?: Json
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cv_sections_portfolio_id_fkey"
+            columns: ["portfolio_id"]
+            isOneToOne: false
+            referencedRelation: "portfolios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      portfolios: {
+        Row: {
+          id: string
+          student_id: string
+          user_id: string
+          template_id: string | null
+          slug: string | null
+          status: string
+          about_title: string
+          about_body: string
+          about_image_url: string | null
+          contact_email: string
+          contact_phone: string
+          contact_website: string | null
+          social_links: Json
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          student_id: string
+          user_id: string
+          template_id?: string | null
+          slug?: string | null
+          status?: string
+          about_title?: string
+          about_body?: string
+          about_image_url?: string | null
+          contact_email?: string
+          contact_phone?: string
+          contact_website?: string | null
+          social_links?: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          student_id?: string
+          user_id?: string
+          template_id?: string | null
+          slug?: string | null
+          status?: string
+          about_title?: string
+          about_body?: string
+          about_image_url?: string | null
+          contact_email?: string
+          contact_phone?: string
+          contact_website?: string | null
+          social_links?: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolios_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: true
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "portfolios_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_media: {
+        Row: {
+          id: string
+          project_id: string
+          drive_file_id: string | null
+          file_name: string
+          mime_type: string
+          thumbnail_url: string | null
+          web_view_url: string | null
+          sort_order: number
+        }
+        Insert: {
+          id?: string
+          project_id: string
+          drive_file_id?: string | null
+          file_name?: string
+          mime_type?: string
+          thumbnail_url?: string | null
+          web_view_url?: string | null
+          sort_order?: number
+        }
+        Update: {
+          id?: string
+          project_id?: string
+          drive_file_id?: string | null
+          file_name?: string
+          mime_type?: string
+          thumbnail_url?: string | null
+          web_view_url?: string | null
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_media_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          id: string
+          portfolio_id: string
+          title: string
+          description: string
+          tags: string[]
+          drive_folder_url: string | null
+          thumbnail_url: string | null
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          portfolio_id: string
+          title?: string
+          description?: string
+          tags?: string[]
+          drive_folder_url?: string | null
+          thumbnail_url?: string | null
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          portfolio_id?: string
+          title?: string
+          description?: string
+          tags?: string[]
+          drive_folder_url?: string | null
+          thumbnail_url?: string | null
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_portfolio_id_fkey"
+            columns: ["portfolio_id"]
+            isOneToOne: false
+            referencedRelation: "portfolios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       service_students: {
         Row: {
           id: string
@@ -99,6 +297,7 @@ export type Database = {
           short_description: string
           tiktok: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           categories?: string[]
@@ -117,6 +316,7 @@ export type Database = {
           short_description?: string
           tiktok?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           categories?: string[]
@@ -135,6 +335,37 @@ export type Database = {
           short_description?: string
           tiktok?: string | null
           updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      templates: {
+        Row: {
+          id: string
+          name: string
+          label: string
+          category: string
+          thumbnail_url: string
+          description: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          label: string
+          category: string
+          thumbnail_url?: string
+          description?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          label?: string
+          category?: string
+          thumbnail_url?: string
+          description?: string
+          created_at?: string
         }
         Relationships: []
       }
