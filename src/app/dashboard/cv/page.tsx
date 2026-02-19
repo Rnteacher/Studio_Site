@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useMyPortfolio } from "@/hooks/usePortfolio";
 import { useCvSections, useCreateCvSection, useUpdateCvSection, useDeleteCvSection } from "@/hooks/useCvSections";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Trash2, GripVertical, Download, ChevronDown, ChevronUp } from "lucide-react";
+import { Plus, Trash2, GripVertical, Download, ChevronDown, ChevronUp, Save } from "lucide-react";
 import type { CvSection, CvEntry } from "@/types/portfolio";
 
 const SECTION_TYPES = [
@@ -71,35 +71,62 @@ function EntryEditor({
 
 function SectionEditor({
   section,
-  onUpdate,
+  onSave,
   onDelete,
+  isSaving,
 }: {
   section: CvSection;
-  onUpdate: (updates: Partial<{ title: string; entries: CvEntry[] }>) => void;
+  onSave: (updates: Partial<{ title: string; entries: CvEntry[] }>) => void;
   onDelete: () => void;
+  isSaving: boolean;
 }) {
   const [collapsed, setCollapsed] = useState(false);
+  const [localTitle, setLocalTitle] = useState(section.title);
+  const [localEntries, setLocalEntries] = useState<CvEntry[]>(section.entries);
+  const [dirty, setDirty] = useState(false);
 
-  const addEntry = () => {
-    onUpdate({
-      entries: [...section.entries, { title: "", subtitle: "", dateRange: "", description: "" }],
-    });
+  // Sync from server when section data changes (e.g., after save)
+  const lastSectionRef = useRef(section);
+  useEffect(() => {
+    if (lastSectionRef.current.id !== section.id || (!dirty && lastSectionRef.current !== section)) {
+      setLocalTitle(section.title);
+      setLocalEntries(section.entries);
+      setDirty(false);
+    }
+    lastSectionRef.current = section;
+  }, [section, dirty]);
+
+  const updateTitle = (val: string) => {
+    setLocalTitle(val);
+    setDirty(true);
   };
 
   const updateEntry = (idx: number, updated: CvEntry) => {
-    const entries = [...section.entries];
+    const entries = [...localEntries];
     entries[idx] = updated;
-    onUpdate({ entries });
+    setLocalEntries(entries);
+    setDirty(true);
   };
 
   const removeEntry = (idx: number) => {
-    onUpdate({ entries: section.entries.filter((_, i) => i !== idx) });
+    setLocalEntries(localEntries.filter((_, i) => i !== idx));
+    setDirty(true);
+  };
+
+  const addEntry = () => {
+    setLocalEntries([...localEntries, { title: "", subtitle: "", dateRange: "", description: "" }]);
+    setDirty(true);
+  };
+
+  const handleSave = () => {
+    onSave({ title: localTitle, entries: localEntries });
+    setDirty(false);
   };
 
   const typeLabel = SECTION_TYPES.find((t) => t.value === section.sectionType)?.label ?? section.sectionType;
 
   return (
-    <div className="border rounded-lg bg-background overflow-hidden">
+    <div className={`border rounded-lg bg-background overflow-hidden ${dirty ? "border-primary/50" : ""}`}>
       <div
         className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50"
         onClick={() => setCollapsed(!collapsed)}
@@ -107,10 +134,23 @@ function SectionEditor({
         <div className="flex items-center gap-2">
           <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
           <span className="text-xs bg-muted px-2 py-0.5 rounded">{typeLabel}</span>
-          <h3 className="font-medium">{section.title || "ללא שם"}</h3>
-          <span className="text-xs text-muted-foreground">({section.entries.length} רשומות)</span>
+          <h3 className="font-medium">{localTitle || "ללא שם"}</h3>
+          <span className="text-xs text-muted-foreground">({localEntries.length} רשומות)</span>
+          {dirty && <span className="text-xs text-primary">● שינויים שלא נשמרו</span>}
         </div>
         <div className="flex items-center gap-1">
+          {dirty && (
+            <Button
+              variant="default"
+              size="sm"
+              onClick={(e) => { e.stopPropagation(); handleSave(); }}
+              disabled={isSaving}
+              className="h-8 gap-1"
+            >
+              <Save className="h-3 w-3" />
+              שמור
+            </Button>
+          )}
           <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); onDelete(); }} className="h-8 w-8">
             <Trash2 className="h-4 w-4" />
           </Button>
@@ -123,14 +163,14 @@ function SectionEditor({
           <div className="space-y-2">
             <Label>כותרת הסקציה</Label>
             <Input
-              value={section.title}
-              onChange={(e) => onUpdate({ title: e.target.value })}
+              value={localTitle}
+              onChange={(e) => updateTitle(e.target.value)}
               placeholder="למשל: השכלה אקדמית"
             />
           </div>
 
           <div className="space-y-2">
-            {section.entries.map((entry, idx) => (
+            {localEntries.map((entry, idx) => (
               <EntryEditor
                 key={idx}
                 entry={entry}
@@ -140,10 +180,18 @@ function SectionEditor({
             ))}
           </div>
 
-          <Button variant="outline" size="sm" onClick={addEntry}>
-            <Plus className="h-3 w-3 ml-1" />
-            הוסף רשומה
-          </Button>
+          <div className="flex items-center justify-between">
+            <Button variant="outline" size="sm" onClick={addEntry}>
+              <Plus className="h-3 w-3 ml-1" />
+              הוסף רשומה
+            </Button>
+            {dirty && (
+              <Button size="sm" onClick={handleSave} disabled={isSaving}>
+                <Save className="h-3 w-3 ml-1" />
+                שמור שינויים
+              </Button>
+            )}
+          </div>
         </div>
       )}
     </div>
@@ -176,15 +224,16 @@ export default function CvPage() {
     }
   };
 
-  const handleUpdate = async (section: CvSection, updates: Partial<{ title: string; entries: CvEntry[] }>) => {
+  const handleSave = async (section: CvSection, updates: Partial<{ title: string; entries: CvEntry[] }>) => {
     try {
       await updateSection.mutateAsync({
         id: section.id,
         portfolio_id: section.portfolioId,
         ...updates,
       });
+      toast({ title: "נשמר", description: "השינויים נשמרו" });
     } catch {
-      toast({ title: "שגיאה", description: "העדכון נכשל", variant: "destructive" });
+      toast({ title: "שגיאה", description: "השמירה נכשלה", variant: "destructive" });
     }
   };
 
@@ -225,8 +274,9 @@ export default function CvPage() {
           <SectionEditor
             key={section.id}
             section={section}
-            onUpdate={(updates) => handleUpdate(section, updates)}
+            onSave={(updates) => handleSave(section, updates)}
             onDelete={() => handleDelete(section)}
+            isSaving={updateSection.isPending}
           />
         ))}
       </div>
