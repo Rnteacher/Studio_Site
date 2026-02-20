@@ -20,9 +20,6 @@ export default function AboutPage() {
   const [aboutTitle, setAboutTitle] = useState("");
   const [aboutSubtitle, setAboutSubtitle] = useState("");
   const [aboutBody, setAboutBody] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
-  const [contactPhone, setContactPhone] = useState("");
-  const [contactWebsite, setContactWebsite] = useState("");
   const [dirty, setDirty] = useState(false);
 
   useEffect(() => {
@@ -30,9 +27,6 @@ export default function AboutPage() {
       setAboutTitle(portfolio.aboutTitle);
       setAboutSubtitle(portfolio.aboutSubtitle ?? "");
       setAboutBody(portfolio.aboutBody);
-      setContactEmail(portfolio.contactEmail);
-      setContactPhone(portfolio.contactPhone);
-      setContactWebsite(portfolio.contactWebsite ?? "");
       setDirty(false);
     }
   }, [portfolio]);
@@ -47,9 +41,6 @@ export default function AboutPage() {
         about_title: aboutTitle,
         about_subtitle: aboutSubtitle,
         about_body: aboutBody,
-        contact_email: contactEmail,
-        contact_phone: contactPhone,
-        contact_website: contactWebsite || null,
       });
       setDirty(false);
       toast({ title: "נשמר", description: "הפרטים עודכנו בהצלחה" });
@@ -83,7 +74,6 @@ export default function AboutPage() {
         </Button>
       </div>
 
-      {/* About section */}
       <section className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="aboutTitle">כותרת</Label>
@@ -115,46 +105,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Contact info */}
-      <section className="space-y-4">
-        <h2 className="text-lg font-semibold">פרטי קשר</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="contactEmail">אימייל</Label>
-            <Input
-              id="contactEmail"
-              type="email"
-              dir="ltr"
-              value={contactEmail}
-              onChange={(e) => { setContactEmail(e.target.value); markDirty(); }}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="contactPhone">טלפון</Label>
-            <Input
-              id="contactPhone"
-              type="tel"
-              dir="ltr"
-              value={contactPhone}
-              onChange={(e) => { setContactPhone(e.target.value); markDirty(); }}
-            />
-          </div>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="contactWebsite">אתר אישי</Label>
-          <Input
-            id="contactWebsite"
-            type="url"
-            dir="ltr"
-            value={contactWebsite}
-            onChange={(e) => { setContactWebsite(e.target.value); markDirty(); }}
-            placeholder="https://"
-          />
-        </div>
-      </section>
-
       <p className="text-sm text-muted-foreground">
-        רשתות חברתיות ותמונת פרופיל ניתנות לעריכה בלשונית{" "}
+        פרטי קשר, רשתות חברתיות ותמונת פרופיל ניתנים לעריכה בלשונית{" "}
         <a href="/dashboard/profile" className="text-primary hover:underline">פרופיל</a>.
       </p>
     </div>

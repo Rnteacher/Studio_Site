@@ -23,6 +23,24 @@ const templates: Record<string, React.ComponentType<TemplateProps>> = {
   "experimental-avant-garde": dynamic(() => import("./experimental-avant-garde"), {
     loading: () => <Skeleton className="h-[600px] w-full" />,
   }),
+  "classic-serif": dynamic(() => import("./classic-serif"), {
+    loading: () => <Skeleton className="h-[600px] w-full" />,
+  }),
+  "classic-grid": dynamic(() => import("./classic-grid"), {
+    loading: () => <Skeleton className="h-[600px] w-full" />,
+  }),
+  "modern-gradient": dynamic(() => import("./modern-gradient"), {
+    loading: () => <Skeleton className="h-[600px] w-full" />,
+  }),
+  "modern-dark": dynamic(() => import("./modern-dark"), {
+    loading: () => <Skeleton className="h-[600px] w-full" />,
+  }),
+  "experimental-retro": dynamic(() => import("./experimental-retro"), {
+    loading: () => <Skeleton className="h-[600px] w-full" />,
+  }),
+  "experimental-magazine": dynamic(() => import("./experimental-magazine"), {
+    loading: () => <Skeleton className="h-[600px] w-full" />,
+  }),
 };
 
 interface RendererProps extends TemplateProps {

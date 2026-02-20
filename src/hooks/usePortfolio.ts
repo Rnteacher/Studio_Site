@@ -6,7 +6,7 @@ import type { Portfolio } from "@/types/portfolio";
 
 export interface PortfolioWithStudent {
   portfolio: Portfolio;
-  student: { name: string; image: string; socialLinks: Record<string, string> };
+  student: { name: string; image: string; email: string; phone: string; website: string; socialLinks: Record<string, string> };
 }
 
 function mapPortfolio(row: Record<string, unknown>): Portfolio {
@@ -33,6 +33,9 @@ function mapStudentFromJoin(row: Record<string, unknown>): PortfolioWithStudent[
   return {
     name: (s?.name as string) ?? "",
     image: (s?.image as string) ?? "",
+    email: (s?.email as string) ?? "",
+    phone: (s?.phone as string) ?? "",
+    website: (s?.website as string) ?? "",
     socialLinks: (s?.social_links as Record<string, string>) ?? {},
   };
 }
@@ -47,7 +50,7 @@ export function useMyPortfolio() {
 
       const { data, error } = await supabase
         .from("portfolios")
-        .select("*, students(name, image, social_links)")
+        .select("*, students(name, image, email, phone, website, social_links)")
         .eq("user_id", user.id)
         .single();
       if (error) throw error;
@@ -66,7 +69,7 @@ export function usePortfolioBySlug(slug: string) {
       const supabase = createClient();
       const { data, error } = await supabase
         .from("portfolios")
-        .select("*, students(name, image, social_links)")
+        .select("*, students(name, image, email, phone, website, social_links)")
         .eq("slug", slug)
         .eq("status", "published")
         .single();
@@ -87,7 +90,7 @@ export function useAllPortfolios() {
       const supabase = createClient();
       const { data, error } = await supabase
         .from("portfolios")
-        .select("*, students(name, image, social_links)")
+        .select("*, students(name, image, email, phone, website, social_links)")
         .order("updated_at", { ascending: false });
       if (error) throw error;
       return (data ?? []).map((row) => ({

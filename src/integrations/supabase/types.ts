@@ -291,6 +291,7 @@ export type Database = {
           social_links: Json
           updated_at: string
           user_id: string | null
+          website: string
         }
         Insert: {
           categories?: string[]
@@ -306,6 +307,7 @@ export type Database = {
           social_links?: Json
           updated_at?: string
           user_id?: string | null
+          website?: string
         }
         Update: {
           categories?: string[]
@@ -321,6 +323,7 @@ export type Database = {
           social_links?: Json
           updated_at?: string
           user_id?: string | null
+          website?: string
         }
         Relationships: []
       }

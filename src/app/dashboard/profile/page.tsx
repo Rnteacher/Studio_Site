@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useStudentProfile, useUpdateStudentProfile } from "@/hooks/useStudentProfile";
+import { uploadImage } from "@/lib/uploadImage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { Save, Plus, Trash2 } from "lucide-react";
+import { Save, Plus, Trash2, Upload, Loader2 } from "lucide-react";
 
 const SOCIAL_OPTIONS = [
   { key: "instagram", label: "Instagram" },
@@ -19,7 +20,6 @@ const SOCIAL_OPTIONS = [
   { key: "twitter", label: "Twitter / X" },
   { key: "behance", label: "Behance" },
   { key: "dribbble", label: "Dribbble" },
-  { key: "website", label: "אתר אישי" },
 ];
 
 export default function ProfilePage() {
@@ -29,16 +29,20 @@ export default function ProfilePage() {
 
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [website, setWebsite] = useState("");
   const [image, setImage] = useState("");
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
   const [socialLinks, setSocialLinks] = useState<Record<string, string>>({});
   const [dirty, setDirty] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (profile) {
       setEmail(profile.email);
       setPhone(profile.phone);
+      setWebsite(profile.website);
       setImage(profile.image);
       setShortDescription(profile.shortDescription);
       setLongDescription(profile.longDescription);
@@ -49,6 +53,25 @@ export default function ProfilePage() {
 
   const markDirty = useCallback(() => setDirty(true), []);
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const url = await uploadImage(file, "students");
+      if (url) {
+        setImage(url);
+        markDirty();
+        toast({ title: "הועלה", description: "התמונה הועלתה בהצלחה" });
+      } else {
+        toast({ title: "שגיאה", description: "העלאת התמונה נכשלה", variant: "destructive" });
+      }
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
   const handleSave = async () => {
     if (!profile) return;
     try {
@@ -56,6 +79,7 @@ export default function ProfilePage() {
         id: profile.id,
         email,
         phone,
+        website,
         image,
         short_description: shortDescription,
         long_description: longDescription,
@@ -117,23 +141,51 @@ export default function ProfilePage() {
       </section>
 
       {/* Image */}
-      <section className="space-y-2">
-        <Label htmlFor="image">תמונת פרופיל (URL)</Label>
+      <section className="space-y-3">
+        <Label>תמונת פרופיל</Label>
         <div className="flex items-center gap-4">
-          {image && (
+          {image ? (
             <img
               src={image}
               alt={profile.name}
               className="w-20 h-20 rounded-full object-cover border"
             />
+          ) : (
+            <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center text-muted-foreground text-xs">
+              אין תמונה
+            </div>
           )}
+          <div className="flex flex-col gap-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageUpload}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              disabled={uploading}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              {uploading ? (
+                <><Loader2 className="h-4 w-4 ml-2 animate-spin" />מעלה...</>
+              ) : (
+                <><Upload className="h-4 w-4 ml-2" />העלה תמונה</>
+              )}
+            </Button>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
           <Input
             id="image"
             dir="ltr"
             value={image}
             onChange={(e) => { setImage(e.target.value); markDirty(); }}
-            placeholder="https://..."
-            className="flex-1"
+            placeholder="או הדבק URL..."
+            className="flex-1 text-xs"
           />
         </div>
       </section>
@@ -185,6 +237,17 @@ export default function ProfilePage() {
               onChange={(e) => { setPhone(e.target.value); markDirty(); }}
             />
           </div>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="website">אתר אישי</Label>
+          <Input
+            id="website"
+            type="url"
+            dir="ltr"
+            value={website}
+            onChange={(e) => { setWebsite(e.target.value); markDirty(); }}
+            placeholder="https://..."
+          />
         </div>
       </section>
 

@@ -7,6 +7,7 @@ import { useStudents } from "@/hooks/useStudents";
 import { useServices } from "@/hooks/useServices";
 import { useAllPortfolios, useUpdatePortfolio } from "@/hooks/usePortfolio";
 import { createClient } from "@/lib/supabase/client";
+import { uploadImage } from "@/lib/uploadImage";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
@@ -57,16 +58,7 @@ const emptyServiceForm: ServiceForm = {
   image: "/placeholder.svg", category: "", linkedStudentIds: [],
 };
 
-// ─── Image Upload Helper ───
-async function uploadImage(file: File, folder: string): Promise<string | null> {
-  const supabase = createClient();
-  const ext = file.name.split(".").pop();
-  const path = `${folder}/${Date.now()}.${ext}`;
-  const { error } = await supabase.storage.from("images").upload(path, file);
-  if (error) return null;
-  const { data } = supabase.storage.from("images").getPublicUrl(path);
-  return data.publicUrl;
-}
+// uploadImage imported from @/lib/uploadImage
 
 export default function AdminPage() {
   const { user, loading: authLoading, isAdmin, signOut } = useAuth();

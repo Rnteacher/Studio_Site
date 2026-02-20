@@ -82,6 +82,12 @@ export default function DesignPage() {
                         {template.name.includes("minimal") && "◻️"}
                         {template.name.includes("creative") && "🎭"}
                         {template.name.includes("avant") && "🔮"}
+                        {template.name.includes("serif") && "📜"}
+                        {template.name.includes("grid") && "📐"}
+                        {template.name.includes("gradient") && "🌈"}
+                        {template.name.includes("dark") && "🌙"}
+                        {template.name.includes("retro") && "📺"}
+                        {template.name.includes("magazine") && "📰"}
                       </span>
                     </div>
                     <div className="p-3">

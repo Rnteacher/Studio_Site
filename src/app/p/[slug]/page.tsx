@@ -14,7 +14,7 @@ async function getPortfolioData(slug: string) {
 
   const { data: portfolio, error } = await supabase
     .from("portfolios")
-    .select("*, templates(*), students(name, image, social_links)")
+    .select("*, templates(*), students(name, image, email, phone, website, social_links)")
     .eq("slug", slug)
     .eq("status", "published")
     .single();
@@ -77,6 +77,9 @@ async function getPortfolioData(slug: string) {
   const student = {
     name: (studentRow?.name as string) ?? "",
     image: (studentRow?.image as string) ?? "",
+    email: (studentRow?.email as string) ?? "",
+    phone: (studentRow?.phone as string) ?? "",
+    website: (studentRow?.website as string) ?? "",
     socialLinks: (studentRow?.social_links as Record<string, string>) ?? {},
   };
 
@@ -135,17 +138,17 @@ export default async function PortfolioPage({ params }: Props) {
           body: data.portfolio.aboutBody,
         }}
         contact={{
-          email: data.portfolio.contactEmail,
-          phone: data.portfolio.contactPhone,
-          website: data.portfolio.contactWebsite ?? "",
+          email: data.student.email,
+          phone: data.student.phone,
+          website: data.student.website,
         }}
         socialLinks={data.student.socialLinks}
         cvSections={data.cvSections}
         projects={data.projects}
       />
       <StickyContactBar
-        email={data.portfolio.contactEmail}
-        phone={data.portfolio.contactPhone}
+        email={data.student.email}
+        phone={data.student.phone}
       />
     </>
   );

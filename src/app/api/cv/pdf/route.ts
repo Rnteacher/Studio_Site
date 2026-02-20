@@ -13,10 +13,10 @@ export async function GET(request: Request) {
 
     const supabase = await createClient();
 
-    // Fetch portfolio
+    // Fetch portfolio with student info (contact comes from students now)
     const { data: portfolio, error: portfolioError } = await supabase
       .from("portfolios")
-      .select("*, students(name)")
+      .select("*, students(name, email, phone, website)")
       .eq("id", portfolioId)
       .single();
 
@@ -33,7 +33,7 @@ export async function GET(request: Request) {
 
     // Dynamic import of react-pdf (server-side only)
     const ReactPDF = await import("@react-pdf/renderer");
-    const { Document, Page, Text, View, StyleSheet, Font } = ReactPDF;
+    const { Document, Page, Text, View, StyleSheet, Font, renderToBuffer } = ReactPDF;
 
     // Register Hebrew font
     Font.register({
@@ -45,7 +45,7 @@ export async function GET(request: Request) {
     });
 
     const styles = StyleSheet.create({
-      page: { fontFamily: "Heebo", padding: 40, fontSize: 10 },
+      page: { fontFamily: "Heebo", padding: 40, fontSize: 10, direction: "rtl" as unknown as undefined },
       header: { textAlign: "center", marginBottom: 20, paddingBottom: 15, borderBottomWidth: 1, borderBottomColor: "#e5e7eb" },
       name: { fontSize: 22, fontWeight: 700, marginBottom: 4 },
       contactRow: { fontSize: 9, color: "#6b7280", marginTop: 4 },
@@ -58,65 +58,73 @@ export async function GET(request: Request) {
       entryDesc: { fontSize: 9, color: "#4b5563", marginTop: 2 },
     });
 
-    const studentName = (portfolio.students as Record<string, unknown>)?.name as string ?? "";
+    const studentRow = portfolio.students as Record<string, unknown> | null;
+    const studentName = (studentRow?.name as string) ?? "";
     const contactParts: string[] = [];
-    if (portfolio.contact_email) contactParts.push(portfolio.contact_email);
-    if (portfolio.contact_phone) contactParts.push(portfolio.contact_phone);
-    if (portfolio.contact_website) contactParts.push(portfolio.contact_website);
+    if (studentRow?.email) contactParts.push(studentRow.email as string);
+    if (studentRow?.phone) contactParts.push(studentRow.phone as string);
+    if (studentRow?.website) contactParts.push(studentRow.website as string);
 
     const sections = (cvSections ?? []).map((s) => ({
-      title: s.title,
+      title: s.title as string,
       entries: (s.entries as Array<{ title: string; subtitle?: string; dateRange?: string; description?: string }>) ?? [],
     }));
 
+    // Helper: create elements using React.createElement
     const h = React.createElement;
 
-    const doc = h(
-      Document,
-      null,
-      h(
-        Page,
-        { size: "A4", style: styles.page },
-        // Header
-        h(
-          View,
-          { style: styles.header },
-          h(Text, { style: styles.name }, studentName || portfolio.about_title || ""),
-          contactParts.length > 0
-            ? h(Text, { style: styles.contactRow }, contactParts.join("  |  "))
-            : null
-        ),
-        // About
-        portfolio.about_body
-          ? h(
-              View,
-              { style: styles.section },
-              h(Text, { style: styles.sectionTitle }, "אודות"),
-              h(Text, { style: styles.entryDesc }, portfolio.about_body)
-            )
-          : null,
-        // CV Sections
-        ...sections.map((section, si) =>
-          h(
-            View,
-            { key: si, style: styles.section },
-            h(Text, { style: styles.sectionTitle }, section.title),
-            ...section.entries.map((entry, ei) =>
-              h(
-                View,
-                { key: ei, style: styles.entry },
-                h(Text, { style: styles.entryTitle }, entry.title),
-                entry.subtitle ? h(Text, { style: styles.entrySubtitle }, entry.subtitle) : null,
-                entry.dateRange ? h(Text, { style: styles.entryDate }, entry.dateRange) : null,
-                entry.description ? h(Text, { style: styles.entryDesc }, entry.description) : null
-              )
-            )
-          )
+    // Build CV entry elements
+    const buildCvEntries = (entries: typeof sections[0]["entries"]) =>
+      entries.map((entry, ei) => {
+        const children = [
+          h(Text, { key: "t", style: styles.entryTitle }, entry.title),
+        ];
+        if (entry.subtitle) children.push(h(Text, { key: "s", style: styles.entrySubtitle }, entry.subtitle));
+        if (entry.dateRange) children.push(h(Text, { key: "d", style: styles.entryDate }, entry.dateRange));
+        if (entry.description) children.push(h(Text, { key: "desc", style: styles.entryDesc }, entry.description));
+        return h(View, { key: String(ei), style: styles.entry }, ...children);
+      });
+
+    // Build section elements
+    const buildSections = () =>
+      sections.map((section, si) =>
+        h(View, { key: String(si), style: styles.section },
+          h(Text, { style: styles.sectionTitle }, section.title),
+          ...buildCvEntries(section.entries),
         )
-      )
+      );
+
+    // Build header
+    const headerChildren = [
+      h(Text, { key: "name", style: styles.name }, studentName || portfolio.about_title || ""),
+    ];
+    if (contactParts.length > 0) {
+      headerChildren.push(h(Text, { key: "contact", style: styles.contactRow }, contactParts.join("  |  ")));
+    }
+    const headerView = h(View, { key: "header", style: styles.header }, ...headerChildren);
+
+    // Build page children
+    const pageChildren: React.ReactElement[] = [headerView];
+
+    // About section
+    if (portfolio.about_body) {
+      pageChildren.push(
+        h(View, { key: "about", style: styles.section },
+          h(Text, { style: styles.sectionTitle }, "אודות"),
+          h(Text, { style: styles.entryDesc }, portfolio.about_body),
+        )
+      );
+    }
+
+    // CV sections
+    pageChildren.push(...buildSections());
+
+    // Build final document
+    const doc = h(Document, null,
+      h(Page, { size: "A4", style: styles.page }, ...pageChildren)
     );
 
-    const buffer = await ReactPDF.renderToBuffer(doc);
+    const buffer = await renderToBuffer(doc);
 
     return new NextResponse(Buffer.from(buffer), {
       status: 200,

@@ -8,6 +8,7 @@ export interface StudentProfile {
   name: string;
   email: string;
   phone: string;
+  website: string;
   image: string;
   shortDescription: string;
   longDescription: string;
@@ -20,6 +21,7 @@ function mapRow(row: Record<string, unknown>): StudentProfile {
     name: row.name as string,
     email: (row.email as string) ?? "",
     phone: (row.phone as string) ?? "",
+    website: (row.website as string) ?? "",
     image: (row.image as string) ?? "",
     shortDescription: (row.short_description as string) ?? "",
     longDescription: (row.long_description as string) ?? "",
@@ -53,6 +55,7 @@ export function useUpdateStudentProfile() {
     mutationFn: async (updates: Partial<{
       email: string;
       phone: string;
+      website: string;
       image: string;
       short_description: string;
       long_description: string;

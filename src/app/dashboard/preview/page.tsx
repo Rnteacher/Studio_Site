@@ -91,9 +91,9 @@ export default function PreviewPage() {
             body: portfolio.aboutBody,
           }}
           contact={{
-            email: portfolio.contactEmail,
-            phone: portfolio.contactPhone,
-            website: portfolio.contactWebsite ?? "",
+            email: student?.email ?? "",
+            phone: student?.phone ?? "",
+            website: student?.website ?? "",
           }}
           socialLinks={student?.socialLinks ?? {}}
           cvSections={cvSections ?? []}
