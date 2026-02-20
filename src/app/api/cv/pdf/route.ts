@@ -33,32 +33,32 @@ export async function GET(request: Request) {
     // Dynamic import react-pdf internals for direct PDF generation
     // We bypass the React reconciler entirely to avoid the $$typeof symbol mismatch
     // (React error #31) that occurs when Next.js bundles multiple React instances.
-    const [fontModule, layoutModule, renderModule, pdfkitModule, fnsModule] =
+    const [rendererModule, layoutModule, renderModule, pdfkitModule] =
       await Promise.all([
-        import("@react-pdf/font"),
+        import("@react-pdf/renderer"),
         import("@react-pdf/layout"),
         import("@react-pdf/render"),
         import("@react-pdf/pdfkit"),
-        import("@react-pdf/fns"),
       ]);
 
-    const FontStore = fontModule.default;
+    // Use the singleton Font object from @react-pdf/renderer — it already has
+    // built-in fonts (Helvetica, Courier, Times-Roman) registered via its constructor.
+    const Font = rendererModule.Font;
     const layoutDocument = layoutModule.default;
     const renderPDF = renderModule.default;
     const PDFDocument = pdfkitModule.default;
-    const { upperFirst } = fnsModule;
 
-    // Font store setup
-    const fontStore = new FontStore();
-
-    // Register Hebrew font
-    fontStore.register({
+    // Register Hebrew font on the singleton (idempotent — re-registering is safe)
+    Font.register({
       family: "Heebo",
       fonts: [
         { src: "https://fonts.gstatic.com/s/heebo/v26/NGSpv5_NC0k9P_v6ZUCbLRAHxK1EiSysd0mm_00.ttf", fontWeight: 400 },
         { src: "https://fonts.gstatic.com/s/heebo/v26/NGSpv5_NC0k9P_v6ZUCbLRAHxK1E1yysd0mm_00.ttf", fontWeight: 700 },
       ],
     });
+
+    // The Font object IS the fontStore (Font = fontStore in react-pdf source)
+    const fontStore = Font;
 
     // ── Style definitions ──
     const styles: Record<string, Record<string, unknown>> = {
