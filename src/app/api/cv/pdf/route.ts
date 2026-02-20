@@ -60,19 +60,19 @@ export async function GET(request: Request) {
     // The Font object IS the fontStore (Font = fontStore in react-pdf source)
     const fontStore = Font;
 
-    // ── Style definitions ──
+    // ── Style definitions (RTL — textAlign: "right" for Hebrew) ──
     const styles: Record<string, Record<string, unknown>> = {
-      page: { fontFamily: "Heebo", padding: 40, fontSize: 10, direction: "rtl" },
+      page: { fontFamily: "Heebo", padding: 40, fontSize: 10 },
       header: { textAlign: "center", marginBottom: 20, paddingBottom: 15, borderBottomWidth: 1, borderBottomColor: "#e5e7eb" },
-      name: { fontSize: 22, fontWeight: 700, marginBottom: 4 },
-      contactRow: { fontSize: 9, color: "#6b7280", marginTop: 4 },
+      name: { fontSize: 22, fontWeight: 700, marginBottom: 4, textAlign: "center" },
+      contactRow: { fontSize: 9, color: "#6b7280", marginTop: 4, textAlign: "center" },
       section: { marginTop: 16 },
-      sectionTitle: { fontSize: 13, fontWeight: 700, marginBottom: 8, paddingBottom: 4, borderBottomWidth: 1, borderBottomColor: "#e5e7eb" },
+      sectionTitle: { fontSize: 13, fontWeight: 700, marginBottom: 8, paddingBottom: 4, borderBottomWidth: 1, borderBottomColor: "#e5e7eb", textAlign: "right" },
       entry: { marginBottom: 8 },
-      entryTitle: { fontSize: 11, fontWeight: 700 },
-      entrySubtitle: { fontSize: 9, color: "#6b7280" },
-      entryDate: { fontSize: 8, color: "#9ca3af" },
-      entryDesc: { fontSize: 9, color: "#4b5563", marginTop: 2 },
+      entryTitle: { fontSize: 11, fontWeight: 700, textAlign: "right" },
+      entrySubtitle: { fontSize: 9, color: "#6b7280", textAlign: "right" },
+      entryDate: { fontSize: 8, color: "#9ca3af", textAlign: "right" },
+      entryDesc: { fontSize: 9, color: "#4b5563", marginTop: 2, textAlign: "right" },
     };
 
     // ── Data extraction ──
