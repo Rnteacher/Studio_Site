@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import React from "react";
 
 export async function GET(request: Request) {
   try {
@@ -70,7 +69,11 @@ export async function GET(request: Request) {
       entries: (s.entries as Array<{ title: string; subtitle?: string; dateRange?: string; description?: string }>) ?? [],
     }));
 
-    // Helper: create elements using React.createElement
+    // Use require("react") to get the same React instance as react-pdf's reconciler.
+    // ESM `import React from "react"` can give a different instance in Next.js bundling,
+    // causing error #31 ($$typeof symbol mismatch).
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const React = require("react") as { createElement: typeof import("react").createElement };
     const h = React.createElement;
 
     // Build CV entry elements
@@ -104,7 +107,8 @@ export async function GET(request: Request) {
     const headerView = h(View, { key: "header", style: styles.header }, ...headerChildren);
 
     // Build page children
-    const pageChildren: React.ReactElement[] = [headerView];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const pageChildren: any[] = [headerView];
 
     // About section
     if (portfolio.about_body) {
