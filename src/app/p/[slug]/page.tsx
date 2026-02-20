@@ -14,7 +14,7 @@ async function getPortfolioData(slug: string) {
 
   const { data: portfolio, error } = await supabase
     .from("portfolios")
-    .select("*, templates(*)")
+    .select("*, templates(*), students(name, image, social_links)")
     .eq("slug", slug)
     .eq("status", "published")
     .single();
@@ -73,6 +73,13 @@ async function getPortfolioData(slug: string) {
   const templateRow = portfolio.templates as Record<string, unknown> | null;
   const templateName = (templateRow?.name as string) ?? "classic-clean";
 
+  const studentRow = portfolio.students as Record<string, unknown> | null;
+  const student = {
+    name: (studentRow?.name as string) ?? "",
+    image: (studentRow?.image as string) ?? "",
+    socialLinks: (studentRow?.social_links as Record<string, string>) ?? {},
+  };
+
   const mappedPortfolio: Portfolio = {
     id: portfolio.id,
     studentId: portfolio.student_id,
@@ -82,16 +89,15 @@ async function getPortfolioData(slug: string) {
     status: portfolio.status as Portfolio["status"],
     aboutTitle: portfolio.about_title,
     aboutBody: portfolio.about_body,
-    aboutImageUrl: portfolio.about_image_url,
+    aboutSubtitle: (portfolio as Record<string, unknown>).about_subtitle as string ?? "",
     contactEmail: portfolio.contact_email,
     contactPhone: portfolio.contact_phone,
     contactWebsite: portfolio.contact_website,
-    socialLinks: (portfolio.social_links as Record<string, string>) ?? {},
     createdAt: portfolio.created_at,
     updatedAt: portfolio.updated_at,
   };
 
-  return { portfolio: mappedPortfolio, templateName, cvSections, projects };
+  return { portfolio: mappedPortfolio, student, templateName, cvSections, projects };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -99,13 +105,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await getPortfolioData(slug);
   if (!data) return { title: "לא נמצא" };
 
+  const title = data.student.name || data.portfolio.aboutTitle || `פורטפוליו - ${slug}`;
   return {
-    title: data.portfolio.aboutTitle || `פורטפוליו - ${slug}`,
+    title,
     description: data.portfolio.aboutBody?.slice(0, 160) || "פורטפוליו אישי",
     openGraph: {
-      title: data.portfolio.aboutTitle || `פורטפוליו - ${slug}`,
+      title,
       description: data.portfolio.aboutBody?.slice(0, 160) || "פורטפוליו אישי",
-      ...(data.portfolio.aboutImageUrl && { images: [data.portfolio.aboutImageUrl] }),
+      ...(data.student.image && { images: [data.student.image] }),
     },
   };
 }
@@ -120,18 +127,19 @@ export default async function PortfolioPage({ params }: Props) {
     <>
       <TemplateRenderer
         templateName={data.templateName}
+        student={{ name: data.student.name, image: data.student.image }}
         portfolio={data.portfolio}
         about={{
           title: data.portfolio.aboutTitle,
+          subtitle: data.portfolio.aboutSubtitle ?? "",
           body: data.portfolio.aboutBody,
-          imageUrl: data.portfolio.aboutImageUrl ?? "",
         }}
         contact={{
           email: data.portfolio.contactEmail,
           phone: data.portfolio.contactPhone,
           website: data.portfolio.contactWebsite ?? "",
         }}
-        socialLinks={data.portfolio.socialLinks}
+        socialLinks={data.student.socialLinks}
         cvSections={data.cvSections}
         projects={data.projects}
       />

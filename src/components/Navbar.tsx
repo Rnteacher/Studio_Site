@@ -42,7 +42,7 @@ const Navbar = () => {
           <Link href="/auth/login">
             <Button variant="outline" size="sm" className="gap-2">
               <LogIn className="h-4 w-4" />
-              כניסת חניכים
+              כניסה
             </Button>
           </Link>
         </div>
@@ -76,7 +76,7 @@ const Navbar = () => {
           <Link href="/auth/login" onClick={() => setIsOpen(false)}>
             <Button variant="outline" size="sm" className="gap-2 w-full">
               <LogIn className="h-4 w-4" />
-              כניסת חניכים
+              כניסה
             </Button>
           </Link>
         </div>

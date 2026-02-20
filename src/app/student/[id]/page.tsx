@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, ArrowRight, ExternalLink, FileText, Briefcase } from "lucide-react";
+import { Mail, ArrowRight, Briefcase } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
@@ -132,20 +132,6 @@ export default function StudentProfilePage() {
                         <Briefcase className="h-4 w-4" />פורטפוליו
                       </Button>
                     </Link>
-                  )}
-                  {student.portfolioUrl && (
-                    <a href={student.portfolioUrl} target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" size="sm" className="gap-1.5">
-                        <ExternalLink className="h-4 w-4" />תיק עבודות
-                      </Button>
-                    </a>
-                  )}
-                  {student.resumeUrl && (
-                    <a href={student.resumeUrl} target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" size="sm" className="gap-1.5">
-                        <FileText className="h-4 w-4" />רזומה
-                      </Button>
-                    </a>
                   )}
                 </div>
                 <p className="text-base leading-relaxed text-foreground">{student.longDescription}</p>

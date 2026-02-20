@@ -1,11 +1,15 @@
 import type { Portfolio, CvSection, ProjectWithMedia } from "@/types/portfolio";
 
 export interface TemplateProps {
+  student: {
+    name: string;
+    image: string;
+  };
   portfolio: Portfolio;
   about: {
     title: string;
+    subtitle: string;
     body: string;
-    imageUrl: string;
   };
   contact: {
     email: string;

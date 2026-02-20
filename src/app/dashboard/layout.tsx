@@ -4,11 +4,12 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Eye, User, FolderOpen, FileText, Palette, Globe, LogOut } from "lucide-react";
+import { Eye, UserCircle, User, FolderOpen, FileText, Palette, Globe, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const tabs = [
   { href: "/dashboard/preview", label: "תצוגה מקדימה", icon: Eye },
+  { href: "/dashboard/profile", label: "פרופיל", icon: UserCircle },
   { href: "/dashboard/about", label: "אודות", icon: User },
   { href: "/dashboard/projects", label: "פרויקטים", icon: FolderOpen },
   { href: "/dashboard/cv", label: "קורות חיים", icon: FileText },

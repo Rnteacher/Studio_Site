@@ -30,19 +30,14 @@ interface StudentForm {
   image: string;
   email: string;
   phone: string;
-  instagram: string;
-  facebook: string;
-  tiktok: string;
-  portfolio_url: string;
-  resume_url: string;
+  social_links: Record<string, string>;
   linkedServiceIds: string[];
 }
 
 const emptyStudentForm: StudentForm = {
   id: "", name: "", short_description: "", long_description: "",
   image: "/placeholder.svg",
-  email: "", phone: "", instagram: "", facebook: "", tiktok: "",
-  portfolio_url: "", resume_url: "", linkedServiceIds: [],
+  email: "", phone: "", social_links: {}, linkedServiceIds: [],
 };
 
 // ─── Service Form ───
@@ -101,7 +96,7 @@ export default function AdminPage() {
 
   if (authLoading) return <div className="min-h-screen flex items-center justify-center">טוען...</div>;
   if (!user) {
-    router.replace("/admin/login");
+    router.replace("/auth/login");
     return null;
   }
   if (!isAdmin) return (
@@ -158,11 +153,7 @@ export default function AdminPage() {
       short_description: student.shortDescription, long_description: student.longDescription,
       image: student.image,
       email: student.contact.email, phone: student.contact.phone,
-      instagram: student.contact.socials?.instagram || "",
-      facebook: student.contact.socials?.facebook || "",
-      tiktok: student.contact.socials?.tiktok || "",
-      portfolio_url: student.portfolioUrl || "",
-      resume_url: student.resumeUrl || "",
+      social_links: student.socialLinks || {},
       linkedServiceIds: (links || []).map((l: any) => l.service_id),
     });
     setIsNewStudent(false);
@@ -197,9 +188,7 @@ export default function AdminPage() {
       short_description: studentForm.short_description, long_description: studentForm.long_description,
       image: studentForm.image, categories: cats, services: svcMap,
       email: studentForm.email, phone: studentForm.phone,
-      instagram: studentForm.instagram || null, facebook: studentForm.facebook || null, tiktok: studentForm.tiktok || null,
-      portfolio_url: studentForm.portfolio_url || null,
-      resume_url: studentForm.resume_url || null,
+      social_links: studentForm.social_links,
     };
     const { error } = isNewStudent
       ? await supabase.from("students").insert(payload)
@@ -346,13 +335,13 @@ export default function AdminPage() {
                 {(!portfolios || portfolios.length === 0) && (
                   <p className="text-muted-foreground text-center py-8">אין פורטפוליו עדיין. חניכים שיתחברו עם Google יקבלו פורטפוליו אוטומטית.</p>
                 )}
-                {portfolios?.map((p) => (
+                {portfolios?.map(({ portfolio: p, student: s }) => (
                   <div key={p.id} className="flex items-center gap-4 bg-card rounded-xl p-4 shadow-sm">
-                    {p.studentImage && (
-                      <img src={p.studentImage} alt={p.studentName} className="w-10 h-10 rounded-full object-cover" />
+                    {s.image && (
+                      <img src={s.image} alt={s.name} className="w-10 h-10 rounded-full object-cover" />
                     )}
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-heading">{p.studentName || "ללא שם"}</p>
+                      <p className="font-semibold text-heading">{s.name || "ללא שם"}</p>
                       <p className="text-sm text-muted-foreground">
                         {p.slug ? `/p/${p.slug}` : "ללא כתובת"}
                       </p>
@@ -487,17 +476,17 @@ export default function AdminPage() {
                 )}
               </div>
 
-              <div className="border rounded-lg p-3 space-y-3">
-                <p className="text-sm font-semibold text-heading">קישורים</p>
-                <Input placeholder="קישור לתיק עבודות (אופציונלי)" value={studentForm.portfolio_url} onChange={e => setStudentForm({...studentForm, portfolio_url: e.target.value})} dir="ltr" />
-                <Input placeholder="קישור לרזומה (אופציונלי)" value={studentForm.resume_url} onChange={e => setStudentForm({...studentForm, resume_url: e.target.value})} dir="ltr" />
-              </div>
-
               <Input placeholder="אימייל" value={studentForm.email} onChange={e => setStudentForm({...studentForm, email: e.target.value})} dir="ltr" />
               <Input placeholder="טלפון" value={studentForm.phone} onChange={e => setStudentForm({...studentForm, phone: e.target.value})} dir="ltr" />
-              <Input placeholder="אינסטגרם (אופציונלי)" value={studentForm.instagram} onChange={e => setStudentForm({...studentForm, instagram: e.target.value})} dir="ltr" />
-              <Input placeholder="פייסבוק (אופציונלי)" value={studentForm.facebook} onChange={e => setStudentForm({...studentForm, facebook: e.target.value})} dir="ltr" />
-              <Input placeholder="טיקטוק (אופציונלי)" value={studentForm.tiktok} onChange={e => setStudentForm({...studentForm, tiktok: e.target.value})} dir="ltr" />
+
+              <div className="border rounded-lg p-3 space-y-3">
+                <p className="text-sm font-semibold text-heading">קישורים חברתיים</p>
+                <Input placeholder="אינסטגרם (אופציונלי)" value={studentForm.social_links.instagram || ""} onChange={e => setStudentForm({...studentForm, social_links: {...studentForm.social_links, instagram: e.target.value}})} dir="ltr" />
+                <Input placeholder="פייסבוק (אופציונלי)" value={studentForm.social_links.facebook || ""} onChange={e => setStudentForm({...studentForm, social_links: {...studentForm.social_links, facebook: e.target.value}})} dir="ltr" />
+                <Input placeholder="טיקטוק (אופציונלי)" value={studentForm.social_links.tiktok || ""} onChange={e => setStudentForm({...studentForm, social_links: {...studentForm.social_links, tiktok: e.target.value}})} dir="ltr" />
+                <Input placeholder="לינקדאין (אופציונלי)" value={studentForm.social_links.linkedin || ""} onChange={e => setStudentForm({...studentForm, social_links: {...studentForm.social_links, linkedin: e.target.value}})} dir="ltr" />
+                <Input placeholder="אתר אישי (אופציונלי)" value={studentForm.social_links.website || ""} onChange={e => setStudentForm({...studentForm, social_links: {...studentForm.social_links, website: e.target.value}})} dir="ltr" />
+              </div>
               <Button onClick={handleSaveStudent} className="w-full">{isNewStudent ? "הוסף" : "שמור"}</Button>
             </div>
           </DialogContent>

@@ -11,7 +11,8 @@ import { useToast } from "@/hooks/use-toast";
 import { Globe, ExternalLink, AlertTriangle } from "lucide-react";
 
 export default function PublishPage() {
-  const { data: portfolio, isLoading } = useMyPortfolio();
+  const { data, isLoading } = useMyPortfolio();
+  const portfolio = data?.portfolio;
   const updatePortfolio = useUpdatePortfolio();
   const { toast } = useToast();
 

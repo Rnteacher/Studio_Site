@@ -44,10 +44,10 @@ function LoginContent() {
   return (
     <div className="w-full max-w-sm mx-auto p-6 text-center">
       <h1 className="font-rubik text-3xl font-bold text-heading mb-2">
-        כניסת חניכים
+        כניסה
       </h1>
       <p className="text-muted-foreground mb-8">
-        התחבר עם חשבון Google כדי לערוך את הפורטפוליו שלך
+        התחבר עם חשבון Google כדי להמשיך
       </p>
       <Button
         onClick={handleGoogleLogin}

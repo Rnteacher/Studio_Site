@@ -14,7 +14,8 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 export default function DesignPage() {
-  const { data: portfolio, isLoading: loadingPortfolio } = useMyPortfolio();
+  const { data, isLoading: loadingPortfolio } = useMyPortfolio();
+  const portfolio = data?.portfolio;
   const { data: templates, isLoading: loadingTemplates } = useTemplates();
   const updatePortfolio = useUpdatePortfolio();
   const { toast } = useToast();

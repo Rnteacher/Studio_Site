@@ -63,11 +63,10 @@ export type Database = {
           status: string
           about_title: string
           about_body: string
-          about_image_url: string | null
+          about_subtitle: string
           contact_email: string
           contact_phone: string
           contact_website: string | null
-          social_links: Json
           created_at: string
           updated_at: string
         }
@@ -80,11 +79,10 @@ export type Database = {
           status?: string
           about_title?: string
           about_body?: string
-          about_image_url?: string | null
+          about_subtitle?: string
           contact_email?: string
           contact_phone?: string
           contact_website?: string | null
-          social_links?: Json
           created_at?: string
           updated_at?: string
         }
@@ -97,11 +95,10 @@ export type Database = {
           status?: string
           about_title?: string
           about_body?: string
-          about_image_url?: string | null
+          about_subtitle?: string
           contact_email?: string
           contact_phone?: string
           contact_website?: string | null
-          social_links?: Json
           created_at?: string
           updated_at?: string
         }
@@ -284,18 +281,14 @@ export type Database = {
           categories: string[]
           created_at: string
           email: string
-          facebook: string | null
           id: string
           image: string
-          instagram: string | null
           long_description: string
           name: string
           phone: string
-          portfolio_url: string | null
-          resume_url: string | null
           services: Json
           short_description: string
-          tiktok: string | null
+          social_links: Json
           updated_at: string
           user_id: string | null
         }
@@ -303,18 +296,14 @@ export type Database = {
           categories?: string[]
           created_at?: string
           email?: string
-          facebook?: string | null
           id: string
           image?: string
-          instagram?: string | null
           long_description?: string
           name: string
           phone?: string
-          portfolio_url?: string | null
-          resume_url?: string | null
           services?: Json
           short_description?: string
-          tiktok?: string | null
+          social_links?: Json
           updated_at?: string
           user_id?: string | null
         }
@@ -322,18 +311,14 @@ export type Database = {
           categories?: string[]
           created_at?: string
           email?: string
-          facebook?: string | null
           id?: string
           image?: string
-          instagram?: string | null
           long_description?: string
           name?: string
           phone?: string
-          portfolio_url?: string | null
-          resume_url?: string | null
           services?: Json
           short_description?: string
-          tiktok?: string | null
+          social_links?: Json
           updated_at?: string
           user_id?: string | null
         }

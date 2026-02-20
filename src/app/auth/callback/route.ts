@@ -4,19 +4,28 @@ import { createClient } from "@/lib/supabase/server";
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/dashboard";
 
   if (code) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      // Check if user has a portfolio, if not create one
       const {
         data: { user },
       } = await supabase.auth.getUser();
 
       if (user) {
+        // Check if admin
+        const { data: isAdmin } = await supabase.rpc("has_role", {
+          _user_id: user.id,
+          _role: "admin",
+        });
+
+        if (isAdmin) {
+          return NextResponse.redirect(`${origin}/admin`);
+        }
+
+        // Student flow: ensure portfolio exists
         const { data: existingPortfolio } = await supabase
           .from("portfolios")
           .select("id")
@@ -49,9 +58,9 @@ export async function GET(request: Request) {
             });
           }
         }
-      }
 
-      return NextResponse.redirect(`${origin}${next}`);
+        return NextResponse.redirect(`${origin}/dashboard`);
+      }
     }
   }
 

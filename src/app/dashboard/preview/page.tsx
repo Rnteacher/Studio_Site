@@ -10,7 +10,9 @@ import { AlertCircle } from "lucide-react";
 import Link from "next/link";
 
 export default function PreviewPage() {
-  const { data: portfolio, isLoading: loadingPortfolio } = useMyPortfolio();
+  const { data, isLoading: loadingPortfolio } = useMyPortfolio();
+  const portfolio = data?.portfolio;
+  const student = data?.student;
   const { data: cvSections } = useCvSections(portfolio?.id);
   const { data: projects } = useProjects(portfolio?.id);
   const { data: template } = useTemplate(portfolio?.templateId ?? null);
@@ -81,18 +83,19 @@ export default function PreviewPage() {
       <div className="border rounded-lg overflow-hidden bg-background">
         <TemplateRenderer
           templateName={template?.name ?? "classic-clean"}
+          student={{ name: student?.name ?? "", image: student?.image ?? "" }}
           portfolio={portfolio}
           about={{
             title: portfolio.aboutTitle,
+            subtitle: portfolio.aboutSubtitle ?? "",
             body: portfolio.aboutBody,
-            imageUrl: portfolio.aboutImageUrl ?? "",
           }}
           contact={{
             email: portfolio.contactEmail,
             phone: portfolio.contactPhone,
             website: portfolio.contactWebsite ?? "",
           }}
-          socialLinks={portfolio.socialLinks}
+          socialLinks={student?.socialLinks ?? {}}
           cvSections={cvSections ?? []}
           projects={projects ?? []}
           isPreview

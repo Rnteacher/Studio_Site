@@ -199,7 +199,8 @@ function SectionEditor({
 }
 
 export default function CvPage() {
-  const { data: portfolio, isLoading: loadingPortfolio } = useMyPortfolio();
+  const { data: portfolioData, isLoading: loadingPortfolio } = useMyPortfolio();
+  const portfolio = portfolioData?.portfolio;
   const { data: cvSections, isLoading: loadingSections } = useCvSections(portfolio?.id);
   const createSection = useCreateCvSection();
   const updateSection = useUpdateCvSection();

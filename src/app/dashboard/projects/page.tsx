@@ -20,7 +20,8 @@ import { Plus, Pencil, Trash2, FolderOpen, RefreshCw } from "lucide-react";
 import type { ProjectWithMedia } from "@/types/portfolio";
 
 export default function ProjectsPage() {
-  const { data: portfolio, isLoading: loadingPortfolio } = useMyPortfolio();
+  const { data: portfolioData, isLoading: loadingPortfolio } = useMyPortfolio();
+  const portfolio = portfolioData?.portfolio;
   const { data: projects, isLoading: loadingProjects } = useProjects(portfolio?.id);
   const createProject = useCreateProject();
   const updateProject = useUpdateProject();

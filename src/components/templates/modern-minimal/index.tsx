@@ -1,9 +1,17 @@
 "use client";
 
 import type { TemplateProps } from "../types";
-import { Mail, Phone, Globe, ArrowUpLeft } from "lucide-react";
+import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
+
+const NAV_ITEMS = [
+  { id: "about", label: "אודות" },
+  { id: "projects", label: "פרויקטים" },
+  { id: "cv", label: "קורות חיים" },
+  { id: "contact", label: "צור קשר" },
+];
 
 export default function ModernMinimal({
+  student,
   about,
   contact,
   socialLinks,
@@ -11,62 +19,123 @@ export default function ModernMinimal({
   projects,
 }: TemplateProps) {
   return (
-    <div className="min-h-screen bg-white text-neutral-900 font-heebo" dir="rtl">
-      {/* Header */}
-      <header className="max-w-2xl mx-auto px-6 pt-20 pb-12">
-        <div className="flex items-center gap-5 mb-8">
-          {about.imageUrl && (
+    <div className="min-h-screen bg-white text-neutral-900 font-heebo scroll-smooth" dir="rtl">
+      {/* Sticky Navigation */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b border-neutral-100">
+        <div className="max-w-3xl mx-auto px-6 flex items-center justify-between h-14">
+          <span className="text-sm font-rubik font-medium tracking-wide text-neutral-400">
+            {student.name}
+          </span>
+          <div className="flex items-center gap-8">
+            {NAV_ITEMS.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className="text-sm text-neutral-400 hover:text-neutral-900 transition-colors"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Banner — full-width image with name overlay */}
+      <header id="about" className="relative">
+        <div className="w-full aspect-[3/1] overflow-hidden bg-neutral-100">
+          {student.image && (
             <img
-              src={about.imageUrl}
-              alt={about.title}
-              className="w-16 h-16 rounded-full object-cover"
+              src={student.image}
+              alt={student.name}
+              className="w-full h-full object-cover"
             />
           )}
-          <h1 className="text-3xl font-bold font-rubik">{about.title || "הפורטפוליו שלי"}</h1>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         </div>
-        {about.body && (
-          <p className="text-neutral-500 leading-relaxed whitespace-pre-line">{about.body}</p>
-        )}
+        <div className="absolute bottom-0 right-0 left-0 p-6 md:p-12">
+          <div className="max-w-3xl mx-auto">
+            <h1 className="text-4xl md:text-6xl font-rubik font-bold text-white tracking-tight">
+              {student.name}
+            </h1>
+            {about.subtitle && (
+              <p className="text-lg md:text-xl text-white/70 mt-2 font-light">
+                {about.subtitle}
+              </p>
+            )}
+          </div>
+        </div>
       </header>
 
-      <div className="max-w-2xl mx-auto px-6 pb-20 space-y-16">
+      {/* About */}
+      <div className="max-w-3xl mx-auto px-6 py-20">
+        {about.body && (
+          <section className="mb-20">
+            <p className="text-neutral-500 text-lg leading-relaxed whitespace-pre-line">
+              {about.body}
+            </p>
+            <div className="w-12 h-px bg-neutral-200 mt-10" />
+          </section>
+        )}
+
         {/* Projects */}
         {projects.length > 0 && (
-          <section>
-            <h2 className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-6">פרויקטים</h2>
-            <div className="space-y-6">
+          <section id="projects" className="mb-20 scroll-mt-20">
+            <h2 className="text-xs uppercase tracking-[0.25em] text-neutral-300 mb-10 font-rubik">
+              פרויקטים
+            </h2>
+            <div className="space-y-10">
               {projects.map((project) => (
                 <div key={project.id} className="group">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-semibold text-lg">{project.title}</h3>
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <h3 className="text-xl font-rubik font-semibold tracking-tight">
+                        {project.title}
+                      </h3>
                       {project.description && (
-                        <p className="text-neutral-500 text-sm mt-1">{project.description}</p>
+                        <p className="text-neutral-400 text-sm mt-2 leading-relaxed">
+                          {project.description}
+                        </p>
                       )}
                     </div>
-                    <ArrowUpLeft className="h-4 w-4 text-neutral-300 group-hover:text-neutral-900 transition-colors mt-1" />
                   </div>
                   {project.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-2">
+                    <div className="flex flex-wrap gap-3 mt-3">
                       {project.tags.map((tag) => (
-                        <span key={tag} className="text-xs text-neutral-400">{tag}</span>
+                        <span
+                          key={tag}
+                          className="text-xs text-neutral-300 tracking-wide"
+                        >
+                          {tag}
+                        </span>
                       ))}
                     </div>
                   )}
                   {project.media.length > 0 && (
-                    <div className="flex gap-2 mt-3 overflow-x-auto">
-                      {project.media.slice(0, 3).map((m) => (
-                        <a key={m.id} href={m.webViewUrl ?? "#"} target="_blank" rel="noopener noreferrer">
+                    <div className="flex gap-3 mt-4 overflow-x-auto">
+                      {project.media.slice(0, 4).map((m) => (
+                        <a
+                          key={m.id}
+                          href={m.webViewUrl ?? "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="shrink-0"
+                        >
                           {m.thumbnailUrl ? (
-                            <img src={m.thumbnailUrl} alt={m.fileName} className="w-20 h-20 object-cover rounded" />
+                            <img
+                              src={m.thumbnailUrl}
+                              alt={m.fileName}
+                              className="w-24 h-24 object-cover rounded-sm grayscale hover:grayscale-0 transition-all"
+                            />
                           ) : (
-                            <div className="w-20 h-20 bg-neutral-100 rounded flex items-center justify-center text-[10px] text-neutral-400">{m.fileName}</div>
+                            <div className="w-24 h-24 bg-neutral-50 rounded-sm flex items-center justify-center text-[10px] text-neutral-300">
+                              {m.fileName}
+                            </div>
                           )}
                         </a>
                       ))}
                     </div>
                   )}
-                  <div className="border-b border-neutral-100 mt-6" />
+                  <div className="border-b border-neutral-100 mt-10" />
                 </div>
               ))}
             </div>
@@ -75,19 +144,36 @@ export default function ModernMinimal({
 
         {/* CV */}
         {cvSections.length > 0 && (
-          <section>
-            <h2 className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-6">קורות חיים</h2>
-            <div className="space-y-8">
+          <section id="cv" className="mb-20 scroll-mt-20">
+            <h2 className="text-xs uppercase tracking-[0.25em] text-neutral-300 mb-10 font-rubik">
+              קורות חיים
+            </h2>
+            <div className="space-y-12">
               {cvSections.map((section) => (
                 <div key={section.id}>
-                  <h3 className="font-semibold mb-3">{section.title}</h3>
-                  <div className="space-y-3">
+                  <h3 className="text-sm font-rubik font-semibold mb-5 text-neutral-700">
+                    {section.title}
+                  </h3>
+                  <div className="space-y-5">
                     {section.entries.map((entry, i) => (
-                      <div key={i} className="flex gap-3">
-                        <span className="text-xs text-neutral-400 w-20 shrink-0 mt-0.5">{entry.dateRange}</span>
+                      <div key={i} className="flex gap-6">
+                        <span className="text-xs text-neutral-300 w-24 shrink-0 pt-0.5 text-left">
+                          {entry.dateRange}
+                        </span>
                         <div>
-                          <p className="text-sm font-medium">{entry.title}</p>
-                          {entry.subtitle && <p className="text-xs text-neutral-500">{entry.subtitle}</p>}
+                          <p className="text-sm font-medium text-neutral-800">
+                            {entry.title}
+                          </p>
+                          {entry.subtitle && (
+                            <p className="text-xs text-neutral-400 mt-0.5">
+                              {entry.subtitle}
+                            </p>
+                          )}
+                          {entry.description && (
+                            <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                              {entry.description}
+                            </p>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -98,28 +184,63 @@ export default function ModernMinimal({
           </section>
         )}
 
-        {/* Contact */}
-        <footer className="pt-8 border-t border-neutral-100">
-          <div className="flex flex-wrap gap-6 text-sm text-neutral-500">
+        {/* Contact / Footer */}
+        <footer id="contact" className="pt-10 border-t border-neutral-100 scroll-mt-20">
+          <h2 className="text-xs uppercase tracking-[0.25em] text-neutral-300 mb-8 font-rubik">
+            צור קשר
+          </h2>
+          <div className="flex flex-wrap gap-8 text-sm text-neutral-400">
             {contact.email && (
-              <a href={`mailto:${contact.email}`} className="flex items-center gap-1.5 hover:text-neutral-900">
-                <Mail className="h-3.5 w-3.5" /> {contact.email}
+              <a
+                href={`mailto:${contact.email}`}
+                className="flex items-center gap-2 hover:text-neutral-900 transition-colors"
+              >
+                <Mail className="h-3.5 w-3.5" />
+                {contact.email}
               </a>
             )}
             {contact.phone && (
-              <a href={`tel:${contact.phone}`} className="flex items-center gap-1.5 hover:text-neutral-900">
-                <Phone className="h-3.5 w-3.5" /> {contact.phone}
+              <a
+                href={`tel:${contact.phone}`}
+                className="flex items-center gap-2 hover:text-neutral-900 transition-colors"
+              >
+                <Phone className="h-3.5 w-3.5" />
+                {contact.phone}
               </a>
             )}
             {contact.website && (
-              <a href={contact.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-neutral-900">
-                <Globe className="h-3.5 w-3.5" /> אתר
+              <a
+                href={contact.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-neutral-900 transition-colors"
+              >
+                <Globe className="h-3.5 w-3.5" />
+                אתר
               </a>
             )}
-            {Object.entries(socialLinks).filter(([, v]) => v).map(([key, url]) => (
-              <a key={key} href={url} target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900">{key}</a>
-            ))}
           </div>
+          {Object.keys(socialLinks).length > 0 && (
+            <div className="flex flex-wrap gap-4 mt-6">
+              {Object.entries(socialLinks)
+                .filter(([, v]) => v)
+                .map(([key, url]) => (
+                  <a
+                    key={key}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-neutral-300 hover:text-neutral-900 transition-colors flex items-center gap-1"
+                  >
+                    <ExternalLink className="h-3 w-3" />
+                    {key}
+                  </a>
+                ))}
+            </div>
+          )}
+          <p className="text-xs text-neutral-200 mt-12">
+            {student.name} &copy; {new Date().getFullYear()}
+          </p>
         </footer>
       </div>
     </div>

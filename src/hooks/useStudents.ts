@@ -11,16 +11,10 @@ export interface Student {
   image: string;
   categories: string[];
   services: Record<string, string[]>;
-  portfolioUrl?: string;
-  resumeUrl?: string;
+  socialLinks: Record<string, string>;
   contact: {
     email: string;
     phone: string;
-    socials?: {
-      instagram?: string;
-      facebook?: string;
-      tiktok?: string;
-    };
   };
 }
 
@@ -33,16 +27,10 @@ function mapRow(row: any): Student {
     image: row.image,
     categories: row.categories || [],
     services: (row.services as Record<string, string[]>) || {},
-    portfolioUrl: row.portfolio_url || undefined,
-    resumeUrl: row.resume_url || undefined,
+    socialLinks: (row.social_links as Record<string, string>) || {},
     contact: {
       email: row.email,
       phone: row.phone,
-      socials: {
-        instagram: row.instagram || undefined,
-        facebook: row.facebook || undefined,
-        tiktok: row.tiktok || undefined,
-      },
     },
   };
 }

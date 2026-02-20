@@ -48,7 +48,6 @@ interface AuthContextType {
   loading: boolean;
   isAdmin: boolean;
   isStudent: boolean;
-  signIn: (email: string, password: string) => ReturnType<ReturnType<typeof createClient>["auth"]["signInWithPassword"]>;
   signInWithGoogle: () => ReturnType<ReturnType<typeof createClient>["auth"]["signInWithOAuth"]>;
   signOut: () => ReturnType<ReturnType<typeof createClient>["auth"]["signOut"]>;
 }
@@ -122,11 +121,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const signIn = (email: string, password: string) => {
-    const supabase = getSupabase();
-    return supabase.auth.signInWithPassword({ email, password });
-  };
-
   const signInWithGoogle = () => {
     const supabase = getSupabase();
     return supabase.auth.signInWithOAuth({
@@ -143,7 +137,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return React.createElement(AuthContext.Provider, {
-    value: { user, session, loading, isAdmin, isStudent, signIn, signInWithGoogle, signOut },
+    value: { user, session, loading, isAdmin, isStudent, signInWithGoogle, signOut },
     children,
   });
 }

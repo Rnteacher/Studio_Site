@@ -17,11 +17,10 @@ export interface Portfolio {
   status: "draft" | "published";
   aboutTitle: string;
   aboutBody: string;
-  aboutImageUrl: string | null;
+  aboutSubtitle: string;
   contactEmail: string;
   contactPhone: string;
   contactWebsite: string | null;
-  socialLinks: Record<string, string>;
   createdAt: string;
   updatedAt: string;
 }

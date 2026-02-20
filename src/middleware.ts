@@ -31,14 +31,18 @@ export async function middleware(request: NextRequest) {
       data: { user },
     } = await supabase.auth.getUser();
 
-    // Protect /admin routes (except /admin/login)
-    if (
-      request.nextUrl.pathname.startsWith("/admin") &&
-      !request.nextUrl.pathname.startsWith("/admin/login")
-    ) {
+    // Redirect old /admin/login to unified login
+    if (request.nextUrl.pathname.startsWith("/admin/login")) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/auth/login";
+      return NextResponse.redirect(url);
+    }
+
+    // Protect /admin routes
+    if (request.nextUrl.pathname.startsWith("/admin")) {
       if (!user) {
         const url = request.nextUrl.clone();
-        url.pathname = "/admin/login";
+        url.pathname = "/auth/login";
         return NextResponse.redirect(url);
       }
     }
