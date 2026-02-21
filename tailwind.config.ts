@@ -24,6 +24,41 @@ export default {
   				'Rubik',
   				'sans-serif'
   			],
+  			assistant: [
+  				'var(--font-assistant)',
+  				'Assistant',
+  				'sans-serif'
+  			],
+  			'varela-round': [
+  				'var(--font-varela-round)',
+  				'Varela Round',
+  				'sans-serif'
+  			],
+  			'frank-ruhl': [
+  				'var(--font-frank-ruhl)',
+  				'Frank Ruhl Libre',
+  				'serif'
+  			],
+  			'secular-one': [
+  				'var(--font-secular-one)',
+  				'Secular One',
+  				'sans-serif'
+  			],
+  			'suez-one': [
+  				'var(--font-suez-one)',
+  				'Suez One',
+  				'serif'
+  			],
+  			karantina: [
+  				'var(--font-karantina)',
+  				'Karantina',
+  				'cursive'
+  			],
+  			'amatic-sc': [
+  				'var(--font-amatic-sc)',
+  				'Amatic SC',
+  				'cursive'
+  			],
   			sans: [
   				'Poppins',
   				'ui-sans-serif',

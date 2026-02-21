@@ -1,15 +1,29 @@
+"use client";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Heart, Shield, Star, Rocket } from "lucide-react";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
-const values = [
-  { icon: Heart, title: "קהילה", description: "אנחנו מאמינים בכוח של קהילה ותמיכה הדדית" },
-  { icon: Shield, title: "אחריות", description: "לוקחים אחריות על כל פרויקט ומחויבים לאיכות" },
-  { icon: Star, title: "מקצועיות", description: "עובדים ברמה מקצועית גבוהה למרות הגיל הצעיר" },
-  { icon: Rocket, title: "יזמות צעירה", description: "מפתחים כישורים עסקיים ויצירתיים מגיל צעיר" },
-];
+const VALUE_ICONS = [Heart, Shield, Star, Rocket];
 
 export default function AboutPage() {
+  const { data: content } = useSiteContent();
+  const about = content?.about ?? {};
+
+  const values = [
+    { icon: VALUE_ICONS[0], title: about.value1_title ?? "קהילה", description: about.value1_desc ?? "אנחנו מאמינים בכוח של קהילה ותמיכה הדדית" },
+    { icon: VALUE_ICONS[1], title: about.value2_title ?? "אחריות", description: about.value2_desc ?? "לוקחים אחריות על כל פרויקט ומחויבים לאיכות" },
+    { icon: VALUE_ICONS[2], title: about.value3_title ?? "מקצועיות", description: about.value3_desc ?? "עובדים ברמה מקצועית גבוהה למרות הגיל הצעיר" },
+    { icon: VALUE_ICONS[3], title: about.value4_title ?? "יזמות צעירה", description: about.value4_desc ?? "מפתחים כישורים עסקיים ויצירתיים מגיל צעיר" },
+  ];
+
+  const images = [
+    about.image1 ?? "/images/behind-1.jpg",
+    about.image2 ?? "/images/behind-2.jpg",
+    about.image3 ?? "/images/behind-3.jpg",
+  ];
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -21,10 +35,14 @@ export default function AboutPage() {
               מי אנחנו?
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              סטודיו דוריאן הוא יוזמת נוער יצירתית שנולדה מתוך תיכון{" "}
-              <strong className="text-foreground">&quot;החממה&quot;</strong> בהוד השרון. אנחנו קבוצה של
-              חניכים מוכשרים שמציעים שירותים יצירתיים וטכניים לעמותות ולעסקים קטנים — בהתנדבות
-              או בתשלום סמלי.
+              {about.description ?? (
+                <>
+                  סטודיו דוריאן הוא יוזמת נוער יצירתית שנולדה מתוך תיכון{" "}
+                  <strong className="text-foreground">&quot;החממה&quot;</strong> בהוד השרון. אנחנו קבוצה של
+                  חניכים מוכשרים שמציעים שירותים יצירתיים וטכניים לעמותות ולעסקים קטנים — בהתנדבות
+                  או בתשלום סמלי.
+                </>
+              )}
             </p>
           </div>
         </section>
@@ -56,10 +74,10 @@ export default function AboutPage() {
         <section className="py-16">
           <div className="container mx-auto px-4 max-w-4xl">
             <h2 className="font-rubik text-3xl font-bold text-heading text-center mb-10">
-              מאחורי הקלעים
+              {about.subtitle ?? "מאחורי הקלעים"}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {["/images/behind-1.jpg", "/images/behind-2.jpg", "/images/behind-3.jpg"].map((src, i) => (
+              {images.map((src, i) => (
                 <img
                   key={i}
                   src={src}

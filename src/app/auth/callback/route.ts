@@ -25,6 +25,21 @@ export async function GET(request: Request) {
           return NextResponse.redirect(`${origin}/admin`);
         }
 
+        // Verify the user's email exists in the students table
+        const { data: knownStudent } = await supabase
+          .from("students")
+          .select("id")
+          .eq("email", user.email ?? "")
+          .single();
+
+        if (!knownStudent) {
+          // Email not registered — sign out and redirect with error
+          await supabase.auth.signOut();
+          return NextResponse.redirect(
+            `${origin}/auth/login?error=not_registered`
+          );
+        }
+
         // Student flow: ensure portfolio exists
         const { data: existingPortfolio } = await supabase
           .from("portfolios")

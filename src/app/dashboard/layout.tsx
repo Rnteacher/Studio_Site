@@ -1,10 +1,10 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Eye, UserCircle, User, FolderOpen, FileText, Palette, Globe, LogOut } from "lucide-react";
+import { Eye, UserCircle, User, FolderOpen, FileText, Palette, Globe, LogOut, Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const tabs = [
@@ -12,6 +12,7 @@ const tabs = [
   { href: "/dashboard/profile", label: "פרופיל", icon: UserCircle },
   { href: "/dashboard/about", label: "אודות", icon: User },
   { href: "/dashboard/projects", label: "פרויקטים", icon: FolderOpen },
+  { href: "/dashboard/services", label: "שירותים", icon: Briefcase },
   { href: "/dashboard/cv", label: "קורות חיים", icon: FileText },
   { href: "/dashboard/design", label: "עיצוב", icon: Palette },
   { href: "/dashboard/publish", label: "פרסום", icon: Globe },
@@ -23,6 +24,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const { user, signOut } = useAuth();
 
   return (
@@ -34,13 +36,13 @@ export default function DashboardLayout({
             <Link href="/" className="font-rubik font-bold text-lg text-primary">
               Studio Durian
             </Link>
-            <span className="text-muted-foreground text-sm">/ דאשבורד</span>
+            <span className="text-muted-foreground text-sm">/ פאנל ניהול</span>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-sm text-muted-foreground hidden sm:inline">
               {user?.email}
             </span>
-            <Button variant="ghost" size="sm" onClick={() => signOut()}>
+            <Button variant="ghost" size="sm" onClick={async () => { await signOut(); router.push("/"); }}>
               <LogOut className="h-4 w-4" />
             </Button>
           </div>

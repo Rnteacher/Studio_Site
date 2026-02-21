@@ -15,7 +15,14 @@ function LoginContent() {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (searchParams.get("error")) {
+    const error = searchParams.get("error");
+    if (error === "not_registered") {
+      toast({
+        title: "אימייל לא רשום",
+        description: "האימייל שלך לא רשום במערכת. פנה למנהל.",
+        variant: "destructive",
+      });
+    } else if (error) {
       toast({
         title: "שגיאת התחברות",
         description: "ההתחברות נכשלה, נסה שוב",

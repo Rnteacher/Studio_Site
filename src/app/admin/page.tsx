@@ -19,8 +19,9 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Pencil, Trash2, Plus, LogOut, Upload, Loader2, Globe, GlobeLock, ExternalLink } from "lucide-react";
+import { Pencil, Trash2, Plus, LogOut, Upload, Loader2, Globe, GlobeLock, ExternalLink, Settings, Save } from "lucide-react";
 import Link from "next/link";
+import { useSiteContent, useUpdateSiteContent } from "@/hooks/useSiteContent";
 
 // ─── Student Form ───
 interface StudentForm {
@@ -58,7 +59,112 @@ const emptyServiceForm: ServiceForm = {
   image: "/placeholder.svg", category: "", linkedStudentIds: [],
 };
 
-// uploadImage imported from @/lib/uploadImage
+// ─── Site Content Editor ───
+const SECTION_LABELS: Record<string, string> = {
+  hero: "עמוד הבית (Hero)",
+  footer: "פוטר",
+  navbar: "ניווט",
+  services_section: "סקציית שירותים",
+  about: "עמוד אודות",
+  meta: "מטא נתונים (SEO)",
+};
+
+const KEY_LABELS: Record<string, string> = {
+  title: "כותרת", subtitle: "תת-כותרת", description: "תיאור", mission: "משימה",
+  badge1: "תג 1", badge2: "תג 2", badge3: "תג 3",
+  email: "אימייל", copyright: "זכויות יוצרים", logo: "לוגו",
+  value1_title: "ערך 1 - כותרת", value1_desc: "ערך 1 - תיאור",
+  value2_title: "ערך 2 - כותרת", value2_desc: "ערך 2 - תיאור",
+  value3_title: "ערך 3 - כותרת", value3_desc: "ערך 3 - תיאור",
+  value4_title: "ערך 4 - כותרת", value4_desc: "ערך 4 - תיאור",
+  image1: "תמונה 1", image2: "תמונה 2", image3: "תמונה 3",
+};
+
+function SiteContentEditor({ content, onSave }: {
+  content: Record<string, Record<string, string>>;
+  onSave: (section: string, key: string, value: string) => Promise<void>;
+}) {
+  const [editValues, setEditValues] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState<string | null>(null);
+
+  const getKey = (section: string, key: string) => `${section}::${key}`;
+
+  const getValue = (section: string, key: string) => {
+    const k = getKey(section, key);
+    return k in editValues ? editValues[k] : (content[section]?.[key] ?? "");
+  };
+
+  const handleChange = (section: string, key: string, value: string) => {
+    setEditValues(prev => ({ ...prev, [getKey(section, key)]: value }));
+  };
+
+  const handleSave = async (section: string, key: string) => {
+    const k = getKey(section, key);
+    setSaving(k);
+    await onSave(section, key, getValue(section, key));
+    setEditValues(prev => { const n = { ...prev }; delete n[k]; return n; });
+    setSaving(null);
+  };
+
+  const sections = Object.keys(SECTION_LABELS);
+
+  return (
+    <div className="space-y-6">
+      {sections.map(section => {
+        const keys = Object.keys(content[section] ?? {});
+        if (keys.length === 0) return null;
+        return (
+          <div key={section} className="border rounded-lg overflow-hidden">
+            <div className="bg-muted/50 px-4 py-3">
+              <h3 className="font-semibold text-heading">{SECTION_LABELS[section] ?? section}</h3>
+            </div>
+            <div className="p-4 space-y-3">
+              {keys.map(key => {
+                const k = getKey(section, key);
+                const isDirty = k in editValues;
+                return (
+                  <div key={key} className="flex items-start gap-2">
+                    <label className="w-32 text-sm font-medium text-muted-foreground pt-2 shrink-0">
+                      {KEY_LABELS[key] ?? key}
+                    </label>
+                    <div className="flex-1">
+                      {getValue(section, key).length > 80 ? (
+                        <Textarea
+                          value={getValue(section, key)}
+                          onChange={e => handleChange(section, key, e.target.value)}
+                          rows={3}
+                          className="text-sm"
+                        />
+                      ) : (
+                        <Input
+                          value={getValue(section, key)}
+                          onChange={e => handleChange(section, key, e.target.value)}
+                          className="text-sm"
+                          dir={key.includes("image") || key === "logo" || key === "email" ? "ltr" : undefined}
+                        />
+                      )}
+                    </div>
+                    {isDirty && (
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        onClick={() => handleSave(section, key)}
+                        disabled={saving === k}
+                        className="shrink-0"
+                      >
+                        {saving === k ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                      </Button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function AdminPage() {
   const { user, loading: authLoading, isAdmin, signOut } = useAuth();
@@ -66,6 +172,8 @@ export default function AdminPage() {
   const { data: services, isLoading: servicesLoading } = useServices();
   const { data: portfolios, isLoading: portfoliosLoading } = useAllPortfolios();
   const updatePortfolio = useUpdatePortfolio();
+  const { data: siteContent, isLoading: contentLoading } = useSiteContent();
+  const updateContent = useUpdateSiteContent();
   const queryClient = useQueryClient();
   const router = useRouter();
   const { toast } = useToast();
@@ -133,24 +241,7 @@ export default function AdminPage() {
   };
 
   // ─── Student CRUD ───
-  // Derive unique categories from services
   const existingCategories = [...new Set((services || []).map(s => s.category).filter(Boolean))];
-
-  const openEditStudent = async (student: any) => {
-    const supabase = createClient();
-    // Get linked service IDs
-    const { data: links } = await supabase.from("service_students").select("service_id").eq("student_id", student.id);
-    setStudentForm({
-      id: student.id, name: student.name,
-      short_description: student.shortDescription, long_description: student.longDescription,
-      image: student.image,
-      email: student.contact.email, phone: student.contact.phone,
-      social_links: student.socialLinks || {},
-      linkedServiceIds: (links || []).map((l: any) => l.service_id),
-    });
-    setIsNewStudent(false);
-    setStudentEditOpen(true);
-  };
 
   const openNewStudent = () => { setStudentForm(emptyStudentForm); setIsNewStudent(true); setStudentEditOpen(true); };
 
@@ -165,7 +256,6 @@ export default function AdminPage() {
 
   const handleSaveStudent = async () => {
     const supabase = createClient();
-    // Derive categories from linked services
     const linkedServices = (services || []).filter(s => studentForm.linkedServiceIds.includes(s.id));
     const cats = [...new Set(linkedServices.map(s => s.category).filter(Boolean))];
     const svcMap: Record<string, string[]> = {};
@@ -182,21 +272,15 @@ export default function AdminPage() {
       email: studentForm.email, phone: studentForm.phone,
       social_links: studentForm.social_links,
     };
-    const { error } = isNewStudent
-      ? await supabase.from("students").insert(payload)
-      : await supabase.from("students").update(payload).eq("id", studentForm.id);
+    const { error } = await supabase.from("students").insert(payload);
     if (error) { toast({ title: "שגיאה", description: error.message, variant: "destructive" }); return; }
 
-    // Update service_students links
-    if (!isNewStudent) {
-      await supabase.from("service_students").delete().eq("student_id", studentForm.id);
-    }
     if (studentForm.linkedServiceIds.length > 0) {
       const rows = studentForm.linkedServiceIds.map(sid => ({ service_id: sid, student_id: studentForm.id }));
       await supabase.from("service_students").insert(rows);
     }
 
-    toast({ title: isNewStudent ? "חניך נוסף!" : "עודכן בהצלחה!" });
+    toast({ title: "חניך נוסף!" });
     queryClient.invalidateQueries({ queryKey: ["students"] });
     queryClient.invalidateQueries({ queryKey: ["services"] });
     queryClient.invalidateQueries({ queryKey: ["student-services"] });
@@ -275,6 +359,11 @@ export default function AdminPage() {
     else { toast({ title: "נמחק!" }); queryClient.invalidateQueries({ queryKey: ["services"] }); }
   };
 
+  // ─── Portfolio helpers ───
+  const getPortfolioForStudent = (studentId: string) => {
+    return portfolios?.find(p => p.portfolio.studentId === studentId);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -284,12 +373,76 @@ export default function AdminPage() {
           <Button variant="outline" onClick={handleLogout} className="gap-1"><LogOut className="h-4 w-4" />יציאה</Button>
         </div>
 
-        <Tabs defaultValue="services" dir="rtl">
+        <Tabs defaultValue="students" dir="rtl">
           <TabsList className="mb-6">
-            <TabsTrigger value="services">שירותים</TabsTrigger>
             <TabsTrigger value="students">חניכים</TabsTrigger>
-            <TabsTrigger value="portfolios">פורטפוליו</TabsTrigger>
+            <TabsTrigger value="services">שירותים</TabsTrigger>
+            <TabsTrigger value="content">תוכן האתר</TabsTrigger>
           </TabsList>
+
+          {/* ─── Students Tab (merged with portfolios) ─── */}
+          <TabsContent value="students">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="font-rubik text-xl font-semibold text-heading">חניכים</h2>
+              <Button onClick={openNewStudent} className="gap-1"><Plus className="h-4 w-4" />חניך חדש</Button>
+            </div>
+            {(studentsLoading || portfoliosLoading) ? <p>טוען...</p> : (
+              <div className="grid gap-3">
+                {students?.map((s) => {
+                  const pData = getPortfolioForStudent(s.id);
+                  const portfolio = pData?.portfolio;
+                  return (
+                    <div key={s.id} className="flex items-center gap-4 bg-card rounded-xl p-4 shadow-sm">
+                      <img src={s.image} alt={s.name} className="w-12 h-12 rounded-full object-cover" />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-heading">{s.name}</p>
+                        <p className="text-sm text-muted-foreground truncate">{s.shortDescription}</p>
+                      </div>
+                      <div className="flex gap-1 items-center">
+                        {portfolio ? (
+                          <>
+                            <Badge
+                              variant={portfolio.status === "published" ? "default" : "secondary"}
+                              className="text-xs"
+                            >
+                              {portfolio.status === "published" ? "פורסם" : "טיוטה"}
+                            </Badge>
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              onClick={async () => {
+                                const newStatus = portfolio.status === "published" ? "draft" : "published";
+                                await updatePortfolio.mutateAsync({ id: portfolio.id, status: newStatus });
+                                toast({ title: newStatus === "published" ? "פורסם" : "הוסתר" });
+                              }}
+                              title={portfolio.status === "published" ? "הסתר" : "פרסם"}
+                            >
+                              {portfolio.status === "published" ? <GlobeLock className="h-4 w-4" /> : <Globe className="h-4 w-4" />}
+                            </Button>
+                            {portfolio.slug && (
+                              <Link href={`/p/${portfolio.slug}`} target="_blank">
+                                <Button size="icon" variant="ghost" title="צפה בפורטפוליו">
+                                  <ExternalLink className="h-4 w-4" />
+                                </Button>
+                              </Link>
+                            )}
+                          </>
+                        ) : (
+                          <Badge variant="outline" className="text-xs">ללא פורטפוליו</Badge>
+                        )}
+                      </div>
+                      <div className="flex gap-1 shrink-0">
+                        <Link href={`/admin/student/${s.id}`}>
+                          <Button size="icon" variant="ghost" title="נהל"><Settings className="h-4 w-4" /></Button>
+                        </Link>
+                        <Button size="icon" variant="ghost" onClick={() => handleDeleteStudent(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </TabsContent>
 
           {/* ─── Services Tab ─── */}
           <TabsContent value="services">
@@ -317,99 +470,28 @@ export default function AdminPage() {
             )}
           </TabsContent>
 
-          {/* ─── Portfolios Tab ─── */}
-          <TabsContent value="portfolios">
+          {/* ─── Site Content Tab ─── */}
+          <TabsContent value="content">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="font-rubik text-xl font-semibold text-heading">פורטפוליו</h2>
+              <h2 className="font-rubik text-xl font-semibold text-heading">תוכן האתר</h2>
             </div>
-            {portfoliosLoading ? <p>טוען...</p> : (
-              <div className="grid gap-3">
-                {(!portfolios || portfolios.length === 0) && (
-                  <p className="text-muted-foreground text-center py-8">אין פורטפוליו עדיין. חניכים שיתחברו עם Google יקבלו פורטפוליו אוטומטית.</p>
-                )}
-                {portfolios?.map(({ portfolio: p, student: s }) => (
-                  <div key={p.id} className="flex items-center gap-4 bg-card rounded-xl p-4 shadow-sm">
-                    {s.image && (
-                      <img src={s.image} alt={s.name} className="w-10 h-10 rounded-full object-cover" />
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-heading">{s.name || "ללא שם"}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {p.slug ? `/p/${p.slug}` : "ללא כתובת"}
-                      </p>
-                    </div>
-                    <Badge
-                      variant={p.status === "published" ? "default" : "secondary"}
-                      className="text-xs"
-                    >
-                      {p.status === "published" ? "פורסם" : "טיוטה"}
-                    </Badge>
-                    <div className="flex gap-1 shrink-0">
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        onClick={async () => {
-                          const newStatus = p.status === "published" ? "draft" : "published";
-                          await updatePortfolio.mutateAsync({ id: p.id, status: newStatus });
-                          toast({ title: newStatus === "published" ? "פורסם" : "הוסתר" });
-                        }}
-                        title={p.status === "published" ? "הסתר" : "פרסם"}
-                      >
-                        {p.status === "published" ? <GlobeLock className="h-4 w-4" /> : <Globe className="h-4 w-4" />}
-                      </Button>
-                      {p.slug && (
-                        <Link href={`/p/${p.slug}`} target="_blank">
-                          <Button size="icon" variant="ghost">
-                            <ExternalLink className="h-4 w-4" />
-                          </Button>
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </TabsContent>
-
-          {/* ─── Students Tab ─── */}
-          <TabsContent value="students">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="font-rubik text-xl font-semibold text-heading">חניכים</h2>
-              <Button onClick={openNewStudent} className="gap-1"><Plus className="h-4 w-4" />חניך חדש</Button>
-            </div>
-            {studentsLoading ? <p>טוען...</p> : (
-              <div className="grid gap-3">
-                {students?.map((s) => (
-                  <div key={s.id} className="flex items-center gap-4 bg-card rounded-xl p-4 shadow-sm">
-                    <img src={s.image} alt={s.name} className="w-12 h-12 rounded-full object-cover" />
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-heading">{s.name}</p>
-                      <p className="text-sm text-muted-foreground truncate">{s.shortDescription}</p>
-                    </div>
-                    <div className="flex gap-1">
-                      {s.categories.map(c => <Badge key={c} variant="secondary" className="text-xs">{c}</Badge>)}
-                    </div>
-                    <div className="flex gap-1 shrink-0">
-                      <Button size="icon" variant="ghost" onClick={() => openEditStudent(s)}><Pencil className="h-4 w-4" /></Button>
-                      <Button size="icon" variant="ghost" onClick={() => handleDeleteStudent(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            {contentLoading ? <p>טוען...</p> : (
+              <SiteContentEditor content={siteContent ?? {}} onSave={async (section, key, value) => {
+                await updateContent.mutateAsync({ section, key, value });
+                toast({ title: "נשמר!" });
+              }} />
             )}
           </TabsContent>
         </Tabs>
 
-        {/* ─── Student Edit Dialog ─── */}
+        {/* ─── New Student Dialog ─── */}
         <Dialog open={studentEditOpen} onOpenChange={setStudentEditOpen}>
           <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{isNewStudent ? "הוספת חניך" : "עריכת חניך"}</DialogTitle>
+              <DialogTitle>הוספת חניך</DialogTitle>
             </DialogHeader>
             <div className="space-y-3 mt-4">
-              {isNewStudent && (
-                <Input placeholder="מזהה (אנגלית)" value={studentForm.id} onChange={e => setStudentForm({...studentForm, id: e.target.value})} dir="ltr" />
-              )}
+              <Input placeholder="מזהה (אנגלית)" value={studentForm.id} onChange={e => setStudentForm({...studentForm, id: e.target.value})} dir="ltr" />
               <Input placeholder="שם" value={studentForm.name} onChange={e => setStudentForm({...studentForm, name: e.target.value})} />
               <Input placeholder="תיאור קצר" value={studentForm.short_description} onChange={e => setStudentForm({...studentForm, short_description: e.target.value})} />
               <Textarea placeholder="ביוגרפיה / תיאור מלא" value={studentForm.long_description} onChange={e => setStudentForm({...studentForm, long_description: e.target.value})} rows={4} />
@@ -477,9 +559,8 @@ export default function AdminPage() {
                 <Input placeholder="פייסבוק (אופציונלי)" value={studentForm.social_links.facebook || ""} onChange={e => setStudentForm({...studentForm, social_links: {...studentForm.social_links, facebook: e.target.value}})} dir="ltr" />
                 <Input placeholder="טיקטוק (אופציונלי)" value={studentForm.social_links.tiktok || ""} onChange={e => setStudentForm({...studentForm, social_links: {...studentForm.social_links, tiktok: e.target.value}})} dir="ltr" />
                 <Input placeholder="לינקדאין (אופציונלי)" value={studentForm.social_links.linkedin || ""} onChange={e => setStudentForm({...studentForm, social_links: {...studentForm.social_links, linkedin: e.target.value}})} dir="ltr" />
-                <Input placeholder="אתר אישי (אופציונלי)" value={studentForm.social_links.website || ""} onChange={e => setStudentForm({...studentForm, social_links: {...studentForm.social_links, website: e.target.value}})} dir="ltr" />
               </div>
-              <Button onClick={handleSaveStudent} className="w-full">{isNewStudent ? "הוסף" : "שמור"}</Button>
+              <Button onClick={handleSaveStudent} className="w-full">הוסף</Button>
             </div>
           </DialogContent>
         </Dialog>

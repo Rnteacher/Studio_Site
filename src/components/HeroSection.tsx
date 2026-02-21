@@ -1,8 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Palette, Music, Camera, Wrench } from "lucide-react";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const HeroSection = () => {
+  const { data: content } = useSiteContent();
+  const hero = content?.hero ?? {};
+
+  const title = hero.title ?? "סטודיו דוריאן";
+
   return (
     <section className="relative overflow-hidden py-20 md:py-32">
       {/* Decorative elements */}
@@ -26,9 +34,9 @@ const HeroSection = () => {
           <Wrench className="h-6 w-6 text-heading" />
         </div>
 
-        <img alt="סטודיו דוריאן" className="h-36 md:h-48 w-auto mx-auto mb-6 mix-blend-multiply" src="/lovable-uploads/26cde093-9e8f-43ac-b26a-eb2b64ea0e5e.png" />
+        <img alt={title} className="h-36 md:h-48 w-auto mx-auto mb-6 mix-blend-multiply" src="/lovable-uploads/26cde093-9e8f-43ac-b26a-eb2b64ea0e5e.png" />
         <h1 className="font-rubik text-5xl md:text-7xl font-extrabold text-heading mb-6 leading-tight">
-          סטודיו דוריאן
+          {title}
         </h1>
         <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
           כישרונות צעירים. שירותים אמיתיים. השפעה אמיתית.
@@ -44,13 +52,12 @@ const HeroSection = () => {
 
         {/* Mission banner */}
         <div className="max-w-3xl mx-auto relative">
-          {/* Tilted background layers */}
           <div className="absolute inset-0 bg-heading/10 rounded-2xl rotate-1 scale-[1.02]" />
           <div className="absolute inset-0 bg-card rounded-2xl -rotate-[0.5deg] border border-border" />
 
           <div className="relative z-10 p-8 md:p-10 text-foreground">
             <p className="text-xl md:text-2xl font-extrabold leading-snug mb-3 tracking-tight text-heading">
-              סטודיו דוריאן מחבר בין יכולות של נוער
+              {hero.mission ?? "סטודיו דוריאן מחבר בין יכולות של נוער"}
               <br />
               <span className="text-primary">לבין צרכים של העולם האמיתי.</span>
             </p>

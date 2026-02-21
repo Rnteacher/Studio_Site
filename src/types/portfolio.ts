@@ -2,7 +2,7 @@ export interface Template {
   id: string;
   name: string;
   label: string;
-  category: "classic" | "modern" | "experimental";
+  category: string;
   thumbnailUrl: string;
   description: string;
   createdAt: string;

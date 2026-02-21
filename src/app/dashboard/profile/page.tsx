@@ -29,7 +29,6 @@ export default function ProfilePage() {
 
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [website, setWebsite] = useState("");
   const [image, setImage] = useState("");
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
@@ -42,7 +41,6 @@ export default function ProfilePage() {
     if (profile) {
       setEmail(profile.email);
       setPhone(profile.phone);
-      setWebsite(profile.website);
       setImage(profile.image);
       setShortDescription(profile.shortDescription);
       setLongDescription(profile.longDescription);
@@ -79,7 +77,6 @@ export default function ProfilePage() {
         id: profile.id,
         email,
         phone,
-        website,
         image,
         short_description: shortDescription,
         long_description: longDescription,
@@ -237,17 +234,6 @@ export default function ProfilePage() {
               onChange={(e) => { setPhone(e.target.value); markDirty(); }}
             />
           </div>
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="website">אתר אישי</Label>
-          <Input
-            id="website"
-            type="url"
-            dir="ltr"
-            value={website}
-            onChange={(e) => { setWebsite(e.target.value); markDirty(); }}
-            placeholder="https://..."
-          />
         </div>
       </section>
 

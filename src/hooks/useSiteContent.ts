@@ -1,0 +1,44 @@
+"use client";
+
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { createClient } from "@/lib/supabase/client";
+
+export type SiteContentMap = Record<string, Record<string, string>>;
+
+export function useSiteContent() {
+  return useQuery({
+    queryKey: ["site-content"],
+    queryFn: async (): Promise<SiteContentMap> => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("site_content")
+        .select("section, key, value");
+      if (error) throw error;
+
+      const map: SiteContentMap = {};
+      for (const row of data ?? []) {
+        if (!map[row.section]) map[row.section] = {};
+        map[row.section][row.key] = row.value;
+      }
+      return map;
+    },
+    staleTime: 60_000, // cache for 1 minute
+  });
+}
+
+export function useUpdateSiteContent() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ section, key, value }: { section: string; key: string; value: string }) => {
+      const supabase = createClient();
+      const { error } = await supabase
+        .from("site_content")
+        .upsert({ section, key, value }, { onConflict: "section,key" });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["site-content"] });
+    },
+  });
+}

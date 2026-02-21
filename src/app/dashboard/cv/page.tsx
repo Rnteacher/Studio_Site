@@ -161,7 +161,7 @@ function SectionEditor({
       {!collapsed && (
         <div className="px-4 pb-4 space-y-3">
           <div className="space-y-2">
-            <Label>כותרת הסקציה</Label>
+            <Label>כותרת המחלקה</Label>
             <Input
               value={localTitle}
               onChange={(e) => updateTitle(e.target.value)}
@@ -219,7 +219,7 @@ export default function CvPage() {
         title: label,
         sort_order: cvSections?.length ?? 0,
       });
-      toast({ title: "נוסף", description: "הסקציה נוספה" });
+      toast({ title: "נוסף", description: "המחלקה נוספה" });
     } catch {
       toast({ title: "שגיאה", description: "ההוספה נכשלה", variant: "destructive" });
     }
@@ -241,7 +241,7 @@ export default function CvPage() {
   const handleDelete = async (section: CvSection) => {
     try {
       await deleteSection.mutateAsync({ id: section.id, portfolioId: section.portfolioId });
-      toast({ title: "נמחק", description: "הסקציה נמחקה" });
+      toast({ title: "נמחק", description: "המחלקה נמחקה" });
     } catch {
       toast({ title: "שגיאה", description: "המחיקה נכשלה", variant: "destructive" });
     }
@@ -295,7 +295,7 @@ export default function CvPage() {
         </Select>
         <Button onClick={handleAddSection} disabled={createSection.isPending}>
           <Plus className="h-4 w-4 ml-2" />
-          הוסף סקציה
+          הוסף מחלקה
         </Button>
       </div>
     </div>

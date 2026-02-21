@@ -4,43 +4,30 @@ import dynamic from "next/dynamic";
 import type { TemplateProps } from "./types";
 import { Skeleton } from "@/components/ui/skeleton";
 
+const loading = () => <Skeleton className="h-[600px] w-full" />;
+
 const templates: Record<string, React.ComponentType<TemplateProps>> = {
-  "classic-clean": dynamic(() => import("./classic-clean"), {
-    loading: () => <Skeleton className="h-[600px] w-full" />,
-  }),
-  "classic-elegant": dynamic(() => import("./classic-elegant"), {
-    loading: () => <Skeleton className="h-[600px] w-full" />,
-  }),
-  "modern-bold": dynamic(() => import("./modern-bold"), {
-    loading: () => <Skeleton className="h-[600px] w-full" />,
-  }),
-  "modern-minimal": dynamic(() => import("./modern-minimal"), {
-    loading: () => <Skeleton className="h-[600px] w-full" />,
-  }),
-  "experimental-creative": dynamic(() => import("./experimental-creative"), {
-    loading: () => <Skeleton className="h-[600px] w-full" />,
-  }),
-  "experimental-avant-garde": dynamic(() => import("./experimental-avant-garde"), {
-    loading: () => <Skeleton className="h-[600px] w-full" />,
-  }),
-  "classic-serif": dynamic(() => import("./classic-serif"), {
-    loading: () => <Skeleton className="h-[600px] w-full" />,
-  }),
-  "classic-grid": dynamic(() => import("./classic-grid"), {
-    loading: () => <Skeleton className="h-[600px] w-full" />,
-  }),
-  "modern-gradient": dynamic(() => import("./modern-gradient"), {
-    loading: () => <Skeleton className="h-[600px] w-full" />,
-  }),
-  "modern-dark": dynamic(() => import("./modern-dark"), {
-    loading: () => <Skeleton className="h-[600px] w-full" />,
-  }),
-  "experimental-retro": dynamic(() => import("./experimental-retro"), {
-    loading: () => <Skeleton className="h-[600px] w-full" />,
-  }),
-  "experimental-magazine": dynamic(() => import("./experimental-magazine"), {
-    loading: () => <Skeleton className="h-[600px] w-full" />,
-  }),
+  // Existing (kept)
+  "classic-elegant": dynamic(() => import("./classic-elegant"), { loading }),
+  "classic-serif": dynamic(() => import("./classic-serif"), { loading }),
+  "modern-bold": dynamic(() => import("./modern-bold"), { loading }),
+  "modern-minimal": dynamic(() => import("./modern-minimal"), { loading }),
+  "modern-gradient": dynamic(() => import("./modern-gradient"), { loading }),
+  "modern-dark": dynamic(() => import("./modern-dark"), { loading }),
+  "experimental-creative": dynamic(() => import("./experimental-creative"), { loading }),
+  "experimental-avant-garde": dynamic(() => import("./experimental-avant-garde"), { loading }),
+  "experimental-retro": dynamic(() => import("./experimental-retro"), { loading }),
+  // New templates
+  "nature-organic": dynamic(() => import("./nature-organic"), { loading }),
+  "tech-terminal": dynamic(() => import("./tech-terminal"), { loading }),
+  "pastel-dreamy": dynamic(() => import("./pastel-dreamy"), { loading }),
+  "brutalist-raw": dynamic(() => import("./brutalist-raw"), { loading }),
+  "neon-glow": dynamic(() => import("./neon-glow"), { loading }),
+  "paper-craft": dynamic(() => import("./paper-craft"), { loading }),
+  "geometric-sharp": dynamic(() => import("./geometric-sharp"), { loading }),
+  "watercolor-soft": dynamic(() => import("./watercolor-soft"), { loading }),
+  "monochrome-photo": dynamic(() => import("./monochrome-photo"), { loading }),
+  "playful-pop": dynamic(() => import("./playful-pop"), { loading }),
 };
 
 interface RendererProps extends TemplateProps {
@@ -48,6 +35,6 @@ interface RendererProps extends TemplateProps {
 }
 
 export function TemplateRenderer({ templateName, ...props }: RendererProps) {
-  const Component = templates[templateName] ?? templates["classic-clean"];
+  const Component = templates[templateName] ?? templates["classic-elegant"];
   return <Component {...props} />;
 }

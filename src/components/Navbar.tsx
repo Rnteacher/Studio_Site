@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X, LogIn } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
@@ -39,12 +39,6 @@ const Navbar = () => {
               {link.label}
             </Link>
           )}
-          <Link href="/auth/login">
-            <Button variant="outline" size="sm" className="gap-2">
-              <LogIn className="h-4 w-4" />
-              כניסה
-            </Button>
-          </Link>
         </div>
 
         {/* Mobile toggle */}
@@ -73,12 +67,6 @@ const Navbar = () => {
               {link.label}
             </Link>
         )}
-          <Link href="/auth/login" onClick={() => setIsOpen(false)}>
-            <Button variant="outline" size="sm" className="gap-2 w-full">
-              <LogIn className="h-4 w-4" />
-              כניסה
-            </Button>
-          </Link>
         </div>
       }
     </nav>);

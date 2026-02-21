@@ -2,10 +2,13 @@
 
 import { useState, useMemo } from "react";
 import { useServices } from "@/hooks/useServices";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import ServiceCard from "@/components/ServiceCard";
 
 const ServicesSection = () => {
   const { data: services = [], isLoading } = useServices();
+  const { data: content } = useSiteContent();
+  const svc = content?.services_section ?? {};
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const categories = useMemo(() => {
@@ -27,10 +30,10 @@ const ServicesSection = () => {
     <section className="py-16" id="services">
       <div className="container mx-auto px-4">
         <h2 className="font-rubik text-3xl md:text-4xl font-extrabold text-heading text-center mb-4">
-          השירותים שלנו
+          {svc.title ?? "השירותים שלנו"}
         </h2>
         <p className="text-center text-muted-foreground mb-8 max-w-xl mx-auto">
-          שירותים מקצועיים מכישרונות צעירים — בחרו שירות וגלו מה אנחנו יכולים לעשות בשבילכם
+          {svc.description ?? "שירותים מקצועיים מכישרונות צעירים — בחרו שירות וגלו מה אנחנו יכולים לעשות בשבילכם"}
         </p>
 
         {/* Category Filter */}
