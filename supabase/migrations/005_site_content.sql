@@ -62,3 +62,7 @@ INSERT INTO site_content (section, key, value, type) VALUES
     ('meta', 'title', 'סטודיו דוריאן | כישרונות צעירים, שירותים אמיתיים', 'text'),
     ('meta', 'description', 'יוזמת נוער יצירתית מתוך תיכון החממה בהוד השרון. פורטפוליו חניכים, שירותים מקצועיים ועוד.', 'text')
 ON CONFLICT (section, key) DO NOTHING;
+
+-- Grants (required for Supabase RLS to work)
+GRANT SELECT ON public.site_content TO anon;
+GRANT ALL ON public.site_content TO authenticated;
