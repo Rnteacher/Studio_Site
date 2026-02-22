@@ -56,7 +56,9 @@ export function useUpdateSiteContent() {
       const supabase = createClient();
       const { error } = await supabase
         .from("site_content")
-        .upsert({ section, key, value }, { onConflict: "section,key" });
+        .update({ value })
+        .eq("section", section)
+        .eq("key", key);
       if (error) throw error;
     },
     onSuccess: () => {

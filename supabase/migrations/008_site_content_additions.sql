@@ -20,11 +20,11 @@ INSERT INTO site_content (section, key, value, type) VALUES
   ('hero', 'background_image', '', 'image')
 ON CONFLICT (section, key) DO NOTHING;
 
--- Color palette (HSL values matching current globals.css)
+-- Color palette (hex values matching current globals.css)
 INSERT INTO site_content (section, key, value, type) VALUES
-  ('palette', 'primary', '333 71% 50%', 'color'),
-  ('palette', 'secondary', '5 57% 28%', 'color'),
-  ('palette', 'accent', '355 100% 97%', 'color'),
-  ('palette', 'heading', '320 100% 17%', 'color'),
-  ('palette', 'background', '240 4% 95%', 'color')
+  ('palette', 'primary', '#D6336C', 'color'),
+  ('palette', 'secondary', '#702A2A', 'color'),
+  ('palette', 'accent', '#FFF0F0', 'color'),
+  ('palette', 'heading', '#570038', 'color'),
+  ('palette', 'background', '#F1F1F2', 'color')
 ON CONFLICT (section, key) DO NOTHING;

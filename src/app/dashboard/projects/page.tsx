@@ -107,7 +107,7 @@ export default function ProjectsPage() {
       const res = await fetch("/api/drive/list", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ folderUrl: project.driveFolderUrl }),
+        body: JSON.stringify({ folderUrl: project.driveFolderUrl, projectId: project.id }),
       });
       if (!res.ok) {
         const err = await res.json();

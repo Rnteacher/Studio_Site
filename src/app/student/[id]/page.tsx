@@ -114,17 +114,6 @@ export default function StudentProfilePage() {
                   {student.name}
                 </h1>
                 <p className="text-lg text-muted-foreground mb-4">{student.shortDescription}</p>
-                {linkedServices.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {linkedServices.map((svc) => (
-                      <Link key={svc.id} href={`/services/${svc.slug}`}>
-                        <Badge variant="default" className="cursor-pointer text-sm px-3 py-1 bg-primary text-primary-foreground hover:bg-heading">
-                          {svc.title}
-                        </Badge>
-                      </Link>
-                    ))}
-                  </div>
-                )}
                 <div className="flex flex-wrap gap-3 mb-4">
                   {portfolioSlug && (
                     <Link href={`/p/${portfolioSlug}`}>
@@ -140,28 +129,29 @@ export default function StudentProfilePage() {
           </div>
         </section>
 
-        <section className="py-12 bg-soft-bg/40">
-          <div className="container mx-auto px-4">
-            <h2 className="font-rubik text-2xl font-bold text-heading mb-6">שירותים</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {student.categories.map((cat) => (
-                <div key={cat} className="bg-card rounded-xl p-5 shadow-sm">
-                  <h3 className="font-rubik font-semibold text-heading mb-3">{cat}</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {(student.services[cat] || []).map((service) => (
-                      <Badge key={service} variant="secondary" className="bg-tag text-foreground">
-                        {service}
-                      </Badge>
-                    ))}
-                    {(!student.services[cat] || student.services[cat].length === 0) && (
-                      <span className="text-sm text-muted-foreground">אין שירותים בקטגוריה זו</span>
-                    )}
+        {linkedServices.length > 0 && (
+          <section className="py-12 bg-soft-bg/40">
+            <div className="container mx-auto px-4">
+              <h2 className="font-rubik text-2xl font-bold text-heading mb-6">שירותים</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[...new Set(linkedServices.map(s => s.category || "כללי"))].map((cat) => (
+                  <div key={cat} className="bg-card rounded-xl p-5 shadow-sm">
+                    <h3 className="font-rubik font-semibold text-heading mb-3">{cat}</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {linkedServices.filter(s => (s.category || "כללי") === cat).map((svc) => (
+                        <Link key={svc.id} href={`/services/${svc.slug}`}>
+                          <Badge variant="secondary" className="bg-tag text-foreground cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors">
+                            {svc.title}
+                          </Badge>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         <section className="py-12">
           <div className="container mx-auto px-4 max-w-2xl">

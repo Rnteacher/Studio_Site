@@ -223,18 +223,13 @@ function SiteContentEditor({ rows, onSave }: {
                         </select>
                       ) : row.type === "color" ? (
                         <div className="flex gap-2 items-center">
-                          <Input
-                            value={currentValue}
+                          <input
+                            type="color"
+                            value={currentValue.startsWith("#") ? currentValue : "#000000"}
                             onChange={e => handleChange(row.section, row.key, e.target.value)}
-                            className="text-sm flex-1"
-                            dir="ltr"
-                            placeholder="333 71% 50%"
+                            className="w-10 h-10 rounded border cursor-pointer shrink-0 p-0.5"
                           />
-                          <div
-                            className="w-8 h-8 rounded border shrink-0"
-                            style={{ backgroundColor: `hsl(${currentValue})` }}
-                            title={`hsl(${currentValue})`}
-                          />
+                          <code dir="ltr" className="text-sm text-muted-foreground">{currentValue}</code>
                         </div>
                       ) : currentValue.length > 80 ? (
                         <Textarea
