@@ -12,7 +12,8 @@ export function useSiteContent() {
       const supabase = createClient();
       const { data, error } = await supabase
         .from("site_content")
-        .select("section, key, value");
+        .select("section, key, value")
+        .order("created_at", { ascending: true });
       if (error) throw error;
 
       const map: SiteContentMap = {};
@@ -40,7 +41,8 @@ export function useSiteContentWithTypes() {
       const supabase = createClient();
       const { data, error } = await supabase
         .from("site_content")
-        .select("section, key, value, type");
+        .select("section, key, value, type")
+        .order("created_at", { ascending: true });
       if (error) throw error;
       return (data ?? []) as SiteContentRow[];
     },
