@@ -56,7 +56,7 @@ export default function BrutalistRaw({
             </div>
           )}
           <div className="flex-1">
-            <h1 className="text-6xl md:text-8xl font-black font-secular-one leading-none uppercase">
+            <h1 className="text-6xl md:text-8xl font-black font-rubik-dirt leading-none uppercase">
               {student.name}
             </h1>
             {about.subtitle && (

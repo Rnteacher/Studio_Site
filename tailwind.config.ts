@@ -59,6 +59,56 @@ export default {
   				'Amatic SC',
   				'cursive'
   			],
+  			'open-sans': [
+  				'var(--font-open-sans)',
+  				'Open Sans',
+  				'sans-serif'
+  			],
+  			fredoka: [
+  				'var(--font-fredoka)',
+  				'Fredoka',
+  				'sans-serif'
+  			],
+  			'playpen-sans': [
+  				'var(--font-playpen-sans)',
+  				'Playpen Sans',
+  				'cursive'
+  			],
+  			'mplus-rounded': [
+  				'var(--font-mplus-rounded)',
+  				'M PLUS Rounded 1c',
+  				'sans-serif'
+  			],
+  			'rubik-pixels': [
+  				'var(--font-rubik-pixels)',
+  				'Rubik Pixels',
+  				'cursive'
+  			],
+  			'rubik-dirt': [
+  				'var(--font-rubik-dirt)',
+  				'Rubik Dirt',
+  				'cursive'
+  			],
+  			'rubik-glitch': [
+  				'var(--font-rubik-glitch)',
+  				'Rubik Glitch',
+  				'cursive'
+  			],
+  			'rubik-bubbles': [
+  				'var(--font-rubik-bubbles)',
+  				'Rubik Bubbles',
+  				'cursive'
+  			],
+  			'rubik-doodle': [
+  				'var(--font-rubik-doodle)',
+  				'Rubik Doodle Shadow',
+  				'cursive'
+  			],
+  			'rubik-iso': [
+  				'var(--font-rubik-iso)',
+  				'Rubik Iso',
+  				'cursive'
+  			],
   			sans: [
   				'Poppins',
   				'ui-sans-serif',

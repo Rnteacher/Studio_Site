@@ -9,6 +9,16 @@ import {
   Suez_One,
   Karantina,
   Amatic_SC,
+  Open_Sans,
+  Fredoka,
+  Playpen_Sans_Hebrew,
+  M_PLUS_Rounded_1c,
+  Rubik_Pixels,
+  Rubik_Dirt,
+  Rubik_Glitch,
+  Rubik_Bubbles,
+  Rubik_Doodle_Shadow,
+  Rubik_Iso,
 } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
@@ -72,6 +82,73 @@ const amaticSC = Amatic_SC({
   display: "swap",
 });
 
+const openSans = Open_Sans({
+  subsets: ["hebrew", "latin"],
+  variable: "--font-open-sans",
+  display: "swap",
+});
+
+const fredoka = Fredoka({
+  subsets: ["hebrew", "latin"],
+  variable: "--font-fredoka",
+  display: "swap",
+});
+
+const playpenSans = Playpen_Sans_Hebrew({
+  subsets: ["hebrew", "latin"],
+  variable: "--font-playpen-sans",
+  display: "swap",
+});
+
+const mplusRounded = M_PLUS_Rounded_1c({
+  subsets: ["hebrew", "latin"],
+  weight: ["300", "400", "700"],
+  variable: "--font-mplus-rounded",
+  display: "swap",
+});
+
+const rubikPixels = Rubik_Pixels({
+  subsets: ["hebrew", "latin"],
+  weight: "400",
+  variable: "--font-rubik-pixels",
+  display: "swap",
+});
+
+const rubikDirt = Rubik_Dirt({
+  subsets: ["hebrew", "latin"],
+  weight: "400",
+  variable: "--font-rubik-dirt",
+  display: "swap",
+});
+
+const rubikGlitch = Rubik_Glitch({
+  subsets: ["hebrew", "latin"],
+  weight: "400",
+  variable: "--font-rubik-glitch",
+  display: "swap",
+});
+
+const rubikBubbles = Rubik_Bubbles({
+  subsets: ["hebrew", "latin"],
+  weight: "400",
+  variable: "--font-rubik-bubbles",
+  display: "swap",
+});
+
+const rubikDoodleShadow = Rubik_Doodle_Shadow({
+  subsets: ["hebrew", "latin"],
+  weight: "400",
+  variable: "--font-rubik-doodle",
+  display: "swap",
+});
+
+const rubikIso = Rubik_Iso({
+  subsets: ["hebrew", "latin"],
+  weight: "400",
+  variable: "--font-rubik-iso",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "סטודיו דוריאן | כישרונות צעירים. שירותים אמיתיים.",
   description:
@@ -93,6 +170,16 @@ const fontVars = [
   suezOne.variable,
   karantina.variable,
   amaticSC.variable,
+  openSans.variable,
+  fredoka.variable,
+  playpenSans.variable,
+  mplusRounded.variable,
+  rubikPixels.variable,
+  rubikDirt.variable,
+  rubikGlitch.variable,
+  rubikBubbles.variable,
+  rubikDoodleShadow.variable,
+  rubikIso.variable,
 ].join(" ");
 
 export default function RootLayout({

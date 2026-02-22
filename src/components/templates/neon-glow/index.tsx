@@ -59,7 +59,7 @@ export default function NeonGlow({
           )}
           <div className="text-center md:text-right flex-1">
             <h1
-              className="text-5xl md:text-6xl font-bold leading-tight bg-gradient-to-l from-[#ff00ff] to-[#00ffff] bg-clip-text text-transparent"
+              className="text-5xl md:text-6xl font-rubik-pixels font-bold leading-tight bg-gradient-to-l from-[#ff00ff] to-[#00ffff] bg-clip-text text-transparent"
               style={{ textShadow: "none" }}
             >
               {student.name}
@@ -80,7 +80,7 @@ export default function NeonGlow({
         {/* About */}
         {about.body && (
           <section id="about" className="py-16 scroll-mt-16">
-            <h2 className="text-2xl font-bold mb-6 text-[#00ffff]">
+            <h2 className="text-2xl font-rubik-pixels font-bold mb-6 text-[#00ffff]">
               {about.title || "אודות"}
             </h2>
             <div
@@ -97,7 +97,7 @@ export default function NeonGlow({
         {/* Projects */}
         {projects.length > 0 && (
           <section id="projects" className="py-16 scroll-mt-16">
-            <h2 className="text-2xl font-bold mb-8 text-[#00ffff]">פרויקטים</h2>
+            <h2 className="text-2xl font-rubik-pixels font-bold mb-8 text-[#00ffff]">פרויקטים</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {projects.map((project) => (
                 <div
@@ -170,7 +170,7 @@ export default function NeonGlow({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv" className="py-16 scroll-mt-16">
-            <h2 className="text-2xl font-bold mb-8 text-[#00ffff]">קורות חיים</h2>
+            <h2 className="text-2xl font-rubik-pixels font-bold mb-8 text-[#00ffff]">קורות חיים</h2>
             <div className="space-y-8">
               {cvSections.map((section) => (
                 <div
@@ -216,7 +216,7 @@ export default function NeonGlow({
 
         {/* Contact */}
         <footer id="contact" className="py-16 border-t border-[#ff00ff]/10 scroll-mt-16">
-          <h2 className="text-2xl font-bold mb-8 text-[#00ffff]">צור קשר</h2>
+          <h2 className="text-2xl font-rubik-pixels font-bold mb-8 text-[#00ffff]">צור קשר</h2>
           <div className="rounded-xl p-8 border border-[#ff00ff]/10 bg-[#12121f]">
             <div className="flex flex-wrap gap-8 text-sm">
               {contact.email && (

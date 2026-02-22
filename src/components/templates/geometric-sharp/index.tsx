@@ -26,7 +26,7 @@ export default function GeometricSharp({
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-[#1a1a2e]/95 backdrop-blur-sm border-b border-orange-500/30">
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="font-secular-one text-lg text-orange-400">
+          <span className="font-rubik-glitch text-lg text-orange-400">
             {student.name}
           </span>
           <div className="flex items-center gap-6">
@@ -79,7 +79,7 @@ export default function GeometricSharp({
               </div>
             )}
             <div className="text-center md:text-right flex-1">
-              <h1 className="font-secular-one text-5xl md:text-7xl leading-tight text-white drop-shadow-lg">
+              <h1 className="font-rubik-glitch text-5xl md:text-7xl leading-tight text-white drop-shadow-lg">
                 {student.name}
               </h1>
               {about.subtitle && (
@@ -117,7 +117,7 @@ export default function GeometricSharp({
                 className="w-10 h-10 bg-orange-500"
                 style={{ clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)" }}
               />
-              <h2 className="font-secular-one text-3xl md:text-4xl text-white">
+              <h2 className="font-rubik-glitch text-3xl md:text-4xl text-white">
                 פרויקטים
               </h2>
               <div className="flex-1 h-px bg-gradient-to-l from-transparent via-orange-500/50 to-transparent" />
@@ -212,7 +212,7 @@ export default function GeometricSharp({
                 className="w-10 h-10 bg-orange-500"
                 style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 50% 50%)" }}
               />
-              <h2 className="font-secular-one text-3xl md:text-4xl text-white">
+              <h2 className="font-rubik-glitch text-3xl md:text-4xl text-white">
                 קורות חיים
               </h2>
               <div className="flex-1 h-px bg-gradient-to-l from-transparent via-orange-500/50 to-transparent" />
@@ -266,7 +266,7 @@ export default function GeometricSharp({
               className="w-10 h-10 bg-orange-500"
               style={{ clipPath: "polygon(0 50%, 50% 0, 100% 50%, 50% 100%)" }}
             />
-            <h2 className="font-secular-one text-3xl md:text-4xl text-white">
+            <h2 className="font-rubik-glitch text-3xl md:text-4xl text-white">
               צור קשר
             </h2>
             <div className="flex-1 h-px bg-gradient-to-l from-transparent via-orange-500/50 to-transparent" />

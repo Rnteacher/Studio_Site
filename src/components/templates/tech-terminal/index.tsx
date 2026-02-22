@@ -55,7 +55,7 @@ export default function TechTerminal({
             <p className="font-mono text-[#00ff41]/50 text-sm mb-2">
               $ whoami
             </p>
-            <h1 className="text-4xl md:text-5xl font-mono font-bold text-[#00ff41] leading-tight">
+            <h1 className="text-4xl md:text-5xl font-rubik-iso font-bold text-[#00ff41] leading-tight">
               {student.name}
             </h1>
             {about.subtitle && (

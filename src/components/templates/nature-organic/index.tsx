@@ -13,7 +13,7 @@ export default function NatureOrganic({
 }: TemplateProps) {
   return (
     <div
-      className="min-h-screen bg-[#f0f7e6] text-[#2d5016] font-varela-round scroll-smooth"
+      className="min-h-screen bg-[#f0f7e6] text-[#2d5016] font-open-sans scroll-smooth"
       dir="rtl"
     >
       {/* Decorative leaf top-corner */}
@@ -24,7 +24,7 @@ export default function NatureOrganic({
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-[#f0f7e6]/90 backdrop-blur-sm border-b border-[#2d5016]/10">
         <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="text-sm font-frank-ruhl font-bold text-[#2d5016]/60">
+          <span className="text-sm font-fredoka font-bold text-[#2d5016]/60">
             {student.name}
           </span>
           <div className="flex items-center gap-6">
@@ -60,7 +60,7 @@ export default function NatureOrganic({
           <div className="absolute -z-10 top-4 right-4 w-48 h-48 rounded-full bg-[#2d5016]/10" />
         </div>
         <div className="text-center md:text-right flex-1">
-          <h1 className="text-5xl md:text-6xl font-frank-ruhl font-bold leading-tight">
+          <h1 className="text-5xl md:text-6xl font-fredoka font-bold leading-tight">
             {student.name}
           </h1>
           {about.subtitle && (
@@ -82,7 +82,7 @@ export default function NatureOrganic({
         {/* About */}
         {about.body && (
           <section id="about" className="py-16 scroll-mt-20">
-            <h2 className="text-2xl font-frank-ruhl font-bold mb-6 flex items-center gap-3">
+            <h2 className="text-2xl font-fredoka font-bold mb-6 flex items-center gap-3">
               <span className="inline-block w-8 h-8 rounded-full bg-[#2d5016]/10 flex items-center justify-center text-sm">
                 ~
               </span>
@@ -99,7 +99,7 @@ export default function NatureOrganic({
         {/* Projects */}
         {projects.length > 0 && (
           <section id="projects" className="py-16 scroll-mt-20">
-            <h2 className="text-2xl font-frank-ruhl font-bold mb-8 flex items-center gap-3">
+            <h2 className="text-2xl font-fredoka font-bold mb-8 flex items-center gap-3">
               <span className="inline-block w-8 h-8 rounded-full bg-[#2d5016]/10 flex items-center justify-center text-sm">
                 ~
               </span>
@@ -119,7 +119,7 @@ export default function NatureOrganic({
                     />
                   )}
                   <div className="p-6">
-                    <h3 className="text-xl font-frank-ruhl font-bold">
+                    <h3 className="text-xl font-fredoka font-bold">
                       {project.title}
                     </h3>
                     {project.description && (
@@ -174,7 +174,7 @@ export default function NatureOrganic({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv" className="py-16 scroll-mt-20">
-            <h2 className="text-2xl font-frank-ruhl font-bold mb-8 flex items-center gap-3">
+            <h2 className="text-2xl font-fredoka font-bold mb-8 flex items-center gap-3">
               <span className="inline-block w-8 h-8 rounded-full bg-[#2d5016]/10 flex items-center justify-center text-sm">
                 ~
               </span>
@@ -186,7 +186,7 @@ export default function NatureOrganic({
                   key={section.id}
                   className="bg-white/60 rounded-3xl p-8 shadow-sm border border-[#2d5016]/5"
                 >
-                  <h3 className="text-lg font-frank-ruhl font-bold text-[#2d5016]/80 mb-4">
+                  <h3 className="text-lg font-fredoka font-bold text-[#2d5016]/80 mb-4">
                     {section.title}
                   </h3>
                   <div className="space-y-4">
@@ -228,7 +228,7 @@ export default function NatureOrganic({
           id="contact"
           className="py-16 border-t border-[#2d5016]/10 scroll-mt-20"
         >
-          <h2 className="text-2xl font-frank-ruhl font-bold mb-8 flex items-center gap-3">
+          <h2 className="text-2xl font-fredoka font-bold mb-8 flex items-center gap-3">
             <span className="inline-block w-8 h-8 rounded-full bg-[#2d5016]/10 flex items-center justify-center text-sm">
               ~
             </span>
