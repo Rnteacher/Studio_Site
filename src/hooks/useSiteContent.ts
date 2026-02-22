@@ -26,6 +26,28 @@ export function useSiteContent() {
   });
 }
 
+export interface SiteContentRow {
+  section: string;
+  key: string;
+  value: string;
+  type: string;
+}
+
+export function useSiteContentWithTypes() {
+  return useQuery({
+    queryKey: ["site-content-with-types"],
+    queryFn: async (): Promise<SiteContentRow[]> => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("site_content")
+        .select("section, key, value, type");
+      if (error) throw error;
+      return (data ?? []) as SiteContentRow[];
+    },
+    staleTime: 60_000,
+  });
+}
+
 export function useUpdateSiteContent() {
   const queryClient = useQueryClient();
 
@@ -39,6 +61,7 @@ export function useUpdateSiteContent() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["site-content"] });
+      queryClient.invalidateQueries({ queryKey: ["site-content-with-types"] });
     },
   });
 }

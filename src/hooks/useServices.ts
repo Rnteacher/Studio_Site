@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
 
 export interface Service {
@@ -104,6 +104,27 @@ export function useStudentServices(studentId: string | undefined) {
         .in("id", serviceIds);
 
       return (services || []).map(mapRow);
+    },
+  });
+}
+
+export function useUpdateStudentServices() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ studentId, serviceIds }: { studentId: string; serviceIds: string[] }) => {
+      const supabase = createClient();
+      await supabase.from("service_students").delete().eq("student_id", studentId);
+      if (serviceIds.length > 0) {
+        const { error } = await supabase.from("service_students").insert(
+          serviceIds.map(sid => ({ service_id: sid, student_id: studentId }))
+        );
+        if (error) throw error;
+      }
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["student-services", variables.studentId] });
+      queryClient.invalidateQueries({ queryKey: ["services"] });
     },
   });
 }

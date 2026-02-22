@@ -21,7 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Pencil, Trash2, Plus, LogOut, Upload, Loader2, Globe, GlobeLock, ExternalLink, Settings, Save } from "lucide-react";
 import Link from "next/link";
-import { useSiteContent, useUpdateSiteContent } from "@/hooks/useSiteContent";
+import { useSiteContentWithTypes, useUpdateSiteContent, type SiteContentRow } from "@/hooks/useSiteContent";
 
 // ─── Student Form ───
 interface StudentForm {
@@ -67,6 +67,7 @@ const SECTION_LABELS: Record<string, string> = {
   services_section: "סקציית שירותים",
   about: "עמוד אודות",
   meta: "מטא נתונים (SEO)",
+  palette: "צבעי האתר",
 };
 
 const KEY_LABELS: Record<string, string> = {
@@ -78,69 +79,176 @@ const KEY_LABELS: Record<string, string> = {
   value3_title: "ערך 3 - כותרת", value3_desc: "ערך 3 - תיאור",
   value4_title: "ערך 4 - כותרת", value4_desc: "ערך 4 - תיאור",
   image1: "תמונה 1", image2: "תמונה 2", image3: "תמונה 3",
+  cta_services: "כפתור שירותים", cta_students: "כפתור חניכים",
+  tagline: "שורת סיסמה", mission_line2: "משימה - שורה 2",
+  mission_sub: "תיאור משימה", badge1_text: "תג באנר 1", badge2_text: "תג באנר 2",
+  background_image: "תמונת רקע",
+  value1_icon: "ערך 1 - אייקון", value2_icon: "ערך 2 - אייקון",
+  value3_icon: "ערך 3 - אייקון", value4_icon: "ערך 4 - אייקון",
+  primary: "ראשי (Primary)", secondary: "משני (Secondary)",
+  accent: "הדגשה (Accent)", heading: "כותרות (Heading)",
+  background: "רקע (Background)",
 };
 
-function SiteContentEditor({ content, onSave }: {
-  content: Record<string, Record<string, string>>;
+const ICON_OPTIONS = [
+  "Heart", "Shield", "Star", "Rocket", "Zap", "Award", "Target", "Lightbulb",
+  "Users", "Handshake", "Sparkles", "Crown", "Trophy", "Flame", "Eye", "Compass",
+  "Leaf", "Sun", "Music", "Camera", "Palette", "Brain", "BookOpen", "GraduationCap",
+];
+
+function SiteContentEditor({ rows, onSave }: {
+  rows: SiteContentRow[];
   onSave: (section: string, key: string, value: string) => Promise<void>;
 }) {
   const [editValues, setEditValues] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState<string | null>(null);
+  const [uploading, setUploading] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const getKey = (section: string, key: string) => `${section}::${key}`;
 
-  const getValue = (section: string, key: string) => {
+  const getValue = (section: string, key: string, serverValue: string) => {
     const k = getKey(section, key);
-    return k in editValues ? editValues[k] : (content[section]?.[key] ?? "");
+    return k in editValues ? editValues[k] : serverValue;
   };
 
   const handleChange = (section: string, key: string, value: string) => {
     setEditValues(prev => ({ ...prev, [getKey(section, key)]: value }));
   };
 
-  const handleSave = async (section: string, key: string) => {
+  const handleSave = async (section: string, key: string, serverValue: string) => {
     const k = getKey(section, key);
+    const value = getValue(section, key, serverValue);
     setSaving(k);
-    await onSave(section, key, getValue(section, key));
-    setEditValues(prev => { const n = { ...prev }; delete n[k]; return n; });
+    await onSave(section, key, value);
     setSaving(null);
+    // Delay clearing editValues to prevent flash during query invalidation
+    setTimeout(() => {
+      setEditValues(prev => { const n = { ...prev }; delete n[k]; return n; });
+    }, 500);
   };
 
-  const sections = Object.keys(SECTION_LABELS);
+  const handleImageUpload = async (section: string, key: string, file: File) => {
+    const k = getKey(section, key);
+    setUploading(k);
+    const url = await uploadImage(file, "site-content");
+    setUploading(null);
+    if (url) {
+      handleChange(section, key, url);
+      toast({ title: "התמונה הועלתה!" });
+    } else {
+      toast({ title: "שגיאה בהעלאת תמונה", variant: "destructive" });
+    }
+  };
+
+  // Group rows by section
+  const grouped = new Map<string, SiteContentRow[]>();
+  for (const row of rows) {
+    if (!grouped.has(row.section)) grouped.set(row.section, []);
+    grouped.get(row.section)!.push(row);
+  }
+  const sectionOrder = Object.keys(SECTION_LABELS);
+  const sortedSections = [...grouped.keys()].sort((a, b) => {
+    const ai = sectionOrder.indexOf(a);
+    const bi = sectionOrder.indexOf(b);
+    if (ai !== -1 && bi !== -1) return ai - bi;
+    if (ai !== -1) return -1;
+    if (bi !== -1) return 1;
+    return a.localeCompare(b);
+  });
 
   return (
     <div className="space-y-6">
-      {sections.map(section => {
-        const keys = Object.keys(content[section] ?? {});
-        if (keys.length === 0) return null;
+      {sortedSections.map(section => {
+        const sectionRows = grouped.get(section)!;
         return (
           <div key={section} className="border rounded-lg overflow-hidden">
             <div className="bg-muted/50 px-4 py-3">
               <h3 className="font-semibold text-heading">{SECTION_LABELS[section] ?? section}</h3>
             </div>
             <div className="p-4 space-y-3">
-              {keys.map(key => {
-                const k = getKey(section, key);
-                const isDirty = k in editValues;
+              {sectionRows.map(row => {
+                const k = getKey(row.section, row.key);
+                const currentValue = getValue(row.section, row.key, row.value);
+                const isDirty = k in editValues && editValues[k] !== row.value;
                 return (
-                  <div key={key} className="flex items-start gap-2">
+                  <div key={row.key} className="flex items-start gap-2">
                     <label className="w-32 text-sm font-medium text-muted-foreground pt-2 shrink-0">
-                      {KEY_LABELS[key] ?? key}
+                      {KEY_LABELS[row.key] ?? row.key}
                     </label>
-                    <div className="flex-1">
-                      {getValue(section, key).length > 80 ? (
+                    <div className="flex-1 space-y-1">
+                      {row.type === "image" ? (
+                        <>
+                          {currentValue && (
+                            <img src={currentValue} alt="" className="w-24 h-16 rounded object-cover" />
+                          )}
+                          <div className="flex gap-2">
+                            <Input
+                              value={currentValue}
+                              onChange={e => handleChange(row.section, row.key, e.target.value)}
+                              className="text-sm flex-1"
+                              dir="ltr"
+                              placeholder="קישור תמונה"
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="icon"
+                              disabled={uploading === k}
+                              onClick={() => {
+                                const input = document.createElement("input");
+                                input.type = "file";
+                                input.accept = "image/*";
+                                input.onchange = (ev) => {
+                                  const file = (ev.target as HTMLInputElement).files?.[0];
+                                  if (file) handleImageUpload(row.section, row.key, file);
+                                };
+                                input.click();
+                              }}
+                            >
+                              {uploading === k ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                            </Button>
+                          </div>
+                        </>
+                      ) : row.type === "icon" ? (
+                        <select
+                          value={currentValue}
+                          onChange={e => handleChange(row.section, row.key, e.target.value)}
+                          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                        >
+                          <option value="">בחר אייקון...</option>
+                          {ICON_OPTIONS.map(icon => (
+                            <option key={icon} value={icon}>{icon}</option>
+                          ))}
+                        </select>
+                      ) : row.type === "color" ? (
+                        <div className="flex gap-2 items-center">
+                          <Input
+                            value={currentValue}
+                            onChange={e => handleChange(row.section, row.key, e.target.value)}
+                            className="text-sm flex-1"
+                            dir="ltr"
+                            placeholder="333 71% 50%"
+                          />
+                          <div
+                            className="w-8 h-8 rounded border shrink-0"
+                            style={{ backgroundColor: `hsl(${currentValue})` }}
+                            title={`hsl(${currentValue})`}
+                          />
+                        </div>
+                      ) : currentValue.length > 80 ? (
                         <Textarea
-                          value={getValue(section, key)}
-                          onChange={e => handleChange(section, key, e.target.value)}
+                          value={currentValue}
+                          onChange={e => handleChange(row.section, row.key, e.target.value)}
                           rows={3}
                           className="text-sm"
                         />
                       ) : (
                         <Input
-                          value={getValue(section, key)}
-                          onChange={e => handleChange(section, key, e.target.value)}
+                          value={currentValue}
+                          onChange={e => handleChange(row.section, row.key, e.target.value)}
                           className="text-sm"
-                          dir={key.includes("image") || key === "logo" || key === "email" ? "ltr" : undefined}
+                          dir={row.key.includes("image") || row.key === "logo" || row.key === "email" ? "ltr" : undefined}
                         />
                       )}
                     </div>
@@ -148,7 +256,7 @@ function SiteContentEditor({ content, onSave }: {
                       <Button
                         size="icon"
                         variant="ghost"
-                        onClick={() => handleSave(section, key)}
+                        onClick={() => handleSave(row.section, row.key, row.value)}
                         disabled={saving === k}
                         className="shrink-0"
                       >
@@ -172,7 +280,7 @@ export default function AdminPage() {
   const { data: services, isLoading: servicesLoading } = useServices();
   const { data: portfolios, isLoading: portfoliosLoading } = useAllPortfolios();
   const updatePortfolio = useUpdatePortfolio();
-  const { data: siteContent, isLoading: contentLoading } = useSiteContent();
+  const { data: siteContentRows, isLoading: contentLoading } = useSiteContentWithTypes();
   const updateContent = useUpdateSiteContent();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -476,7 +584,7 @@ export default function AdminPage() {
               <h2 className="font-rubik text-xl font-semibold text-heading">תוכן האתר</h2>
             </div>
             {contentLoading ? <p>טוען...</p> : (
-              <SiteContentEditor content={siteContent ?? {}} onSave={async (section, key, value) => {
+              <SiteContentEditor rows={siteContentRows ?? []} onSave={async (section, key, value) => {
                 await updateContent.mutateAsync({ section, key, value });
                 toast({ title: "נשמר!" });
               }} />

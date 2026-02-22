@@ -16,7 +16,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Pencil, Trash2, FolderOpen, RefreshCw } from "lucide-react";
+import { Plus, Pencil, Trash2, FolderOpen, RefreshCw, Copy, Check } from "lucide-react";
 import type { ProjectWithMedia } from "@/types/portfolio";
 
 export default function ProjectsPage() {
@@ -35,6 +35,7 @@ export default function ProjectsPage() {
   const [tags, setTags] = useState("");
   const [driveFolderUrl, setDriveFolderUrl] = useState("");
   const [syncing, setSyncing] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const openNew = () => {
     setEditingProject(null);
@@ -244,9 +245,28 @@ export default function ProjectsPage() {
             <div className="space-y-2">
               <Label>קישור לתיקיית Google Drive</Label>
               <Input dir="ltr" value={driveFolderUrl} onChange={(e) => setDriveFolderUrl(e.target.value)} placeholder="https://drive.google.com/drive/folders/..." />
-              <p className="text-xs text-muted-foreground">
-                שתף את התיקייה עם חשבון השירות של המערכת
+              <p className="text-xs text-muted-foreground mb-1">
+                שתף את התיקייה עם חשבון השירות של המערכת:
               </p>
+              <div className="flex items-center gap-2 bg-muted rounded px-2 py-1.5">
+                <code dir="ltr" className="text-[11px] flex-1 select-all break-all text-muted-foreground">
+                  studio-durian-drive@studio-durian-site.iam.gserviceaccount.com
+                </code>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6 shrink-0"
+                  onClick={async () => {
+                    await navigator.clipboard.writeText("studio-durian-drive@studio-durian-site.iam.gserviceaccount.com");
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                    toast({ title: "הועתק!" });
+                  }}
+                >
+                  {copied ? <Check className="h-3 w-3 text-green-600" /> : <Copy className="h-3 w-3" />}
+                </Button>
+              </div>
             </div>
           </div>
           <DialogFooter>

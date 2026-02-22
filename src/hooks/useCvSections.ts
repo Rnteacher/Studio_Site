@@ -100,6 +100,30 @@ export function useUpdateCvSection() {
   });
 }
 
+export function useReorderCvSections() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ portfolioId, updates }: {
+      portfolioId: string;
+      updates: { id: string; sort_order: number }[];
+    }) => {
+      const supabase = createClient();
+      for (const { id, sort_order } of updates) {
+        const { error } = await supabase
+          .from("cv_sections")
+          .update({ sort_order })
+          .eq("id", id);
+        if (error) throw error;
+      }
+      return portfolioId;
+    },
+    onSuccess: (portfolioId) => {
+      queryClient.invalidateQueries({ queryKey: ["cv-sections", portfolioId] });
+    },
+  });
+}
+
 export function useDeleteCvSection() {
   const queryClient = useQueryClient();
 

@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useMyPortfolio } from "@/hooks/usePortfolio";
-import { useCvSections, useCreateCvSection, useUpdateCvSection, useDeleteCvSection } from "@/hooks/useCvSections";
+import { useCvSections, useCreateCvSection, useUpdateCvSection, useDeleteCvSection, useReorderCvSections } from "@/hooks/useCvSections";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -205,9 +206,12 @@ export default function CvPage() {
   const createSection = useCreateCvSection();
   const updateSection = useUpdateCvSection();
   const deleteSection = useDeleteCvSection();
+  const reorderSections = useReorderCvSections();
   const { toast } = useToast();
 
   const [newSectionType, setNewSectionType] = useState("experience");
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
   const handleAddSection = async () => {
     if (!portfolio) return;
@@ -271,14 +275,45 @@ export default function CvPage() {
       </div>
 
       <div className="space-y-3">
-        {(cvSections ?? []).map((section) => (
-          <SectionEditor
+        {(cvSections ?? []).map((section, idx) => (
+          <div
             key={section.id}
-            section={section}
-            onSave={(updates) => handleSave(section, updates)}
-            onDelete={() => handleDelete(section)}
-            isSaving={updateSection.isPending}
-          />
+            draggable
+            onDragStart={(e) => {
+              setDragIndex(idx);
+              e.dataTransfer.effectAllowed = "move";
+            }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.dataTransfer.dropEffect = "move";
+              setDragOverIndex(idx);
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              if (dragIndex === null || dragIndex === idx) { setDragIndex(null); setDragOverIndex(null); return; }
+              const items = [...(cvSections ?? [])];
+              const [moved] = items.splice(dragIndex, 1);
+              items.splice(idx, 0, moved);
+              const updates = items.map((s, i) => ({ id: s.id, sort_order: i }));
+              reorderSections.mutate({ portfolioId: portfolio!.id, updates });
+              setDragIndex(null);
+              setDragOverIndex(null);
+            }}
+            onDragEnd={() => { setDragIndex(null); setDragOverIndex(null); }}
+            className={cn(
+              "transition-opacity",
+              dragIndex === idx && "opacity-40",
+              dragOverIndex === idx && dragIndex !== idx && "border-t-2 border-primary"
+            )}
+          >
+            <SectionEditor
+              key={section.id}
+              section={section}
+              onSave={(updates) => handleSave(section, updates)}
+              onDelete={() => handleDelete(section)}
+              isSaving={updateSection.isPending}
+            />
+          </div>
         ))}
       </div>
 

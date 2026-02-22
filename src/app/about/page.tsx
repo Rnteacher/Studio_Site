@@ -2,20 +2,31 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Heart, Shield, Star, Rocket } from "lucide-react";
+import {
+  Heart, Shield, Star, Rocket, Zap, Award, Target, Lightbulb,
+  Users, Handshake, Sparkles, Crown, Trophy, Flame, Eye, Compass,
+  Leaf, Sun, Music, Camera, Palette, Brain, BookOpen, GraduationCap,
+  type LucideIcon,
+} from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
-const VALUE_ICONS = [Heart, Shield, Star, Rocket];
+const ICON_MAP: Record<string, LucideIcon> = {
+  Heart, Shield, Star, Rocket, Zap, Award, Target, Lightbulb,
+  Users, Handshake, Sparkles, Crown, Trophy, Flame, Eye, Compass,
+  Leaf, Sun, Music, Camera, Palette, Brain, BookOpen, GraduationCap,
+};
+
+const DEFAULT_ICONS = ["Heart", "Shield", "Star", "Rocket"];
 
 export default function AboutPage() {
   const { data: content } = useSiteContent();
   const about = content?.about ?? {};
 
   const values = [
-    { icon: VALUE_ICONS[0], title: about.value1_title ?? "קהילה", description: about.value1_desc ?? "אנחנו מאמינים בכוח של קהילה ותמיכה הדדית" },
-    { icon: VALUE_ICONS[1], title: about.value2_title ?? "אחריות", description: about.value2_desc ?? "לוקחים אחריות על כל פרויקט ומחויבים לאיכות" },
-    { icon: VALUE_ICONS[2], title: about.value3_title ?? "מקצועיות", description: about.value3_desc ?? "עובדים ברמה מקצועית גבוהה למרות הגיל הצעיר" },
-    { icon: VALUE_ICONS[3], title: about.value4_title ?? "יזמות צעירה", description: about.value4_desc ?? "מפתחים כישורים עסקיים ויצירתיים מגיל צעיר" },
+    { icon: ICON_MAP[about.value1_icon ?? DEFAULT_ICONS[0]] ?? Heart, title: about.value1_title ?? "קהילה", description: about.value1_desc ?? "אנחנו מאמינים בכוח של קהילה ותמיכה הדדית" },
+    { icon: ICON_MAP[about.value2_icon ?? DEFAULT_ICONS[1]] ?? Shield, title: about.value2_title ?? "אחריות", description: about.value2_desc ?? "לוקחים אחריות על כל פרויקט ומחויבים לאיכות" },
+    { icon: ICON_MAP[about.value3_icon ?? DEFAULT_ICONS[2]] ?? Star, title: about.value3_title ?? "מקצועיות", description: about.value3_desc ?? "עובדים ברמה מקצועית גבוהה למרות הגיל הצעיר" },
+    { icon: ICON_MAP[about.value4_icon ?? DEFAULT_ICONS[3]] ?? Rocket, title: about.value4_title ?? "יזמות צעירה", description: about.value4_desc ?? "מפתחים כישורים עסקיים ויצירתיים מגיל צעיר" },
   ];
 
   const images = [

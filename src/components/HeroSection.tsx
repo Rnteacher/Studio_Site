@@ -12,7 +12,12 @@ const HeroSection = () => {
   const title = hero.title ?? "סטודיו דוריאן";
 
   return (
-    <section className="relative overflow-hidden py-20 md:py-32">
+    <section
+      className="relative overflow-hidden py-20 md:py-32"
+      style={hero.background_image ? { backgroundImage: `url(${hero.background_image})`, backgroundSize: "cover", backgroundPosition: "center" } : undefined}
+    >
+      {hero.background_image && <div className="absolute inset-0 bg-background/80" />}
+
       {/* Decorative elements */}
       <div className="absolute top-10 left-10 text-6xl opacity-10 select-none">🎨</div>
       <div className="absolute top-20 right-20 text-5xl opacity-10 select-none">🎵</div>
@@ -39,14 +44,14 @@ const HeroSection = () => {
           {title}
         </h1>
         <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-          כישרונות צעירים. שירותים אמיתיים. השפעה אמיתית.
+          {hero.subtitle ?? "כישרונות צעירים. שירותים אמיתיים. השפעה אמיתית."}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
           <Button asChild size="lg" className="text-lg px-8 bg-primary hover:bg-heading">
-            <a href="#services">גלו את השירותים שלנו</a>
+            <a href="#services">{hero.cta_services ?? "גלו את השירותים שלנו"}</a>
           </Button>
           <Button asChild variant="outline" size="lg" className="text-lg px-8 border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-            <Link href="/students">החניכים שלנו</Link>
+            <Link href="/students">{hero.cta_students ?? "החניכים שלנו"}</Link>
           </Button>
         </div>
 
@@ -59,19 +64,17 @@ const HeroSection = () => {
             <p className="text-xl md:text-2xl font-extrabold leading-snug mb-3 tracking-tight text-heading">
               {hero.mission ?? "סטודיו דוריאן מחבר בין יכולות של נוער"}
               <br />
-              <span className="text-primary">לבין צרכים של העולם האמיתי.</span>
+              <span className="text-primary">{hero.mission_line2 ?? "לבין צרכים של העולם האמיתי."}</span>
             </p>
             <p className="text-sm md:text-base leading-relaxed text-muted-foreground mb-6 max-w-xl mx-auto text-center">
-              אנחנו מציעים שירותים מקצועיים לעמותות ולעסקים קטנים.
-              <br />
-              מתוך רצון ללמוד, להתפתח ולהשפיע.
+              {hero.mission_sub ?? "אנחנו מציעים שירותים מקצועיים לעמותות ולעסקים קטנים. מתוך רצון ללמוד, להתפתח ולהשפיע."}
             </p>
             <div className="flex flex-wrap gap-2 mb-5 justify-center">
-              <span className="bg-soft-bg/60 px-4 py-1 rounded-sm text-xs font-bold uppercase tracking-widest border-r-2 border-primary text-heading">עובדים עם קהילה</span>
-              <span className="bg-soft-bg/60 px-4 py-1 rounded-sm text-xs font-bold uppercase tracking-widest border-r-2 border-primary text-heading">לומדים דרך אחריות</span>
+              <span className="bg-soft-bg/60 px-4 py-1 rounded-sm text-xs font-bold uppercase tracking-widest border-r-2 border-primary text-heading">{hero.badge1_text ?? "עובדים עם קהילה"}</span>
+              <span className="bg-soft-bg/60 px-4 py-1 rounded-sm text-xs font-bold uppercase tracking-widest border-r-2 border-primary text-heading">{hero.badge2_text ?? "לומדים דרך אחריות"}</span>
             </div>
             <p className="text-lg md:text-xl font-black text-primary italic">
-              גיל הוא לא מגבלה — אלא יתרון.
+              {hero.tagline ?? "גיל הוא לא מגבלה — אלא יתרון."}
             </p>
           </div>
         </div>
