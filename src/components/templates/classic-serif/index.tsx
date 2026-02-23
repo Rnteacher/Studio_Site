@@ -19,7 +19,7 @@ export default function ClassicSerif({
   projects,
 }: TemplateProps) {
   return (
-    <div className="min-h-screen scroll-smooth" dir="rtl">
+    <div className="min-h-screen font-heebo scroll-smooth" dir="rtl">
       {/* Mobile Header — collapses sidebar into horizontal strip */}
       <header className="lg:hidden bg-[#1b2a4a] text-white">
         <div className="flex flex-col items-center py-8 px-6 gap-4">
@@ -31,8 +31,7 @@ export default function ClassicSerif({
             />
           )}
           <h1
-            className="text-2xl font-bold"
-            style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
+            className="text-2xl font-bold font-fredoka"
           >
             {student.name}
           </h1>
@@ -69,8 +68,7 @@ export default function ClassicSerif({
             )}
             <div className="text-center">
               <h1
-                className="text-2xl font-bold leading-tight"
-                style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
+                className="text-2xl font-bold leading-tight font-fredoka"
               >
                 {student.name}
               </h1>
@@ -89,9 +87,6 @@ export default function ClassicSerif({
                     key={item.id}
                     href={`#${item.id}`}
                     className="block py-2.5 px-4 rounded-lg text-sm text-white/60 hover:text-white hover:bg-white/5 transition-colors"
-                    style={{
-                      fontFamily: "Georgia, 'Times New Roman', serif",
-                    }}
                   >
                     {item.label}
                   </a>
@@ -158,8 +153,7 @@ export default function ClassicSerif({
             {/* About */}
             <section id="about" className="mb-20 scroll-mt-16">
               <h2
-                className="text-3xl font-bold text-[#1b2a4a] mb-6"
-                style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
+                className="text-3xl font-bold text-[#1b2a4a] mb-6 font-fredoka"
               >
                 {about.title || "אודות"}
               </h2>
@@ -167,7 +161,6 @@ export default function ClassicSerif({
               {about.body && (
                 <p
                   className="text-[#4a4a4a] text-lg leading-[1.9] whitespace-pre-line"
-                  style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
                 >
                   {about.body}
                 </p>
@@ -178,10 +171,7 @@ export default function ClassicSerif({
             {projects.length > 0 && (
               <section id="projects" className="mb-20 scroll-mt-16">
                 <h2
-                  className="text-3xl font-bold text-[#1b2a4a] mb-6"
-                  style={{
-                    fontFamily: "Georgia, 'Times New Roman', serif",
-                  }}
+                  className="text-3xl font-bold text-[#1b2a4a] mb-6 font-fredoka"
                 >
                   פרויקטים
                 </h2>
@@ -193,10 +183,7 @@ export default function ClassicSerif({
                       className="border-b border-[#e5e0d5] pb-10 last:border-b-0"
                     >
                       <h3
-                        className="text-xl font-bold text-[#1b2a4a] mb-2"
-                        style={{
-                          fontFamily: "Georgia, 'Times New Roman', serif",
-                        }}
+                        className="text-xl font-bold text-[#1b2a4a] mb-2 font-fredoka"
                       >
                         {project.title}
                       </h3>
@@ -206,10 +193,6 @@ export default function ClassicSerif({
                             <span
                               key={tag}
                               className="text-xs text-[#8a7d5a] border border-[#d4cbb3] rounded px-2.5 py-0.5"
-                              style={{
-                                fontFamily:
-                                  "Georgia, 'Times New Roman', serif",
-                              }}
                             >
                               {tag}
                             </span>
@@ -219,9 +202,6 @@ export default function ClassicSerif({
                       {project.description && (
                         <p
                           className="text-[#5a5a5a] leading-relaxed"
-                          style={{
-                            fontFamily: "Georgia, 'Times New Roman', serif",
-                          }}
                         >
                           {project.description}
                         </p>
@@ -261,10 +241,7 @@ export default function ClassicSerif({
             {cvSections.length > 0 && (
               <section id="cv" className="mb-20 scroll-mt-16">
                 <h2
-                  className="text-3xl font-bold text-[#1b2a4a] mb-6"
-                  style={{
-                    fontFamily: "Georgia, 'Times New Roman', serif",
-                  }}
+                  className="text-3xl font-bold text-[#1b2a4a] mb-6 font-fredoka"
                 >
                   קורות חיים
                 </h2>
@@ -273,10 +250,7 @@ export default function ClassicSerif({
                   {cvSections.map((section) => (
                     <div key={section.id}>
                       <h3
-                        className="text-lg font-bold text-[#1b2a4a] mb-6 pb-2 border-b-2 border-[#c9b97a]/40"
-                        style={{
-                          fontFamily: "Georgia, 'Times New Roman', serif",
-                        }}
+                        className="text-lg font-bold text-[#1b2a4a] mb-6 pb-2 border-b-2 border-[#c9b97a]/40 font-fredoka"
                       >
                         {section.title}
                       </h3>
@@ -290,20 +264,12 @@ export default function ClassicSerif({
                             <div>
                               <p
                                 className="font-semibold text-[#1b2a4a]"
-                                style={{
-                                  fontFamily:
-                                    "Georgia, 'Times New Roman', serif",
-                                }}
                               >
                                 {entry.title}
                               </p>
                               {entry.subtitle && (
                                 <p
                                   className="text-sm text-[#8a7d5a] mt-0.5"
-                                  style={{
-                                    fontFamily:
-                                      "Georgia, 'Times New Roman', serif",
-                                  }}
                                 >
                                   {entry.subtitle}
                                 </p>
@@ -316,10 +282,6 @@ export default function ClassicSerif({
                               {entry.description && (
                                 <p
                                   className="text-sm text-[#6a6a6a] mt-2 leading-relaxed"
-                                  style={{
-                                    fontFamily:
-                                      "Georgia, 'Times New Roman', serif",
-                                  }}
                                 >
                                   {entry.description}
                                 </p>
@@ -340,8 +302,7 @@ export default function ClassicSerif({
               className="lg:hidden pt-10 border-t border-[#e5e0d5] scroll-mt-16"
             >
               <h2
-                className="text-2xl font-bold text-[#1b2a4a] mb-6"
-                style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
+                className="text-2xl font-bold text-[#1b2a4a] mb-6 font-fredoka"
               >
                 יצירת קשר
               </h2>
@@ -403,7 +364,6 @@ export default function ClassicSerif({
             <div className="mt-16 pt-8 border-t border-[#e5e0d5] text-center">
               <p
                 className="text-xs text-[#b0a890]"
-                style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
               >
                 {student.name} &copy; {new Date().getFullYear()}
               </p>

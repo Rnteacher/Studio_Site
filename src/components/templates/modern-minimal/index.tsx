@@ -23,7 +23,7 @@ export default function ModernMinimal({
       {/* Sticky Navigation */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b border-neutral-100">
         <div className="max-w-3xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="text-sm font-rubik font-medium tracking-wide text-neutral-400">
+          <span className="text-sm font-karantina font-medium tracking-wide text-neutral-400">
             {student.name}
           </span>
           <div className="flex items-center gap-8">
@@ -54,7 +54,7 @@ export default function ModernMinimal({
         </div>
         <div className="absolute bottom-0 right-0 left-0 p-6 md:p-12">
           <div className="max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-rubik font-bold text-white tracking-tight">
+            <h1 className="text-4xl md:text-6xl font-karantina font-bold text-white tracking-tight">
               {student.name}
             </h1>
             {about.subtitle && (
@@ -80,7 +80,7 @@ export default function ModernMinimal({
         {/* Projects */}
         {projects.length > 0 && (
           <section id="projects" className="mb-20 scroll-mt-20">
-            <h2 className="text-xs uppercase tracking-[0.25em] text-neutral-300 mb-10 font-rubik">
+            <h2 className="text-xs uppercase tracking-[0.25em] text-neutral-300 mb-10 font-karantina">
               פרויקטים
             </h2>
             <div className="space-y-10">
@@ -88,7 +88,7 @@ export default function ModernMinimal({
                 <div key={project.id} className="group">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
-                      <h3 className="text-xl font-rubik font-semibold tracking-tight">
+                      <h3 className="text-xl font-karantina font-semibold tracking-tight">
                         {project.title}
                       </h3>
                       {project.description && (
@@ -145,13 +145,13 @@ export default function ModernMinimal({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv" className="mb-20 scroll-mt-20">
-            <h2 className="text-xs uppercase tracking-[0.25em] text-neutral-300 mb-10 font-rubik">
+            <h2 className="text-xs uppercase tracking-[0.25em] text-neutral-300 mb-10 font-karantina">
               קורות חיים
             </h2>
             <div className="space-y-12">
               {cvSections.map((section) => (
                 <div key={section.id}>
-                  <h3 className="text-sm font-rubik font-semibold mb-5 text-neutral-700">
+                  <h3 className="text-sm font-karantina font-semibold mb-5 text-neutral-700">
                     {section.title}
                   </h3>
                   <div className="space-y-5">
@@ -186,7 +186,7 @@ export default function ModernMinimal({
 
         {/* Contact / Footer */}
         <footer id="contact" className="pt-10 border-t border-neutral-100 scroll-mt-20">
-          <h2 className="text-xs uppercase tracking-[0.25em] text-neutral-300 mb-8 font-rubik">
+          <h2 className="text-xs uppercase tracking-[0.25em] text-neutral-300 mb-8 font-karantina">
             צור קשר
           </h2>
           <div className="flex flex-wrap gap-8 text-sm text-neutral-400">

@@ -19,7 +19,7 @@ export default function ExperimentalCreative({
   projects,
 }: TemplateProps) {
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-100 font-heebo scroll-smooth" dir="rtl">
+    <div className="min-h-screen bg-neutral-950 text-neutral-100 font-playpen-sans scroll-smooth" dir="rtl">
       {/* Side Navigation — desktop vertical, mobile horizontal */}
       <nav className="fixed top-0 right-0 z-50 md:top-1/2 md:-translate-y-1/2 md:right-4 w-full md:w-auto bg-neutral-950/90 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none border-b md:border-b-0 border-neutral-800">
         <div className="flex md:flex-col items-center justify-center gap-4 md:gap-6 px-4 py-3 md:px-0 md:py-0">

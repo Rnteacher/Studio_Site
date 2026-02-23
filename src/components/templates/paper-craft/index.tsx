@@ -20,7 +20,7 @@ export default function PaperCraft({
 }: TemplateProps) {
   return (
     <div
-      className="min-h-screen bg-[#faf8f0] text-stone-800 font-frank-ruhl scroll-smooth"
+      className="min-h-screen bg-[#faf8f0] text-stone-800 font-playpen-sans scroll-smooth"
       dir="rtl"
     >
       {/* Navigation */}

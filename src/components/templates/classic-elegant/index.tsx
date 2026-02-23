@@ -18,7 +18,7 @@ export default function ClassicElegant({
       {/* Sticky Navigation - dark background */}
       <nav className="sticky top-0 z-50 bg-gray-900/95 backdrop-blur-sm">
         <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="font-rubik font-bold text-white text-sm truncate">
+          <span className="font-fredoka font-bold text-white text-sm truncate">
             {student.name}
           </span>
           <div className="flex items-center gap-6">
@@ -49,7 +49,7 @@ export default function ClassicElegant({
             />
           )}
           <div className="text-center md:text-right">
-            <h1 className="text-4xl md:text-5xl font-bold font-rubik mb-3">
+            <h1 className="text-4xl md:text-5xl font-bold font-fredoka mb-3">
               {student.name}
             </h1>
             {about.subtitle && (
@@ -65,7 +65,7 @@ export default function ClassicElegant({
       <div className="max-w-5xl mx-auto px-6 py-16 space-y-20">
         {/* About - Two-column: image + text */}
         <section id="about">
-          <h2 className="text-xs uppercase tracking-[0.2em] text-stone-400 mb-8 font-rubik">
+          <h2 className="text-xs uppercase tracking-[0.2em] text-stone-400 mb-8 font-fredoka">
             אודות
           </h2>
           <div className="flex flex-col md:flex-row gap-10 items-start">
@@ -77,7 +77,7 @@ export default function ClassicElegant({
               />
             )}
             <div className="flex-1">
-              <h3 className="text-2xl font-bold font-rubik mb-4">
+              <h3 className="text-2xl font-bold font-fredoka mb-4">
                 {about.title || student.name}
               </h3>
               {about.body && (
@@ -92,7 +92,7 @@ export default function ClassicElegant({
         {/* Projects - 2-column grid */}
         {projects.length > 0 && (
           <section id="projects">
-            <h2 className="text-xs uppercase tracking-[0.2em] text-stone-400 mb-8 font-rubik">
+            <h2 className="text-xs uppercase tracking-[0.2em] text-stone-400 mb-8 font-fredoka">
               פרויקטים
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -111,7 +111,7 @@ export default function ClassicElegant({
                     <div className="w-full h-52 bg-stone-200" />
                   )}
                   <div className="p-6">
-                    <h3 className="text-xl font-semibold font-rubik mb-2">
+                    <h3 className="text-xl font-semibold font-fredoka mb-2">
                       {project.title}
                     </h3>
                     {project.description && (
@@ -166,13 +166,13 @@ export default function ClassicElegant({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv">
-            <h2 className="text-xs uppercase tracking-[0.2em] text-stone-400 mb-8 font-rubik">
+            <h2 className="text-xs uppercase tracking-[0.2em] text-stone-400 mb-8 font-fredoka">
               קורות חיים
             </h2>
             <div className="space-y-10">
               {cvSections.map((section) => (
                 <div key={section.id}>
-                  <h3 className="text-xl font-semibold font-rubik mb-5 pb-3 border-b border-stone-200">
+                  <h3 className="text-xl font-semibold font-fredoka mb-5 pb-3 border-b border-stone-200">
                     {section.title}
                   </h3>
                   <div className="space-y-6">
@@ -203,7 +203,7 @@ export default function ClassicElegant({
 
         {/* Contact - Dark footer card */}
         <footer id="contact" className="bg-gray-900 text-white rounded-xl p-10">
-          <h2 className="text-xs uppercase tracking-[0.2em] text-stone-400 mb-6 font-rubik">
+          <h2 className="text-xs uppercase tracking-[0.2em] text-stone-400 mb-6 font-fredoka">
             יצירת קשר
           </h2>
           <div className="flex flex-wrap gap-6">

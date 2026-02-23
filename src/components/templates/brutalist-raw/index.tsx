@@ -72,7 +72,7 @@ export default function BrutalistRaw({
         {/* About */}
         {about.body && (
           <section id="about" className="py-12 border-b-4 border-black scroll-mt-14">
-            <h2 className="font-mono text-2xl font-bold uppercase mb-6 bg-black text-[#e8e4dc] inline-block px-4 py-1">
+            <h2 className="font-rubik-dirt text-2xl font-bold uppercase mb-6 bg-black text-[#e8e4dc] inline-block px-4 py-1">
               {about.title || "אודות"}
             </h2>
             <p className="text-lg leading-relaxed whitespace-pre-line max-w-3xl font-mono">
@@ -84,7 +84,7 @@ export default function BrutalistRaw({
         {/* Projects */}
         {projects.length > 0 && (
           <section id="projects" className="py-12 border-b-4 border-black scroll-mt-14">
-            <h2 className="font-mono text-2xl font-bold uppercase mb-8 bg-black text-[#e8e4dc] inline-block px-4 py-1">
+            <h2 className="font-rubik-dirt text-2xl font-bold uppercase mb-8 bg-black text-[#e8e4dc] inline-block px-4 py-1">
               פרויקטים
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
@@ -100,7 +100,7 @@ export default function BrutalistRaw({
                       className="w-full h-40 object-cover grayscale border-2 border-black mb-4"
                     />
                   )}
-                  <h3 className="font-mono text-xl font-bold uppercase">
+                  <h3 className="font-rubik-dirt text-xl font-bold uppercase">
                     {project.title}
                   </h3>
                   {project.description && (
@@ -154,13 +154,13 @@ export default function BrutalistRaw({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv" className="py-12 border-b-4 border-black scroll-mt-14">
-            <h2 className="font-mono text-2xl font-bold uppercase mb-8 bg-black text-[#e8e4dc] inline-block px-4 py-1">
+            <h2 className="font-rubik-dirt text-2xl font-bold uppercase mb-8 bg-black text-[#e8e4dc] inline-block px-4 py-1">
               קורות חיים
             </h2>
             <div className="space-y-8">
               {cvSections.map((section) => (
                 <div key={section.id}>
-                  <h3 className="font-mono text-lg font-bold uppercase border-b-2 border-black pb-2 mb-4">
+                  <h3 className="font-rubik-dirt text-lg font-bold uppercase border-b-2 border-black pb-2 mb-4">
                     {section.title}
                   </h3>
                   <div className="space-y-3">
@@ -191,7 +191,7 @@ export default function BrutalistRaw({
 
         {/* Contact */}
         <footer id="contact" className="py-12 scroll-mt-14">
-          <h2 className="font-mono text-2xl font-bold uppercase mb-8 bg-black text-[#e8e4dc] inline-block px-4 py-1">
+          <h2 className="font-rubik-dirt text-2xl font-bold uppercase mb-8 bg-black text-[#e8e4dc] inline-block px-4 py-1">
             צור קשר
           </h2>
           <div className="border-4 border-black p-6 font-mono">

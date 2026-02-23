@@ -150,7 +150,7 @@ export default function GeometricSharp({
                   )}
 
                   <div className="p-5">
-                    <h3 className="font-secular-one text-lg text-white">
+                    <h3 className="font-rubik-glitch text-lg text-white">
                       {project.title}
                     </h3>
                     {project.description && (
@@ -222,7 +222,7 @@ export default function GeometricSharp({
               {cvSections.map((section) => (
                 <div key={section.id} className="relative pr-6 border-r-2 border-orange-500/40">
                   <div className="absolute top-0 right-[-5px] w-2 h-2 bg-orange-500 rotate-45" />
-                  <h3 className="font-secular-one text-xl text-orange-400 mb-4">
+                  <h3 className="font-rubik-glitch text-xl text-orange-400 mb-4">
                     {section.title}
                   </h3>
                   <div className="space-y-4">

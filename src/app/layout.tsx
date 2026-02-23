@@ -2,23 +2,16 @@ import type { Metadata } from "next";
 import {
   Heebo,
   Rubik,
-  Assistant,
-  Varela_Round,
-  Frank_Ruhl_Libre,
-  Secular_One,
-  Suez_One,
   Karantina,
   Amatic_SC,
   Open_Sans,
   Fredoka,
   Playpen_Sans_Hebrew,
-  M_PLUS_Rounded_1c,
   Rubik_Pixels,
   Rubik_Dirt,
   Rubik_Glitch,
   Rubik_Bubbles,
   Rubik_Doodle_Shadow,
-  Rubik_Iso,
 } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
@@ -35,38 +28,6 @@ const rubik = Rubik({
   display: "swap",
 });
 
-const assistant = Assistant({
-  subsets: ["hebrew", "latin"],
-  variable: "--font-assistant",
-  display: "swap",
-});
-
-const varelaRound = Varela_Round({
-  subsets: ["hebrew", "latin"],
-  weight: "400",
-  variable: "--font-varela-round",
-  display: "swap",
-});
-
-const frankRuhlLibre = Frank_Ruhl_Libre({
-  subsets: ["hebrew", "latin"],
-  variable: "--font-frank-ruhl",
-  display: "swap",
-});
-
-const secularOne = Secular_One({
-  subsets: ["hebrew", "latin"],
-  weight: "400",
-  variable: "--font-secular-one",
-  display: "swap",
-});
-
-const suezOne = Suez_One({
-  subsets: ["hebrew", "latin"],
-  weight: "400",
-  variable: "--font-suez-one",
-  display: "swap",
-});
 
 const karantina = Karantina({
   subsets: ["hebrew", "latin"],
@@ -100,12 +61,6 @@ const playpenSans = Playpen_Sans_Hebrew({
   display: "swap",
 });
 
-const mplusRounded = M_PLUS_Rounded_1c({
-  subsets: ["hebrew", "latin"],
-  weight: ["300", "400", "700"],
-  variable: "--font-mplus-rounded",
-  display: "swap",
-});
 
 const rubikPixels = Rubik_Pixels({
   subsets: ["hebrew", "latin"],
@@ -142,12 +97,6 @@ const rubikDoodleShadow = Rubik_Doodle_Shadow({
   display: "swap",
 });
 
-const rubikIso = Rubik_Iso({
-  subsets: ["hebrew", "latin"],
-  weight: "400",
-  variable: "--font-rubik-iso",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "סטודיו דוריאן | כישרונות צעירים. שירותים אמיתיים.",
@@ -163,23 +112,16 @@ export const metadata: Metadata = {
 const fontVars = [
   heebo.variable,
   rubik.variable,
-  assistant.variable,
-  varelaRound.variable,
-  frankRuhlLibre.variable,
-  secularOne.variable,
-  suezOne.variable,
   karantina.variable,
   amaticSC.variable,
   openSans.variable,
   fredoka.variable,
   playpenSans.variable,
-  mplusRounded.variable,
   rubikPixels.variable,
   rubikDirt.variable,
   rubikGlitch.variable,
   rubikBubbles.variable,
   rubikDoodleShadow.variable,
-  rubikIso.variable,
 ].join(" ");
 
 export default function RootLayout({

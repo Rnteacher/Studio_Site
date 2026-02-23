@@ -61,7 +61,7 @@ export default function ExperimentalRetro({
             )}
 
             <div className="text-center md:text-right flex-1">
-              <h1 className="font-mono text-5xl md:text-7xl font-black tracking-tight leading-none">
+              <h1 className="font-karantina text-5xl md:text-7xl font-black tracking-tight leading-none">
                 {student.name}
               </h1>
               {about.subtitle && (
@@ -97,7 +97,7 @@ export default function ExperimentalRetro({
           <div className="max-w-5xl mx-auto px-6">
             <div className="flex items-center gap-4 mb-12">
               <div className="w-6 h-6 bg-blue-500 border-2 border-black" />
-              <h2 className="font-mono text-3xl md:text-4xl font-black uppercase">
+              <h2 className="font-karantina text-3xl md:text-4xl font-black uppercase">
                 // פרויקטים
               </h2>
               <div className="flex-1 border-t-4 border-dashed border-black" />
@@ -128,7 +128,7 @@ export default function ExperimentalRetro({
                     <span className="font-mono text-xs font-bold text-white bg-fuchsia-500 border-2 border-black px-2 py-0.5 shrink-0">
                       #{String(idx + 1).padStart(2, "0")}
                     </span>
-                    <h3 className="font-mono text-xl font-black leading-tight">
+                    <h3 className="font-karantina text-xl font-black leading-tight">
                       {project.title}
                     </h3>
                   </div>
@@ -199,7 +199,7 @@ export default function ExperimentalRetro({
           <div className="max-w-5xl mx-auto px-6">
             <div className="flex items-center gap-4 mb-12">
               <div className="w-6 h-6 bg-lime-500 border-2 border-black" />
-              <h2 className="font-mono text-3xl md:text-4xl font-black uppercase">
+              <h2 className="font-karantina text-3xl md:text-4xl font-black uppercase">
                 // קורות חיים
               </h2>
               <div className="flex-1 border-t-4 border-dashed border-black" />
@@ -263,7 +263,7 @@ export default function ExperimentalRetro({
         <div className="max-w-5xl mx-auto px-6">
           <div className="flex items-center gap-4 mb-10">
             <div className="w-6 h-6 bg-fuchsia-500 border-2 border-black" />
-            <h2 className="font-mono text-3xl md:text-4xl font-black uppercase">
+            <h2 className="font-karantina text-3xl md:text-4xl font-black uppercase">
               // יצירת קשר
             </h2>
             <div className="flex-1 border-t-4 border-dashed border-black" />

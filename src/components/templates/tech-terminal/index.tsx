@@ -13,7 +13,7 @@ export default function TechTerminal({
 }: TemplateProps) {
   return (
     <div
-      className="min-h-screen bg-[#0a0a0a] text-[#b0b0b0] font-heebo scroll-smooth selection:bg-[#00ff41]/20"
+      className="min-h-screen bg-[#0a0a0a] text-[#b0b0b0] font-mono scroll-smooth selection:bg-[#00ff41]/20"
       dir="rtl"
     >
       {/* Top bar */}
@@ -55,7 +55,7 @@ export default function TechTerminal({
             <p className="font-mono text-[#00ff41]/50 text-sm mb-2">
               $ whoami
             </p>
-            <h1 className="text-4xl md:text-5xl font-rubik-iso font-bold text-[#00ff41] leading-tight">
+            <h1 className="text-4xl md:text-5xl font-rubik-pixels font-bold text-[#00ff41] leading-tight">
               {student.name}
             </h1>
             {about.subtitle && (
@@ -77,7 +77,7 @@ export default function TechTerminal({
         {/* About */}
         {about.body && (
           <section id="about" className="py-12 scroll-mt-16">
-            <h2 className="font-mono text-lg text-[#00ff41] mb-6">
+            <h2 className="font-rubik-pixels text-lg text-[#00ff41] mb-6">
               <span className="text-[#00ff41]/40">&gt; </span>
               {about.title || "אודות"}
             </h2>
@@ -92,7 +92,7 @@ export default function TechTerminal({
         {/* Projects */}
         {projects.length > 0 && (
           <section id="projects" className="py-12 scroll-mt-16">
-            <h2 className="font-mono text-lg text-[#00ff41] mb-6">
+            <h2 className="font-rubik-pixels text-lg text-[#00ff41] mb-6">
               <span className="text-[#00ff41]/40">&gt; </span>
               פרויקטים
               <span className="text-[#00ff41]/30 text-sm mr-3">
@@ -111,7 +111,7 @@ export default function TechTerminal({
                         <span className="font-mono text-[#00ff41]/40 text-xs">
                           [{String(idx).padStart(2, "0")}]
                         </span>
-                        <h3 className="font-mono text-[#00ff41] font-bold text-lg">
+                        <h3 className="font-rubik-pixels text-[#00ff41] font-bold text-lg">
                           {project.title}
                         </h3>
                       </div>
@@ -175,7 +175,7 @@ export default function TechTerminal({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv" className="py-12 scroll-mt-16">
-            <h2 className="font-mono text-lg text-[#00ff41] mb-6">
+            <h2 className="font-rubik-pixels text-lg text-[#00ff41] mb-6">
               <span className="text-[#00ff41]/40">&gt; </span>
               קורות חיים
             </h2>
@@ -185,7 +185,7 @@ export default function TechTerminal({
                   key={section.id}
                   className="border border-[#00ff41]/10 bg-[#0f0f0f] p-6"
                 >
-                  <h3 className="font-mono text-[#00ff41]/70 font-bold mb-4 text-sm">
+                  <h3 className="font-rubik-pixels text-[#00ff41]/70 font-bold mb-4 text-sm">
                     --- {section.title} ---
                   </h3>
                   <div className="space-y-3">
@@ -221,7 +221,7 @@ export default function TechTerminal({
           id="contact"
           className="py-12 border-t border-[#00ff41]/10 scroll-mt-16"
         >
-          <h2 className="font-mono text-lg text-[#00ff41] mb-6">
+          <h2 className="font-rubik-pixels text-lg text-[#00ff41] mb-6">
             <span className="text-[#00ff41]/40">&gt; </span>
             צור קשר
           </h2>

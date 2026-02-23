@@ -24,31 +24,6 @@ export default {
   				'Rubik',
   				'sans-serif'
   			],
-  			assistant: [
-  				'var(--font-assistant)',
-  				'Assistant',
-  				'sans-serif'
-  			],
-  			'varela-round': [
-  				'var(--font-varela-round)',
-  				'Varela Round',
-  				'sans-serif'
-  			],
-  			'frank-ruhl': [
-  				'var(--font-frank-ruhl)',
-  				'Frank Ruhl Libre',
-  				'serif'
-  			],
-  			'secular-one': [
-  				'var(--font-secular-one)',
-  				'Secular One',
-  				'sans-serif'
-  			],
-  			'suez-one': [
-  				'var(--font-suez-one)',
-  				'Suez One',
-  				'serif'
-  			],
   			karantina: [
   				'var(--font-karantina)',
   				'Karantina',
@@ -74,11 +49,6 @@ export default {
   				'Playpen Sans',
   				'cursive'
   			],
-  			'mplus-rounded': [
-  				'var(--font-mplus-rounded)',
-  				'M PLUS Rounded 1c',
-  				'sans-serif'
-  			],
   			'rubik-pixels': [
   				'var(--font-rubik-pixels)',
   				'Rubik Pixels',
@@ -102,11 +72,6 @@ export default {
   			'rubik-doodle': [
   				'var(--font-rubik-doodle)',
   				'Rubik Doodle Shadow',
-  				'cursive'
-  			],
-  			'rubik-iso': [
-  				'var(--font-rubik-iso)',
-  				'Rubik Iso',
   				'cursive'
   			],
   			sans: [

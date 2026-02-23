@@ -26,7 +26,7 @@ export default function WatercolorSoft({
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b border-sky-100">
         <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="font-mplus-rounded text-lg text-sky-700">
+          <span className="font-amatic-sc text-lg text-sky-700">
             {student.name}
           </span>
           <div className="flex items-center gap-6">
@@ -58,7 +58,7 @@ export default function WatercolorSoft({
                 />
               </div>
             )}
-            <h1 className="font-mplus-rounded text-4xl md:text-6xl text-slate-800 leading-tight">
+            <h1 className="font-amatic-sc text-4xl md:text-6xl text-slate-800 leading-tight">
               {student.name}
             </h1>
             {about.subtitle && (
@@ -87,7 +87,7 @@ export default function WatercolorSoft({
       {projects.length > 0 && (
         <section id="projects" className="scroll-mt-20 pb-20">
           <div className="max-w-5xl mx-auto px-6">
-            <h2 className="font-mplus-rounded text-3xl md:text-4xl text-slate-700 text-center mb-2">
+            <h2 className="font-amatic-sc text-3xl md:text-4xl text-slate-700 text-center mb-2">
               פרויקטים
             </h2>
             <div className="w-16 h-0.5 bg-gradient-to-l from-sky-300 to-teal-300 mx-auto rounded-full mb-12" />
@@ -119,7 +119,7 @@ export default function WatercolorSoft({
                       </a>
                     )}
                     <div className="p-6">
-                      <h3 className="font-mplus-rounded text-xl text-slate-800">
+                      <h3 className="font-amatic-sc text-xl text-slate-800">
                         {project.title}
                       </h3>
                       {project.description && (
@@ -177,7 +177,7 @@ export default function WatercolorSoft({
       {cvSections.length > 0 && (
         <section id="cv" className="scroll-mt-20 pb-20">
           <div className="max-w-5xl mx-auto px-6">
-            <h2 className="font-mplus-rounded text-3xl md:text-4xl text-slate-700 text-center mb-2">
+            <h2 className="font-amatic-sc text-3xl md:text-4xl text-slate-700 text-center mb-2">
               קורות חיים
             </h2>
             <div className="w-16 h-0.5 bg-gradient-to-l from-teal-300 to-emerald-300 mx-auto rounded-full mb-12" />
@@ -185,7 +185,7 @@ export default function WatercolorSoft({
             <div className="max-w-3xl mx-auto space-y-10">
               {cvSections.map((section) => (
                 <div key={section.id}>
-                  <h3 className="font-mplus-rounded text-xl text-sky-700 mb-5">
+                  <h3 className="font-amatic-sc text-xl text-sky-700 mb-5">
                     {section.title}
                   </h3>
                   <div className="space-y-4">
@@ -227,7 +227,7 @@ export default function WatercolorSoft({
       {/* Contact */}
       <footer id="contact" className="scroll-mt-20 pb-16">
         <div className="max-w-5xl mx-auto px-6">
-          <h2 className="font-mplus-rounded text-3xl md:text-4xl text-slate-700 text-center mb-2">
+          <h2 className="font-amatic-sc text-3xl md:text-4xl text-slate-700 text-center mb-2">
             צור קשר
           </h2>
           <div className="w-16 h-0.5 bg-gradient-to-l from-sky-300 to-emerald-300 mx-auto rounded-full mb-10" />

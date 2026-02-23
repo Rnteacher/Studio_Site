@@ -26,7 +26,7 @@ export default function ModernGradient({
       {/* Glass Navigation */}
       <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/60 border-b border-white/20 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="text-sm font-rubik font-bold bg-gradient-to-l from-purple-600 to-blue-500 bg-clip-text text-transparent">
+          <span className="text-sm font-fredoka font-bold bg-gradient-to-l from-purple-600 to-blue-500 bg-clip-text text-transparent">
             {student.name}
           </span>
           <div className="flex items-center gap-8">
@@ -67,7 +67,7 @@ export default function ModernGradient({
             )}
 
             <div className="text-center md:text-right flex-1">
-              <h1 className="text-5xl md:text-7xl font-rubik font-black text-white drop-shadow-lg">
+              <h1 className="text-5xl md:text-7xl font-fredoka font-black text-white drop-shadow-lg">
                 {student.name}
               </h1>
               {about.subtitle && (
@@ -96,7 +96,7 @@ export default function ModernGradient({
       {projects.length > 0 && (
         <section id="projects" className="scroll-mt-20 py-20">
           <div className="max-w-6xl mx-auto px-6">
-            <h2 className="text-3xl md:text-4xl font-rubik font-bold bg-gradient-to-l from-purple-600 to-blue-500 bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-fredoka font-bold bg-gradient-to-l from-purple-600 to-blue-500 bg-clip-text text-transparent">
               פרויקטים
             </h2>
             <div className="w-24 h-1 bg-gradient-to-l from-purple-600 to-blue-500 rounded-full mt-2 mb-14" />
@@ -128,7 +128,7 @@ export default function ModernGradient({
                     )}
 
                     <div className="p-5">
-                      <h3 className="text-lg font-rubik font-bold text-slate-800 group-hover:text-purple-600 transition-colors">
+                      <h3 className="text-lg font-fredoka font-bold text-slate-800 group-hover:text-purple-600 transition-colors">
                         {project.title}
                       </h3>
                       {project.description && (
@@ -186,7 +186,7 @@ export default function ModernGradient({
       {cvSections.length > 0 && (
         <section id="cv" className="scroll-mt-20 py-20 bg-gradient-to-b from-slate-50 to-purple-50/30">
           <div className="max-w-6xl mx-auto px-6">
-            <h2 className="text-3xl md:text-4xl font-rubik font-bold bg-gradient-to-l from-purple-600 to-blue-500 bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-fredoka font-bold bg-gradient-to-l from-purple-600 to-blue-500 bg-clip-text text-transparent">
               קורות חיים
             </h2>
             <div className="w-24 h-1 bg-gradient-to-l from-blue-500 to-purple-600 rounded-full mt-2 mb-14" />
@@ -197,7 +197,7 @@ export default function ModernGradient({
                   key={section.id}
                   className="backdrop-blur-sm bg-white/70 border border-purple-100/50 rounded-2xl p-6 shadow-lg shadow-purple-500/5"
                 >
-                  <h3 className="text-lg font-rubik font-bold text-purple-700 mb-6 flex items-center gap-2">
+                  <h3 className="text-lg font-fredoka font-bold text-purple-700 mb-6 flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-gradient-to-br from-purple-500 to-blue-500" />
                     {section.title}
                   </h3>
@@ -240,7 +240,7 @@ export default function ModernGradient({
       {/* Contact Section */}
       <footer id="contact" className="scroll-mt-20 py-20">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-rubik font-bold bg-gradient-to-l from-purple-600 to-blue-500 bg-clip-text text-transparent">
+          <h2 className="text-3xl md:text-4xl font-fredoka font-bold bg-gradient-to-l from-purple-600 to-blue-500 bg-clip-text text-transparent">
             יצירת קשר
           </h2>
           <div className="w-24 h-1 bg-gradient-to-l from-purple-600 to-blue-500 rounded-full mt-2 mb-10" />
