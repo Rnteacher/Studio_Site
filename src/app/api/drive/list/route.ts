@@ -67,7 +67,9 @@ export async function POST(request: Request) {
           .update({
             file_name: file.name ?? "",
             mime_type: file.mimeType ?? "",
-            thumbnail_url: file.thumbnailLink ?? null,
+            thumbnail_url: file.id
+              ? `https://lh3.googleusercontent.com/d/${file.id}=s800`
+              : null,
             web_view_url: file.webViewLink ?? null,
             sort_order: i,
           })
@@ -78,7 +80,9 @@ export async function POST(request: Request) {
           drive_file_id: file.id!,
           file_name: file.name ?? "",
           mime_type: file.mimeType ?? "",
-          thumbnail_url: file.thumbnailLink ?? null,
+          thumbnail_url: file.id
+            ? `https://lh3.googleusercontent.com/d/${file.id}=s800`
+            : null,
           web_view_url: file.webViewLink ?? null,
           sort_order: i,
         });
