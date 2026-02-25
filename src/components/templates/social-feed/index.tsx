@@ -10,18 +10,31 @@ export default function SocialFeed({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-open-sans';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
+
   return (
-    <div className="min-h-screen bg-[#fafafa] text-[#262626] font-open-sans scroll-smooth" dir="rtl">
+    <div
+      className={`min-h-screen bg-[#fafafa] text-[#262626] ${bodyFont} scroll-smooth`}
+      dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#262626',
+        '--t-accent': customization?.colors?.accent ?? '#e1306c',
+        '--t-bg': customization?.colors?.bg ?? '#fafafa',
+        '--t-text': customization?.colors?.text ?? '#262626',
+      } as React.CSSProperties}
+    >
       {/* App-style top bar */}
       <nav className="sticky top-0 z-50 bg-white border-b border-[#dbdbdb]">
         <div className="max-w-lg mx-auto px-4 flex items-center justify-between h-12">
-          <span className="font-rubik font-bold text-lg">{student.name}</span>
+          <span className={`${headingFont} font-bold text-lg`}>{student.name}</span>
           <div className="flex items-center gap-4">
-            <a href="#about" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">אודות</a>
-            <a href="#projects" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">פרויקטים</a>
-            <a href="#cv" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">ניסיון</a>
-            <a href="#contact" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">קשר</a>
+            <a href="#about" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">{customization?.sectionLabels?.about ?? "אודות"}</a>
+            <a href="#projects" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">{customization?.sectionLabels?.projects ?? "פרויקטים"}</a>
+            <a href="#cv" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">{customization?.sectionLabels?.cv ?? "קורות חיים"}</a>
+            <a href="#contact" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">{customization?.sectionLabels?.contact ?? "צור קשר"}</a>
           </div>
         </div>
       </nav>
@@ -40,22 +53,22 @@ export default function SocialFeed({
               <div className="w-20 h-20 rounded-full bg-[#efefef] shrink-0" />
             )}
             <div className="flex-1">
-              <h1 className="text-xl font-bold font-rubik mb-1">{student.name}</h1>
+              <h1 className={`text-xl font-bold ${headingFont} mb-1`}>{student.name}</h1>
               {about.subtitle && <p className="text-sm text-[#8e8e8e]">{about.subtitle}</p>}
             </div>
           </div>
           {/* Stats row */}
           <div className="flex justify-around py-3 border-y border-[#dbdbdb]">
             <div className="text-center">
-              <p className="font-bold font-rubik">{projects.length}</p>
+              <p className={`font-bold ${headingFont}`}>{projects.length}</p>
               <p className="text-xs text-[#8e8e8e]">פרויקטים</p>
             </div>
             <div className="text-center">
-              <p className="font-bold font-rubik">{cvSections.length}</p>
+              <p className={`font-bold ${headingFont}`}>{cvSections.length}</p>
               <p className="text-xs text-[#8e8e8e]">תחומים</p>
             </div>
             <div className="text-center">
-              <p className="font-bold font-rubik">{cvSections.reduce((a, s) => a + s.entries.length, 0)}</p>
+              <p className={`font-bold ${headingFont}`}>{cvSections.reduce((a, s) => a + s.entries.length, 0)}</p>
               <p className="text-xs text-[#8e8e8e]">כישורים</p>
             </div>
           </div>
@@ -67,7 +80,7 @@ export default function SocialFeed({
             {cvSections.map((section) => (
               <div key={section.id} className="flex flex-col items-center gap-1 shrink-0">
                 <div className="w-16 h-16 rounded-full border-2 border-[#dbdbdb] flex items-center justify-center bg-[#fafafa]">
-                  <span className="text-lg font-bold font-rubik text-[#262626]">{section.entries.length}</span>
+                  <span className={`text-lg font-bold ${headingFont} text-[#262626]`}>{section.entries.length}</span>
                 </div>
                 <span className="text-[10px] text-[#8e8e8e] max-w-[64px] text-center truncate">{section.title}</span>
               </div>
@@ -85,7 +98,7 @@ export default function SocialFeed({
             </div>
           </div>
           <div className="p-4">
-            <h2 className="font-bold font-rubik mb-2">{about.title || "אודות"}</h2>
+            <h2 className={`font-bold ${headingFont} mb-2`}>{about.title || (customization?.sectionLabels?.about ?? "אודות")}</h2>
             {about.body && <p className="text-sm leading-relaxed whitespace-pre-line text-[#262626]">{about.body}</p>}
           </div>
         </section>
@@ -114,7 +127,7 @@ export default function SocialFeed({
                     <svg className="w-6 h-6 text-[#262626]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
                   </div>
                   {/* Caption */}
-                  <h3 className="font-bold font-rubik text-sm mb-1">{project.title}</h3>
+                  <h3 className={`font-bold ${headingFont} text-sm mb-1`}>{project.title}</h3>
                   {project.description && (
                     <p className="text-sm text-[#262626] leading-relaxed line-clamp-3">{project.description}</p>
                   )}
@@ -148,7 +161,7 @@ export default function SocialFeed({
           <section className="space-y-3 mb-6 scroll-mt-16">
             {cvSections.map((section) => (
               <div key={section.id} className="bg-white rounded-lg border border-[#dbdbdb] p-4">
-                <h3 className="font-bold font-rubik mb-3 text-sm">{section.title}</h3>
+                <h3 className={`font-bold ${headingFont} mb-3 text-sm`}>{section.title}</h3>
                 <div className="space-y-3">
                   {section.entries.map((entry, i) => (
                     <div key={i} className="flex gap-3">
@@ -169,7 +182,7 @@ export default function SocialFeed({
 
         {/* Contact — Link in Bio */}
         <footer id="contact" className="bg-white rounded-lg border border-[#dbdbdb] p-4 mb-6 scroll-mt-16">
-          <h2 className="font-bold font-rubik text-sm mb-3">קישורים</h2>
+          <h2 className={`font-bold ${headingFont} text-sm mb-3`}>{customization?.sectionLabels?.contact ?? "צור קשר"}</h2>
           <div className="space-y-2">
             {contact.email && (
               <a href={`mailto:${contact.email}`} className="flex items-center gap-3 text-sm text-[#00376b] hover:text-[#e1306c] transition-colors p-2 rounded-lg hover:bg-[#fafafa]">

@@ -3,13 +3,6 @@
 import type { TemplateProps } from "../types";
 import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 
-const NAV_ITEMS = [
-  { id: "about", label: "אודות" },
-  { id: "projects", label: "פרויקטים" },
-  { id: "cv", label: "קורות חיים" },
-  { id: "contact", label: "יצירת קשר" },
-];
-
 export default function ExperimentalRetro({
   student,
   about,
@@ -17,11 +10,29 @@ export default function ExperimentalRetro({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-pixels';
+
+  const NAV_ITEMS = [
+    { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? "יצירת קשר" },
+  ];
+
+
   return (
     <div
-      className="min-h-screen bg-amber-50 text-neutral-900 font-heebo scroll-smooth selection:bg-fuchsia-500 selection:text-white"
+      className={`min-h-screen bg-amber-50 text-neutral-900 ${bodyFont} scroll-smooth selection:bg-fuchsia-500 selection:text-white`}
       dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#f59e0b',
+        '--t-accent': customization?.colors?.accent ?? '#ef4444',
+        '--t-bg': customization?.colors?.bg ?? '#fef3c7',
+        '--t-text': customization?.colors?.text ?? '#451a03',
+      } as React.CSSProperties}
     >
       {/* Navigation Bar */}
       <nav className="sticky top-0 z-50 bg-amber-50 border-b-4 border-black">
@@ -61,7 +72,7 @@ export default function ExperimentalRetro({
             )}
 
             <div className="text-center md:text-right flex-1">
-              <h1 className="font-karantina text-5xl md:text-7xl font-black tracking-tight leading-none">
+              <h1 className={`${headingFont} text-5xl md:text-7xl font-black tracking-tight leading-none`}>
                 {student.name}
               </h1>
               {about.subtitle && (
@@ -97,7 +108,7 @@ export default function ExperimentalRetro({
           <div className="max-w-5xl mx-auto px-6">
             <div className="flex items-center gap-4 mb-12">
               <div className="w-6 h-6 bg-blue-500 border-2 border-black" />
-              <h2 className="font-karantina text-3xl md:text-4xl font-black uppercase">
+              <h2 className={`${headingFont} text-3xl md:text-4xl font-black uppercase`}>
                 // פרויקטים
               </h2>
               <div className="flex-1 border-t-4 border-dashed border-black" />
@@ -128,7 +139,7 @@ export default function ExperimentalRetro({
                     <span className="font-mono text-xs font-bold text-white bg-fuchsia-500 border-2 border-black px-2 py-0.5 shrink-0">
                       #{String(idx + 1).padStart(2, "0")}
                     </span>
-                    <h3 className="font-karantina text-xl font-black leading-tight">
+                    <h3 className={`${headingFont} text-xl font-black leading-tight`}>
                       {project.title}
                     </h3>
                   </div>
@@ -199,7 +210,7 @@ export default function ExperimentalRetro({
           <div className="max-w-5xl mx-auto px-6">
             <div className="flex items-center gap-4 mb-12">
               <div className="w-6 h-6 bg-lime-500 border-2 border-black" />
-              <h2 className="font-karantina text-3xl md:text-4xl font-black uppercase">
+              <h2 className={`${headingFont} text-3xl md:text-4xl font-black uppercase`}>
                 // קורות חיים
               </h2>
               <div className="flex-1 border-t-4 border-dashed border-black" />
@@ -263,7 +274,7 @@ export default function ExperimentalRetro({
         <div className="max-w-5xl mx-auto px-6">
           <div className="flex items-center gap-4 mb-10">
             <div className="w-6 h-6 bg-fuchsia-500 border-2 border-black" />
-            <h2 className="font-karantina text-3xl md:text-4xl font-black uppercase">
+            <h2 className={`${headingFont} text-3xl md:text-4xl font-black uppercase`}>
               // יצירת קשר
             </h2>
             <div className="flex-1 border-t-4 border-dashed border-black" />

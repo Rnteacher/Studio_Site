@@ -1,5 +1,22 @@
 import type { Portfolio, CvSection, ProjectWithMedia } from "@/types/portfolio";
 
+export interface TemplateCustomization {
+  colors?: {
+    primary?: string;
+    accent?: string;
+    bg?: string;
+    text?: string;
+  };
+  bodyFont?: string;
+  headingFont?: string;
+  sectionLabels?: {
+    about?: string;
+    projects?: string;
+    cv?: string;
+    contact?: string;
+  };
+}
+
 export interface TemplateProps {
   student: {
     name: string;
@@ -20,4 +37,5 @@ export interface TemplateProps {
   cvSections: CvSection[];
   projects: ProjectWithMedia[];
   isPreview?: boolean;
+  customization?: TemplateCustomization;
 }

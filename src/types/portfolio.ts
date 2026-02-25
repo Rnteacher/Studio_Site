@@ -8,6 +8,23 @@ export interface Template {
   createdAt: string;
 }
 
+export interface TemplateCustomSettings {
+  colors?: {
+    primary?: string;
+    accent?: string;
+    bg?: string;
+    text?: string;
+  };
+  bodyFont?: string;
+  headingFont?: string;
+  sectionLabels?: {
+    about?: string;
+    projects?: string;
+    cv?: string;
+    contact?: string;
+  };
+}
+
 export interface Portfolio {
   id: string;
   studentId: string;
@@ -21,6 +38,7 @@ export interface Portfolio {
   contactEmail: string;
   contactPhone: string;
   contactWebsite: string | null;
+  customSettings: TemplateCustomSettings;
   createdAt: string;
   updatedAt: string;
 }

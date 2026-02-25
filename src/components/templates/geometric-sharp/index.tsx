@@ -3,13 +3,6 @@
 import type { TemplateProps } from "../types";
 import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 
-const NAV_ITEMS = [
-  { id: "about", label: "אודות" },
-  { id: "projects", label: "פרויקטים" },
-  { id: "cv", label: "קורות חיים" },
-  { id: "contact", label: "צור קשר" },
-];
-
 export default function GeometricSharp({
   student,
   about,
@@ -17,16 +10,34 @@ export default function GeometricSharp({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
+
+  const NAV_ITEMS = [
+    { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? "יצירת קשר" },
+  ];
+
+
   return (
     <div
-      className="min-h-screen bg-[#1a1a2e] text-white font-rubik scroll-smooth"
+      className={`min-h-screen bg-[#1a1a2e] text-white ${headingFont} scroll-smooth`}
       dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#ef4444',
+        '--t-accent': customization?.colors?.accent ?? '#f97316',
+        '--t-bg': customization?.colors?.bg ?? '#ffffff',
+        '--t-text': customization?.colors?.text ?? '#171717',
+      } as React.CSSProperties}
     >
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-[#1a1a2e]/95 backdrop-blur-sm border-b border-orange-500/30">
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="font-rubik-glitch text-lg text-orange-400">
+          <span className={`${headingFont}-glitch text-lg text-orange-400`}>
             {student.name}
           </span>
           <div className="flex items-center gap-6">
@@ -79,7 +90,7 @@ export default function GeometricSharp({
               </div>
             )}
             <div className="text-center md:text-right flex-1">
-              <h1 className="font-rubik-glitch text-5xl md:text-7xl leading-tight text-white drop-shadow-lg">
+              <h1 className={`${headingFont}-glitch text-5xl md:text-7xl leading-tight text-white drop-shadow-lg`}>
                 {student.name}
               </h1>
               {about.subtitle && (
@@ -117,8 +128,8 @@ export default function GeometricSharp({
                 className="w-10 h-10 bg-orange-500"
                 style={{ clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)" }}
               />
-              <h2 className="font-rubik-glitch text-3xl md:text-4xl text-white">
-                פרויקטים
+              <h2 className={`${headingFont}-glitch text-3xl md:text-4xl text-white`}>
+                {customization?.sectionLabels?.projects ?? "פרויקטים"}
               </h2>
               <div className="flex-1 h-px bg-gradient-to-l from-transparent via-orange-500/50 to-transparent" />
             </div>
@@ -150,7 +161,7 @@ export default function GeometricSharp({
                   )}
 
                   <div className="p-5">
-                    <h3 className="font-rubik-glitch text-lg text-white">
+                    <h3 className={`${headingFont}-glitch text-lg text-white`}>
                       {project.title}
                     </h3>
                     {project.description && (
@@ -212,8 +223,8 @@ export default function GeometricSharp({
                 className="w-10 h-10 bg-orange-500"
                 style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 50% 50%)" }}
               />
-              <h2 className="font-rubik-glitch text-3xl md:text-4xl text-white">
-                קורות חיים
+              <h2 className={`${headingFont}-glitch text-3xl md:text-4xl text-white`}>
+                {customization?.sectionLabels?.cv ?? "קורות חיים"}
               </h2>
               <div className="flex-1 h-px bg-gradient-to-l from-transparent via-orange-500/50 to-transparent" />
             </div>
@@ -222,7 +233,7 @@ export default function GeometricSharp({
               {cvSections.map((section) => (
                 <div key={section.id} className="relative pr-6 border-r-2 border-orange-500/40">
                   <div className="absolute top-0 right-[-5px] w-2 h-2 bg-orange-500 rotate-45" />
-                  <h3 className="font-rubik-glitch text-xl text-orange-400 mb-4">
+                  <h3 className={`${headingFont}-glitch text-xl text-orange-400 mb-4`}>
                     {section.title}
                   </h3>
                   <div className="space-y-4">
@@ -266,8 +277,8 @@ export default function GeometricSharp({
               className="w-10 h-10 bg-orange-500"
               style={{ clipPath: "polygon(0 50%, 50% 0, 100% 50%, 50% 100%)" }}
             />
-            <h2 className="font-rubik-glitch text-3xl md:text-4xl text-white">
-              צור קשר
+            <h2 className={`${headingFont}-glitch text-3xl md:text-4xl text-white`}>
+              {customization?.sectionLabels?.contact ?? "צור קשר"}
             </h2>
             <div className="flex-1 h-px bg-gradient-to-l from-transparent via-orange-500/50 to-transparent" />
           </div>

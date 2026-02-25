@@ -10,24 +10,35 @@ export default function TechStartup({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
+
   const stats = [
-    { label: "פרויקטים", value: projects.length },
+    { label: customization?.sectionLabels?.projects ?? "פרויקטים", value: projects.length },
     { label: "תחומי ניסיון", value: cvSections.length },
     { label: "כישורים", value: cvSections.reduce((acc, s) => acc + s.entries.length, 0) },
   ];
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-[#1e293b] font-heebo scroll-smooth" dir="rtl">
+    <div className={`min-h-screen bg-[#f8fafc] text-[#1e293b] ${bodyFont} scroll-smooth`} dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#3b82f6',
+        '--t-accent': customization?.colors?.accent ?? '#06b6d4',
+        '--t-bg': customization?.colors?.bg ?? '#ffffff',
+        '--t-text': customization?.colors?.text ?? '#1e293b',
+      } as React.CSSProperties}
+    >
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-[#3b82f6]/10">
         <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="font-rubik font-bold text-[#1e293b] text-sm truncate">{student.name}</span>
+          <span className={`${headingFont} font-bold text-[#1e293b] text-sm truncate`}>{student.name}</span>
           <div className="flex items-center gap-6">
-            <a href="#about" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">אודות</a>
-            <a href="#projects" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">פרויקטים</a>
-            <a href="#cv" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">קורות חיים</a>
-            <a href="#contact" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">יצירת קשר</a>
+            <a href="#about" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">{customization?.sectionLabels?.about ?? "אודות"}</a>
+            <a href="#projects" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">{customization?.sectionLabels?.projects ?? "פרויקטים"}</a>
+            <a href="#cv" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">{customization?.sectionLabels?.cv ?? "קורות חיים"}</a>
+            <a href="#contact" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">{customization?.sectionLabels?.contact ?? "יצירת קשר"}</a>
           </div>
         </div>
       </nav>
@@ -42,7 +53,7 @@ export default function TechStartup({
             <img src={student.image} alt={student.name} className="w-40 h-40 md:w-48 md:h-48 rounded-2xl object-cover shadow-2xl shrink-0 border-4 border-white/20" />
           )}
           <div className="text-center md:text-right">
-            <h1 className="text-4xl md:text-5xl font-black font-rubik text-white mb-3 leading-tight">{student.name}</h1>
+            <h1 className={`text-4xl md:text-5xl font-black ${headingFont} text-white mb-3 leading-tight`}>{student.name}</h1>
             {about.subtitle && <p className="text-lg text-white/70 mb-4">{about.subtitle}</p>}
             <div className="flex flex-wrap gap-3 justify-center md:justify-start">
               {contact.email && (
@@ -65,7 +76,7 @@ export default function TechStartup({
         <div className="grid grid-cols-3 gap-4">
           {stats.map((s) => (
             <div key={s.label} className="bg-white/80 backdrop-blur-sm rounded-xl border border-[#3b82f6]/10 p-5 text-center shadow-sm">
-              <p className="text-3xl font-black font-rubik text-[#3b82f6]">{s.value}</p>
+              <p className={`text-3xl font-black ${headingFont} text-[#3b82f6]`}>{s.value}</p>
               <p className="text-sm text-[#64748b] mt-1">{s.label}</p>
             </div>
           ))}
@@ -75,9 +86,9 @@ export default function TechStartup({
       <div className="max-w-5xl mx-auto px-6 py-20 space-y-24">
         {/* About */}
         <section id="about">
-          <h2 className="text-3xl font-black font-rubik mb-8">אודות</h2>
+          <h2 className={`text-3xl font-black ${headingFont} mb-8`}>{customization?.sectionLabels?.about ?? "אודות"}</h2>
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-[#3b82f6]/10 shadow-sm">
-            <h3 className="text-xl font-bold font-rubik mb-4 text-[#3b82f6]">{about.title || student.name}</h3>
+            <h3 className={`text-xl font-bold ${headingFont} mb-4 text-[#3b82f6]`}>{about.title || student.name}</h3>
             {about.body && <p className="text-[#475569] text-lg leading-relaxed whitespace-pre-line">{about.body}</p>}
           </div>
         </section>
@@ -85,7 +96,7 @@ export default function TechStartup({
         {/* Projects */}
         {projects.length > 0 && (
           <section id="projects">
-            <h2 className="text-3xl font-black font-rubik mb-10">פרויקטים</h2>
+            <h2 className={`text-3xl font-black ${headingFont} mb-10`}>{customization?.sectionLabels?.projects ?? "פרויקטים"}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {projects.map((project) => (
                 <div key={project.id} className="group bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden border border-[#3b82f6]/10 hover:border-[#3b82f6]/30 transition-all shadow-sm hover:shadow-md">
@@ -97,7 +108,7 @@ export default function TechStartup({
                     )}
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-bold font-rubik mb-2 group-hover:text-[#3b82f6] transition-colors">{project.title}</h3>
+                    <h3 className={`text-xl font-bold ${headingFont} mb-2 group-hover:text-[#3b82f6] transition-colors`}>{project.title}</h3>
                     {project.description && <p className="text-[#64748b] text-sm mb-4 leading-relaxed line-clamp-3">{project.description}</p>}
                     {project.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-4">
@@ -129,11 +140,11 @@ export default function TechStartup({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv">
-            <h2 className="text-3xl font-black font-rubik mb-10">קורות חיים</h2>
+            <h2 className={`text-3xl font-black ${headingFont} mb-10`}>{customization?.sectionLabels?.cv ?? "קורות חיים"}</h2>
             <div className="space-y-10">
               {cvSections.map((section) => (
                 <div key={section.id}>
-                  <h3 className="text-xl font-bold font-rubik mb-5 text-[#3b82f6]">{section.title}</h3>
+                  <h3 className={`text-xl font-bold ${headingFont} mb-5 text-[#3b82f6]`}>{section.title}</h3>
                   <div className="relative pr-8 space-y-6">
                     <div className="absolute right-2.5 top-1 bottom-0 w-0.5" style={{ background: "linear-gradient(180deg, #3b82f6, #06b6d4)" }} />
                     {section.entries.map((entry, i) => (
@@ -160,7 +171,7 @@ export default function TechStartup({
 
         {/* Contact */}
         <footer id="contact" className="border-t border-[#e2e8f0] pt-12">
-          <h2 className="text-3xl font-black font-rubik mb-8">בואו נדבר</h2>
+          <h2 className={`text-3xl font-black ${headingFont} mb-8`}>{customization?.sectionLabels?.contact ?? "בואו נדבר"}</h2>
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-[#3b82f6]/10">
             <div className="flex flex-wrap gap-4">
               {contact.email && (

@@ -18,18 +18,31 @@ export default function RestaurantMenu({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-amatic-sc';
+
   return (
-    <div className="min-h-screen bg-[#1c1008] text-[#e8dcc8] font-heebo scroll-smooth" dir="rtl">
+    <div
+      className={`min-h-screen bg-[#1c1008] text-[#e8dcc8] ${bodyFont} scroll-smooth`}
+      dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#c9a44a',
+        '--t-accent': customization?.colors?.accent ?? '#8b2332',
+        '--t-bg': customization?.colors?.bg ?? '#1c1008',
+        '--t-text': customization?.colors?.text ?? '#e8dcc8',
+      } as React.CSSProperties}
+    >
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-[#1c1008]/95 backdrop-blur-sm border-b border-[#c9a44a]/20">
         <div className="max-w-3xl mx-auto px-6 flex items-center justify-between h-12">
-          <span className="font-amatic-sc font-bold text-xl text-[#c9a44a]">{student.name}</span>
+          <span className={`${headingFont} font-bold text-xl text-[#c9a44a]`}>{student.name}</span>
           <div className="flex items-center gap-6">
-            <a href="#about" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">אודות</a>
-            <a href="#projects" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">עבודות</a>
-            <a href="#cv" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">ניסיון</a>
-            <a href="#contact" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">הזמנות</a>
+            <a href="#about" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.about ?? "אודות"}</a>
+            <a href="#projects" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.projects ?? "עבודות"}</a>
+            <a href="#cv" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.cv ?? "ניסיון"}</a>
+            <a href="#contact" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.contact ?? "הזמנות"}</a>
           </div>
         </div>
       </nav>
@@ -45,7 +58,7 @@ export default function RestaurantMenu({
           {student.image && (
             <img src={student.image} alt={student.name} className="w-32 h-32 rounded-full object-cover mx-auto mb-6 border-2 border-[#c9a44a]/40" />
           )}
-          <h1 className="text-5xl md:text-6xl font-bold font-amatic-sc text-[#c9a44a] mb-3">{student.name}</h1>
+          <h1 className={`text-5xl md:text-6xl font-bold ${headingFont} text-[#c9a44a] mb-3`}>{student.name}</h1>
           {about.subtitle && (
             <p className="text-sm text-[#e8dcc8]/50 italic tracking-wider">{about.subtitle}</p>
           )}
@@ -60,7 +73,7 @@ export default function RestaurantMenu({
 
         {/* About — Chef's Philosophy */}
         <section id="about" className="mb-4 scroll-mt-16">
-          <h2 className="text-center text-3xl font-bold font-amatic-sc text-[#c9a44a] mb-2">
+          <h2 className={`text-center text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>
             {about.title || "הפילוסופיה שלנו"}
           </h2>
           <div className="text-center text-[#c9a44a]/40 text-xs tracking-[0.3em] mb-6">&#8212; &#8212; &#8212;</div>
@@ -76,18 +89,18 @@ export default function RestaurantMenu({
         {/* Projects — Menu Items */}
         {projects.length > 0 && (
           <section id="projects" className="mb-4 scroll-mt-16">
-            <h2 className="text-center text-3xl font-bold font-amatic-sc text-[#c9a44a] mb-2">
-              התפריט
+            <h2 className={`text-center text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>
+              {customization?.sectionLabels?.projects ?? "התפריט"}
             </h2>
             <div className="text-center text-[#c9a44a]/40 text-xs tracking-[0.3em] mb-8">&#8212; &#8212; &#8212;</div>
             <div className="space-y-8">
               {projects.map((project) => (
                 <article key={project.id} className="group">
                   <div className="flex items-baseline gap-2">
-                    <h3 className="text-xl font-bold font-amatic-sc text-[#e8dcc8] shrink-0">{project.title}</h3>
+                    <h3 className={`text-xl font-bold ${headingFont} text-[#e8dcc8] shrink-0`}>{project.title}</h3>
                     <div className="flex-1 border-b border-dotted border-[#c9a44a]/30 mb-1" />
                     {project.tags.length > 0 && (
-                      <span className="text-sm text-[#c9a44a] shrink-0 font-amatic-sc">
+                      <span className={`text-sm text-[#c9a44a] shrink-0 ${headingFont}`}>
                         {project.tags[0]}
                       </span>
                     )}
@@ -130,8 +143,8 @@ export default function RestaurantMenu({
         {/* CV — Wine List / Specials */}
         {cvSections.length > 0 && (
           <section id="cv" className="mb-4 scroll-mt-16">
-            <h2 className="text-center text-3xl font-bold font-amatic-sc text-[#c9a44a] mb-2">
-              רשימת היינות
+            <h2 className={`text-center text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>
+              {customization?.sectionLabels?.cv ?? "רשימת היינות"}
             </h2>
             <div className="text-center text-[#c9a44a]/40 text-xs tracking-[0.3em] mb-8">&#8212; &#8212; &#8212;</div>
             <div className="space-y-10">

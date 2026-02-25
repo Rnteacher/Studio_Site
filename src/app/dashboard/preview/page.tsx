@@ -98,6 +98,7 @@ export default function PreviewPage() {
           socialLinks={student?.socialLinks ?? {}}
           cvSections={cvSections ?? []}
           projects={projects ?? []}
+          customization={portfolio.customSettings}
           isPreview
         />
       </div>

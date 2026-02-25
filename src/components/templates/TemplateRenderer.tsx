@@ -48,5 +48,23 @@ interface RendererProps extends TemplateProps {
 
 export function TemplateRenderer({ templateName, ...props }: RendererProps) {
   const Component = templates[templateName] ?? templates["classic-elegant"];
+  const colors = props.customization?.colors;
+
+  // If user has custom colors, inject them as CSS custom properties
+  // Templates use var(--t-primary) etc. with their own defaults
+  if (colors && Object.keys(colors).length > 0) {
+    const style: Record<string, string> = {};
+    if (colors.primary) style["--t-primary"] = colors.primary;
+    if (colors.accent) style["--t-accent"] = colors.accent;
+    if (colors.bg) style["--t-bg"] = colors.bg;
+    if (colors.text) style["--t-text"] = colors.text;
+
+    return (
+      <div style={style as React.CSSProperties}>
+        <Component {...props} />
+      </div>
+    );
+  }
+
   return <Component {...props} />;
 }

@@ -3,13 +3,6 @@
 import type { TemplateProps } from "../types";
 import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 
-const NAV_ITEMS = [
-  { id: "about", label: "אודות" },
-  { id: "projects", label: "פרויקטים" },
-  { id: "cv", label: "קורות חיים" },
-  { id: "contact", label: "צור קשר" },
-];
-
 export default function ModernMinimal({
   student,
   about,
@@ -17,13 +10,33 @@ export default function ModernMinimal({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-karantina';
+
+  const NAV_ITEMS = [
+    { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? "צור קשר" },
+  ];
+
   return (
-    <div className="min-h-screen bg-white text-neutral-900 font-heebo scroll-smooth" dir="rtl">
+    <div
+      className={`min-h-screen bg-white text-neutral-900 ${bodyFont} scroll-smooth`}
+      dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#171717',
+        '--t-accent': customization?.colors?.accent ?? '#a3a3a3',
+        '--t-bg': customization?.colors?.bg ?? '#ffffff',
+        '--t-text': customization?.colors?.text ?? '#262626',
+      } as React.CSSProperties}
+    >
       {/* Sticky Navigation */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b border-neutral-100">
         <div className="max-w-3xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="text-sm font-karantina font-medium tracking-wide text-neutral-400">
+          <span className={`text-sm ${headingFont} font-medium tracking-wide text-neutral-400`}>
             {student.name}
           </span>
           <div className="flex items-center gap-8">
@@ -54,7 +67,7 @@ export default function ModernMinimal({
         </div>
         <div className="absolute bottom-0 right-0 left-0 p-6 md:p-12">
           <div className="max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-karantina font-bold text-white tracking-tight">
+            <h1 className={`text-4xl md:text-6xl ${headingFont} font-bold text-white tracking-tight`}>
               {student.name}
             </h1>
             {about.subtitle && (
@@ -80,15 +93,15 @@ export default function ModernMinimal({
         {/* Projects */}
         {projects.length > 0 && (
           <section id="projects" className="mb-20 scroll-mt-20">
-            <h2 className="text-xs uppercase tracking-[0.25em] text-neutral-300 mb-10 font-karantina">
-              פרויקטים
+            <h2 className={`text-xs uppercase tracking-[0.25em] text-neutral-300 mb-10 ${headingFont}`}>
+              {customization?.sectionLabels?.projects ?? "פרויקטים"}
             </h2>
             <div className="space-y-10">
               {projects.map((project) => (
                 <div key={project.id} className="group">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
-                      <h3 className="text-xl font-karantina font-semibold tracking-tight">
+                      <h3 className={`text-xl ${headingFont} font-semibold tracking-tight`}>
                         {project.title}
                       </h3>
                       {project.description && (
@@ -145,13 +158,13 @@ export default function ModernMinimal({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv" className="mb-20 scroll-mt-20">
-            <h2 className="text-xs uppercase tracking-[0.25em] text-neutral-300 mb-10 font-karantina">
-              קורות חיים
+            <h2 className={`text-xs uppercase tracking-[0.25em] text-neutral-300 mb-10 ${headingFont}`}>
+              {customization?.sectionLabels?.cv ?? "קורות חיים"}
             </h2>
             <div className="space-y-12">
               {cvSections.map((section) => (
                 <div key={section.id}>
-                  <h3 className="text-sm font-karantina font-semibold mb-5 text-neutral-700">
+                  <h3 className={`text-sm ${headingFont} font-semibold mb-5 text-neutral-700`}>
                     {section.title}
                   </h3>
                   <div className="space-y-5">
@@ -186,8 +199,8 @@ export default function ModernMinimal({
 
         {/* Contact / Footer */}
         <footer id="contact" className="pt-10 border-t border-neutral-100 scroll-mt-20">
-          <h2 className="text-xs uppercase tracking-[0.25em] text-neutral-300 mb-8 font-karantina">
-            צור קשר
+          <h2 className={`text-xs uppercase tracking-[0.25em] text-neutral-300 mb-8 ${headingFont}`}>
+            {customization?.sectionLabels?.contact ?? "צור קשר"}
           </h2>
           <div className="flex flex-wrap gap-8 text-sm text-neutral-400">
             {contact.email && (

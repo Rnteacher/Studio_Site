@@ -10,18 +10,29 @@ export default function MakerWorkshop({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-rubik';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-glitch';
+
   return (
-    <div className="min-h-screen bg-[#2b2118] text-[#d4c5a0] font-rubik scroll-smooth" dir="rtl">
+    <div className={`min-h-screen bg-[#2b2118] text-[#d4c5a0] ${bodyFont} scroll-smooth`} dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#f59e0b',
+        '--t-accent': customization?.colors?.accent ?? '#ef4444',
+        '--t-bg': customization?.colors?.bg ?? '#1c1917',
+        '--t-text': customization?.colors?.text ?? '#e7e5e4',
+      } as React.CSSProperties}
+    >
       {/* Shelf/pegboard nav */}
       <nav className="sticky top-0 z-50 bg-[#231a10] border-b-4 border-[#d97706]">
         <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="font-rubik-glitch text-lg text-[#d97706]">{student.name}</span>
+          <span className={`${headingFont} text-lg text-[#d97706]`}>{student.name}</span>
           <div className="flex items-center gap-6">
-            <a href="#about" className="text-sm text-[#78716c] hover:text-[#d97706] transition-colors">אודות</a>
-            <a href="#projects" className="text-sm text-[#78716c] hover:text-[#d97706] transition-colors">עבודות</a>
-            <a href="#cv" className="text-sm text-[#78716c] hover:text-[#d97706] transition-colors">ניסיון</a>
-            <a href="#contact" className="text-sm text-[#78716c] hover:text-[#d97706] transition-colors">קשר</a>
+            <a href="#about" className="text-sm text-[#78716c] hover:text-[#d97706] transition-colors">{customization?.sectionLabels?.about ?? "אודות"}</a>
+            <a href="#projects" className="text-sm text-[#78716c] hover:text-[#d97706] transition-colors">{customization?.sectionLabels?.projects ?? "עבודות"}</a>
+            <a href="#cv" className="text-sm text-[#78716c] hover:text-[#d97706] transition-colors">{customization?.sectionLabels?.cv ?? "ניסיון"}</a>
+            <a href="#contact" className="text-sm text-[#78716c] hover:text-[#d97706] transition-colors">{customization?.sectionLabels?.contact ?? "קשר"}</a>
           </div>
         </div>
       </nav>
@@ -33,7 +44,7 @@ export default function MakerWorkshop({
             <img src={student.image} alt={student.name} className="w-40 h-40 object-cover border-4 border-[#78716c] shrink-0" />
           )}
           <div className="text-center md:text-right">
-            <h1 className="text-4xl md:text-5xl font-bold font-rubik-glitch text-[#d97706] mb-3 tracking-wide">
+            <h1 className={`text-4xl md:text-5xl font-bold ${headingFont} text-[#d97706] mb-3 tracking-wide`}>
               {student.name}
             </h1>
             {about.subtitle && <p className="text-[#d4c5a0]/50 text-lg">{about.subtitle}</p>}
@@ -46,7 +57,7 @@ export default function MakerWorkshop({
         <section id="about" className="scroll-mt-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-3 h-3 rounded-full bg-[#78716c]" />
-            <h2 className="text-2xl font-bold font-rubik-glitch text-[#d97706] uppercase tracking-wider">אודות</h2>
+            <h2 className={`text-2xl font-bold ${headingFont} text-[#d97706] uppercase tracking-wider`}>{customization?.sectionLabels?.about ?? "אודות"}</h2>
           </div>
           <div className="bg-[#3a3028] border-2 border-[#78716c]/30 p-8">
             <h3 className="text-lg font-bold text-[#d97706] mb-3">{about.title || student.name}</h3>
@@ -61,7 +72,7 @@ export default function MakerWorkshop({
           <section id="projects" className="scroll-mt-16">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-3 h-3 rounded-full bg-[#78716c]" />
-              <h2 className="text-2xl font-bold font-rubik-glitch text-[#d97706] uppercase tracking-wider">עבודות</h2>
+              <h2 className={`text-2xl font-bold ${headingFont} text-[#d97706] uppercase tracking-wider`}>עבודות</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {projects.map((project) => (
@@ -72,7 +83,7 @@ export default function MakerWorkshop({
                     <div className="w-full h-44 bg-[#2b2118]" />
                   )}
                   <div className="p-5">
-                    <h3 className="text-lg font-bold font-rubik-glitch text-[#d4c5a0] mb-2">{project.title}</h3>
+                    <h3 className={`text-lg font-bold ${headingFont} text-[#d4c5a0] mb-2`}>{project.title}</h3>
                     {project.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-3">
                         {project.tags.map((tag) => (
@@ -110,12 +121,12 @@ export default function MakerWorkshop({
           <section id="cv" className="scroll-mt-16">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-3 h-3 rounded-full bg-[#78716c]" />
-              <h2 className="text-2xl font-bold font-rubik-glitch text-[#d97706] uppercase tracking-wider">ניסיון</h2>
+              <h2 className={`text-2xl font-bold ${headingFont} text-[#d97706] uppercase tracking-wider`}>ניסיון</h2>
             </div>
             <div className="space-y-10">
               {cvSections.map((section) => (
                 <div key={section.id}>
-                  <h3 className="text-xl font-bold font-rubik-glitch text-[#d97706] mb-5 pb-2 border-b-2 border-[#78716c]/30">
+                  <h3 className={`text-xl font-bold ${headingFont} text-[#d97706] mb-5 pb-2 border-b-2 border-[#78716c]/30`}>
                     {section.title}
                   </h3>
                   <div className="relative pr-6 space-y-6">
@@ -146,7 +157,7 @@ export default function MakerWorkshop({
         <footer id="contact" className="scroll-mt-16 border-t-4 border-[#d97706] pt-10">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-3 h-3 rounded-full bg-[#78716c]" />
-            <h2 className="text-2xl font-bold font-rubik-glitch text-[#d97706] uppercase tracking-wider">צור קשר</h2>
+            <h2 className={`text-2xl font-bold ${headingFont} text-[#d97706] uppercase tracking-wider`}>{customization?.sectionLabels?.contact ?? "צור קשר"}</h2>
           </div>
           <div className="flex flex-wrap gap-4">
             {contact.email && (

@@ -96,6 +96,7 @@ async function getPortfolioData(slug: string) {
     contactEmail: portfolio.contact_email,
     contactPhone: portfolio.contact_phone,
     contactWebsite: portfolio.contact_website,
+    customSettings: ((portfolio as Record<string, unknown>).custom_settings as Record<string, unknown>) ?? {},
     createdAt: portfolio.created_at,
     updatedAt: portfolio.updated_at,
   };
@@ -145,6 +146,7 @@ export default async function PortfolioPage({ params }: Props) {
         socialLinks={data.student.socialLinks}
         cvSections={data.cvSections}
         projects={data.projects}
+        customization={data.portfolio.customSettings}
       />
       {data.cvSections.length > 0 && (
         <a

@@ -3,13 +3,6 @@
 import type { TemplateProps } from "../types";
 import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 
-const NAV_ITEMS = [
-  { id: "about", label: "אודות" },
-  { id: "projects", label: "פרויקטים" },
-  { id: "cv", label: "קורות חיים" },
-  { id: "contact", label: "צור קשר" },
-];
-
 export default function NeonGlow({
   student,
   about,
@@ -17,11 +10,28 @@ export default function NeonGlow({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-rubik';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
+
+  const NAV_ITEMS = [
+    { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? "צור קשר" },
+  ];
+
   return (
     <div
-      className="min-h-screen bg-[#0a0a14] text-gray-300 font-rubik scroll-smooth selection:bg-[#ff00ff]/30"
+      className={`min-h-screen bg-[#0a0a14] text-gray-300 ${bodyFont} scroll-smooth selection:bg-[#ff00ff]/30`}
       dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#ff00ff',
+        '--t-accent': customization?.colors?.accent ?? '#00ffff',
+        '--t-bg': customization?.colors?.bg ?? '#0a0a14',
+        '--t-text': customization?.colors?.text ?? '#d1d5db',
+      } as React.CSSProperties}
     >
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-[#0a0a14]/90 backdrop-blur-md border-b border-[#ff00ff]/20">
@@ -80,8 +90,8 @@ export default function NeonGlow({
         {/* About */}
         {about.body && (
           <section id="about" className="py-16 scroll-mt-16">
-            <h2 className="text-2xl font-bold mb-6 text-[#00ffff]">
-              {about.title || "אודות"}
+            <h2 className={`text-2xl ${headingFont} font-bold mb-6 text-[#00ffff]`}>
+              {about.title || customization?.sectionLabels?.about || "אודות"}
             </h2>
             <div
               className="rounded-xl p-8 border border-[#ff00ff]/15 bg-[#12121f]"
@@ -97,7 +107,7 @@ export default function NeonGlow({
         {/* Projects */}
         {projects.length > 0 && (
           <section id="projects" className="py-16 scroll-mt-16">
-            <h2 className="text-2xl font-bold mb-8 text-[#00ffff]">פרויקטים</h2>
+            <h2 className={`text-2xl ${headingFont} font-bold mb-8 text-[#00ffff]`}>{customization?.sectionLabels?.projects ?? "פרויקטים"}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {projects.map((project) => (
                 <div
@@ -170,7 +180,7 @@ export default function NeonGlow({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv" className="py-16 scroll-mt-16">
-            <h2 className="text-2xl font-bold mb-8 text-[#00ffff]">קורות חיים</h2>
+            <h2 className={`text-2xl ${headingFont} font-bold mb-8 text-[#00ffff]`}>{customization?.sectionLabels?.cv ?? "קורות חיים"}</h2>
             <div className="space-y-8">
               {cvSections.map((section) => (
                 <div
@@ -216,7 +226,7 @@ export default function NeonGlow({
 
         {/* Contact */}
         <footer id="contact" className="py-16 border-t border-[#ff00ff]/10 scroll-mt-16">
-          <h2 className="text-2xl font-bold mb-8 text-[#00ffff]">צור קשר</h2>
+          <h2 className={`text-2xl ${headingFont} font-bold mb-8 text-[#00ffff]`}>{customization?.sectionLabels?.contact ?? "צור קשר"}</h2>
           <div className="rounded-xl p-8 border border-[#ff00ff]/10 bg-[#12121f]">
             <div className="flex flex-wrap gap-8 text-sm">
               {contact.email && (

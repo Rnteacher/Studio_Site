@@ -23,6 +23,7 @@ function mapPortfolio(row: Record<string, unknown>): Portfolio {
     contactEmail: (row.contact_email as string) ?? "",
     contactPhone: (row.contact_phone as string) ?? "",
     contactWebsite: (row.contact_website as string) ?? null,
+    customSettings: (row.custom_settings as Record<string, unknown>) ?? {},
     createdAt: row.created_at as string,
     updatedAt: row.updated_at as string,
   };
@@ -115,6 +116,7 @@ export function useUpdatePortfolio() {
       contact_email: string;
       contact_phone: string;
       contact_website: string | null;
+      custom_settings: Record<string, unknown>;
     }> & { id: string }) => {
       const supabase = createClient();
       const { id, ...rest } = updates;

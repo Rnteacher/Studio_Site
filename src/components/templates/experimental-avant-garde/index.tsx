@@ -3,13 +3,6 @@
 import type { TemplateProps } from "../types";
 import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 
-const NAV_ITEMS = [
-  { id: "about", label: "אודות" },
-  { id: "projects", label: "פרויקטים" },
-  { id: "cv", label: "קו\"ח" },
-  { id: "contact", label: "קשר" },
-];
-
 export default function ExperimentalAvantGarde({
   student,
   about,
@@ -17,16 +10,33 @@ export default function ExperimentalAvantGarde({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-dirt';
+
+  const NAV_ITEMS = [
+    { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? "קו\"ח" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? "קשר" },
+  ];
+
   return (
     <div
-      className="min-h-screen bg-black text-white font-heebo scroll-smooth selection:bg-emerald-400 selection:text-black"
+      className={`min-h-screen bg-black text-white ${bodyFont} scroll-smooth selection:bg-emerald-400 selection:text-black`}
       dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#34d399',
+        '--t-accent': customization?.colors?.accent ?? '#a3e635',
+        '--t-bg': customization?.colors?.bg ?? '#000000',
+        '--t-text': customization?.colors?.text ?? '#ffffff',
+      } as React.CSSProperties}
     >
       {/* Sticky Neon Navigation Bar */}
       <nav className="sticky top-0 z-50 bg-black/90 backdrop-blur-md border-b border-emerald-400/30">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="text-emerald-400 text-sm font-rubik-dirt font-bold tracking-wider">
+          <span className={`text-emerald-400 text-sm ${headingFont} font-bold tracking-wider`}>
             {student.name}
           </span>
           <div className="flex items-center gap-6 md:gap-10">
@@ -57,7 +67,7 @@ export default function ExperimentalAvantGarde({
             <div>
               {/* Rotated large name */}
               <div className="relative">
-                <h1 className="text-7xl md:text-8xl lg:text-9xl font-black font-rubik-dirt leading-none tracking-tighter text-white md:-rotate-2 origin-right">
+                <h1 className={`text-7xl md:text-8xl lg:text-9xl font-black ${headingFont} leading-none tracking-tighter text-white md:-rotate-2 origin-right`}>
                   {student.name}
                 </h1>
                 <div className="w-full h-1 bg-gradient-to-l from-emerald-400 via-lime-400 to-transparent mt-4 md:-rotate-2 origin-right" />
@@ -95,8 +105,8 @@ export default function ExperimentalAvantGarde({
         <section id="projects" className="scroll-mt-20 relative py-24">
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-l from-transparent via-emerald-400/50 to-transparent" />
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-5xl md:text-6xl font-black font-rubik-dirt mb-16">
-              <span className="text-emerald-400">{"{"}</span> פרויקטים{" "}
+            <h2 className={`text-5xl md:text-6xl font-black ${headingFont} mb-16`}>
+              <span className="text-emerald-400">{"{"}</span> {customization?.sectionLabels?.projects ?? "פרויקטים"}{" "}
               <span className="text-emerald-400">{"}"}</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -131,7 +141,7 @@ export default function ExperimentalAvantGarde({
                     <span className="text-emerald-400/40 text-xs font-mono">
                       {String(idx + 1).padStart(2, "0")}
                     </span>
-                    <h3 className="text-xl font-bold font-rubik-dirt mt-1">
+                    <h3 className={`text-xl font-bold ${headingFont} mt-1`}>
                       {project.title}
                     </h3>
                     {project.description && (
@@ -189,7 +199,7 @@ export default function ExperimentalAvantGarde({
         <section id="cv" className="scroll-mt-20 relative py-24">
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-l from-transparent via-lime-400/50 to-transparent" />
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-5xl md:text-6xl font-black font-rubik-dirt mb-16">
+            <h2 className="text-5xl md:text-6xl font-black ${headingFont} mb-16">
               <span className="text-lime-400">{"{"}</span> קורות חיים{" "}
               <span className="text-lime-400">{"}"}</span>
             </h2>
@@ -203,7 +213,7 @@ export default function ExperimentalAvantGarde({
                   <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-emerald-400" />
                   <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-emerald-400" />
                   <div className="p-6">
-                    <h3 className="text-lg font-bold font-rubik-dirt mb-5 pb-3 border-b border-neutral-800">
+                    <h3 className="text-lg font-bold ${headingFont} mb-5 pb-3 border-b border-neutral-800">
                       {section.title}
                     </h3>
                     <div className="space-y-4">
@@ -242,7 +252,7 @@ export default function ExperimentalAvantGarde({
       <footer id="contact" className="scroll-mt-20 relative py-20">
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-l from-emerald-400 via-lime-400 to-emerald-400" />
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-5xl md:text-6xl font-black font-rubik-dirt mb-12">
+          <h2 className="text-5xl md:text-6xl font-black ${headingFont} mb-12">
             <span className="text-emerald-400">{"{"}</span> קשר{" "}
             <span className="text-emerald-400">{"}"}</span>
           </h2>

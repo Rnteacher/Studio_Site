@@ -3,13 +3,6 @@
 import type { TemplateProps } from "../types";
 import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 
-const NAV_ITEMS = [
-  { id: "about", label: "אודות" },
-  { id: "projects", label: "פרויקטים" },
-  { id: "cv", label: "קורות חיים" },
-  { id: "contact", label: "צור קשר" },
-];
-
 export default function PaperCraft({
   student,
   about,
@@ -17,11 +10,28 @@ export default function PaperCraft({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-amatic-sc';
+
+  const NAV_ITEMS = [
+    { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? "צור קשר" },
+  ];
+
   return (
     <div
-      className="min-h-screen bg-[#faf8f0] text-stone-800 font-playpen-sans scroll-smooth"
+      className={`min-h-screen bg-[#faf8f0] text-stone-800 ${bodyFont} scroll-smooth`}
       dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#57534e',
+        '--t-accent': customization?.colors?.accent ?? '#78716c',
+        '--t-bg': customization?.colors?.bg ?? '#faf8f0',
+        '--t-text': customization?.colors?.text ?? '#292524',
+      } as React.CSSProperties}
     >
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-[#faf8f0]/90 backdrop-blur-sm border-b border-stone-300/50">

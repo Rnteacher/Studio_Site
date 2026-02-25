@@ -3,13 +3,6 @@
 import type { TemplateProps } from "../types";
 import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 
-const NAV_ITEMS = [
-  { id: "about", label: "אודות" },
-  { id: "projects", label: "פרויקטים" },
-  { id: "cv", label: "קורות חיים" },
-  { id: "contact", label: "יצירת קשר" },
-];
-
 const COLORS = ["#ec4899", "#8b5cf6", "#fbbf24", "#34d399"];
 
 export default function SidebarPlayful({
@@ -19,9 +12,28 @@ export default function SidebarPlayful({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-fredoka';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-bubbles';
+
+  const NAV_ITEMS = [
+    { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? "יצירת קשר" },
+  ];
+
+
   return (
-    <div className="min-h-screen font-fredoka scroll-smooth" dir="rtl">
+    <div className={`min-h-screen ${bodyFont} scroll-smooth`} dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#ec4899',
+        '--t-accent': customization?.colors?.accent ?? '#a855f7',
+        '--t-bg': customization?.colors?.bg ?? '#fdf2f8',
+        '--t-text': customization?.colors?.text ?? '#1e1e1e',
+      } as React.CSSProperties}
+    >
       {/* Mobile Header */}
       <header className="lg:hidden bg-[#fbbf24] text-[#44403c]">
         <div className="flex flex-col items-center py-8 px-6 gap-4">
@@ -32,7 +44,7 @@ export default function SidebarPlayful({
               </div>
             </div>
           )}
-          <h1 className="text-2xl font-bold font-rubik-bubbles text-[#44403c]">
+          <h1 className={`text-2xl font-bold ${headingFont} text-[#44403c]`}>
             {student.name}
           </h1>
           {about.subtitle && <p className="text-sm text-[#44403c]/60">{about.subtitle}</p>}
@@ -60,7 +72,7 @@ export default function SidebarPlayful({
               </div>
             )}
             <div className="text-center">
-              <h1 className="text-2xl font-bold leading-tight font-rubik-bubbles">
+              <h1 className={`text-2xl font-bold leading-tight ${headingFont}`}>
                 {student.name}
               </h1>
               {about.subtitle && (
@@ -115,7 +127,7 @@ export default function SidebarPlayful({
           <div className="max-w-3xl mx-auto px-6 md:px-10 py-16 lg:py-20">
             {/* About */}
             <section id="about" className="mb-20 scroll-mt-16">
-              <h2 className="text-3xl font-bold mb-6 font-rubik-bubbles text-[#ec4899]">
+              <h2 className={`text-3xl font-bold mb-6 ${headingFont} text-[#ec4899]`}>
                 {about.title || "אודות"}
               </h2>
               <div className="flex gap-1.5 mb-8">
@@ -129,14 +141,14 @@ export default function SidebarPlayful({
             {/* Projects */}
             {projects.length > 0 && (
               <section id="projects" className="mb-20 scroll-mt-16">
-                <h2 className="text-3xl font-bold mb-6 font-rubik-bubbles text-[#8b5cf6]">פרויקטים</h2>
+                <h2 className={`text-3xl font-bold mb-6 ${headingFont} text-[#8b5cf6]`}>{customization?.sectionLabels?.projects ?? "פרויקטים"}</h2>
                 <div className="flex gap-1.5 mb-10">
                   {COLORS.map((c) => <div key={c} className="w-3 h-3 rounded-full" style={{ backgroundColor: c }} />)}
                 </div>
                 <div className="space-y-8">
                   {projects.map((project, pi) => (
                     <article key={project.id} className="bg-white rounded-3xl border-2 border-dashed p-6 hover:-translate-y-1 transition-transform" style={{ borderColor: COLORS[pi % COLORS.length] }}>
-                      <h3 className="text-xl font-bold mb-2 font-rubik-bubbles" style={{ color: COLORS[pi % COLORS.length] }}>
+                      <h3 className={`text-xl font-bold mb-2 ${headingFont}`} style={{ color: COLORS[pi % COLORS.length] }}>
                         {project.title}
                       </h3>
                       {project.tags.length > 0 && (
@@ -175,14 +187,14 @@ export default function SidebarPlayful({
             {/* CV */}
             {cvSections.length > 0 && (
               <section id="cv" className="mb-20 scroll-mt-16">
-                <h2 className="text-3xl font-bold mb-6 font-rubik-bubbles text-[#34d399]">קורות חיים</h2>
+                <h2 className={`text-3xl font-bold mb-6 ${headingFont} text-[#34d399]`}>{customization?.sectionLabels?.cv ?? "קורות חיים"}</h2>
                 <div className="flex gap-1.5 mb-10">
                   {COLORS.map((c) => <div key={c} className="w-3 h-3 rounded-full" style={{ backgroundColor: c }} />)}
                 </div>
                 <div className="space-y-12">
                   {cvSections.map((section, si) => (
                     <div key={section.id}>
-                      <h3 className="text-lg font-bold mb-6 pb-2 border-b-2 border-dashed font-rubik-bubbles" style={{ color: COLORS[si % COLORS.length], borderColor: COLORS[si % COLORS.length] + "60" }}>
+                      <h3 className={`text-lg font-bold mb-6 pb-2 border-b-2 border-dashed ${headingFont}`} style={{ color: COLORS[si % COLORS.length], borderColor: COLORS[si % COLORS.length] + "60" }}>
                         {section.title}
                       </h3>
                       <div className="space-y-6">
@@ -206,7 +218,7 @@ export default function SidebarPlayful({
 
             {/* Contact — mobile only */}
             <footer id="contact" className="lg:hidden pt-10 border-t-2 border-dashed border-[#ec4899]/30 scroll-mt-16">
-              <h2 className="text-2xl font-bold text-[#ec4899] mb-6 font-rubik-bubbles">יצירת קשר</h2>
+              <h2 className={`text-2xl font-bold text-[#ec4899] mb-6 ${headingFont}`}>{customization?.sectionLabels?.contact ?? "יצירת קשר"}</h2>
               <div className="space-y-4">
                 {contact.email && (
                   <a href={`mailto:${contact.email}`} className="flex items-center gap-3 text-[#44403c]/70 hover:text-[#ec4899] transition-colors">

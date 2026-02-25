@@ -10,21 +10,32 @@ export default function NewspaperVintage({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-karantina';
+
   const today = new Date();
   const dateStr = today.toLocaleDateString("he-IL", { year: "numeric", month: "long", day: "numeric" });
 
   return (
-    <div className="min-h-screen bg-[#f5f0e1] text-[#2c2417] font-heebo scroll-smooth" dir="rtl">
+    <div className={`min-h-screen bg-[#f5f0e1] text-[#2c2417] ${bodyFont} scroll-smooth`} dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#1a1a1a',
+        '--t-accent': customization?.colors?.accent ?? '#8b0000',
+        '--t-bg': customization?.colors?.bg ?? '#f5f0e8',
+        '--t-text': customization?.colors?.text ?? '#333333',
+      } as React.CSSProperties}
+    >
       {/* Edition strip */}
       <nav className="sticky top-0 z-50 bg-[#f5f0e1]/95 backdrop-blur-sm border-b-2 border-[#2c2417]">
         <div className="max-w-4xl mx-auto px-6 flex items-center justify-between h-10">
           <span className="text-xs text-[#8b7d5a]">{dateStr} | מהדורה מיוחדת</span>
           <div className="flex items-center gap-5">
-            <a href="#about" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">אודות</a>
-            <a href="#projects" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">עבודות</a>
-            <a href="#cv" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">ניסיון</a>
-            <a href="#contact" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">קשר</a>
+            <a href="#about" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">{customization?.sectionLabels?.about ?? "אודות"}</a>
+            <a href="#projects" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">{customization?.sectionLabels?.projects ?? "עבודות"}</a>
+            <a href="#cv" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">{customization?.sectionLabels?.cv ?? "ניסיון"}</a>
+            <a href="#contact" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">{customization?.sectionLabels?.contact ?? "קשר"}</a>
           </div>
         </div>
       </nav>
@@ -35,7 +46,7 @@ export default function NewspaperVintage({
           <div className="border-t-4 border-b-2 border-[#2c2417] py-2 mb-4">
             <p className="text-[10px] text-[#8b7d5a] tracking-[0.5em] uppercase">פורטפוליו אישי</p>
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold font-karantina text-[#2c2417] leading-none mb-3">
+          <h1 className={`text-5xl md:text-7xl font-bold ${headingFont} text-[#2c2417] leading-none mb-3`}>
             {student.name}
           </h1>
           {about.subtitle && (
@@ -57,7 +68,7 @@ export default function NewspaperVintage({
               <img src={student.image} alt={student.name} className="w-24 h-24 object-cover grayscale border border-[#d4c5a0]" />
             )}
             <div className="flex-1">
-              <h2 className="text-2xl font-bold font-karantina text-[#8b0000] mb-1">{about.title || "כתבה ראשית"}</h2>
+              <h2 className={`text-2xl font-bold ${headingFont} text-[#8b0000] mb-1`}>{about.title || "כתבה ראשית"}</h2>
               <div className="h-0.5 bg-[#8b0000]" />
             </div>
           </div>
@@ -75,7 +86,7 @@ export default function NewspaperVintage({
         {/* Projects — Articles */}
         {projects.length > 0 && (
           <section id="projects" className="mb-10 scroll-mt-16">
-            <h2 className="text-3xl font-bold font-karantina text-[#8b0000] mb-1">חדשות</h2>
+            <h2 className={`text-3xl font-bold ${headingFont} text-[#8b0000] mb-1`}>חדשות</h2>
             <div className="h-0.5 bg-[#8b0000] mb-6" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {projects.map((project, pi) => (
@@ -83,7 +94,7 @@ export default function NewspaperVintage({
                   {project.media[0]?.thumbnailUrl && (
                     <img src={project.media[0].thumbnailUrl} alt={project.title} className={`w-full ${pi === 0 ? "h-64" : "h-40"} object-cover grayscale hover:grayscale-0 transition-all duration-500 mb-3 border border-[#d4c5a0]`} />
                   )}
-                  <h3 className="text-xl font-bold font-karantina text-[#2c2417] mb-1">{project.title}</h3>
+                  <h3 className={`text-xl font-bold ${headingFont} text-[#2c2417] mb-1`}>{project.title}</h3>
                   {project.tags.length > 0 && (
                     <p className="text-[10px] text-[#8b0000] mb-2 tracking-wider">
                       {project.tags.join(" | ")}
@@ -118,12 +129,12 @@ export default function NewspaperVintage({
         {/* CV — Classified ads */}
         {cvSections.length > 0 && (
           <section id="cv" className="mb-10 scroll-mt-16">
-            <h2 className="text-3xl font-bold font-karantina text-[#8b0000] mb-1">מודעות מסווגות</h2>
+            <h2 className={`text-3xl font-bold ${headingFont} text-[#8b0000] mb-1`}>מודעות מסווגות</h2>
             <div className="h-0.5 bg-[#8b0000] mb-6" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {cvSections.map((section) => (
                 <div key={section.id} className="border-2 border-dotted border-[#d4c5a0] p-4">
-                  <h3 className="text-lg font-bold font-karantina text-[#2c2417] mb-3 text-center border-b border-[#d4c5a0] pb-2">
+                  <h3 className={`text-lg font-bold ${headingFont} text-[#2c2417] mb-3 text-center border-b border-[#d4c5a0] pb-2`}>
                     {section.title}
                   </h3>
                   <div className="space-y-3">
@@ -146,7 +157,7 @@ export default function NewspaperVintage({
 
         {/* Contact */}
         <footer id="contact" className="scroll-mt-16">
-          <h2 className="text-2xl font-bold font-karantina text-[#8b0000] mb-4">מערכת העיתון</h2>
+          <h2 className={`text-2xl font-bold ${headingFont} text-[#8b0000] mb-4`}>מערכת העיתון</h2>
           <div className="flex flex-col md:flex-row gap-6 md:gap-12">
             <div className="space-y-2">
               {contact.email && (

@@ -3,13 +3,6 @@
 import type { TemplateProps } from "../types";
 import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 
-const NAV_ITEMS = [
-  { id: "about", label: "אודות" },
-  { id: "projects", label: "פרויקטים" },
-  { id: "cv", label: "קורות חיים" },
-  { id: "contact", label: "צור קשר" },
-];
-
 export default function WatercolorSoft({
   student,
   about,
@@ -17,16 +10,34 @@ export default function WatercolorSoft({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-amatic-sc';
+
+  const NAV_ITEMS = [
+    { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? "יצירת קשר" },
+  ];
+
+
   return (
     <div
       className="min-h-screen bg-gradient-to-b from-[#e0f2fe] via-white to-[#f0fdf4] text-slate-700 font-open-sans scroll-smooth"
       dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#6366f1',
+        '--t-accent': customization?.colors?.accent ?? '#a78bfa',
+        '--t-bg': customization?.colors?.bg ?? '#faf5ff',
+        '--t-text': customization?.colors?.text ?? '#3b0764',
+      } as React.CSSProperties}
     >
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b border-sky-100">
         <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="font-amatic-sc text-lg text-sky-700">
+          <span className={`${headingFont} text-lg text-sky-700`}>
             {student.name}
           </span>
           <div className="flex items-center gap-6">
@@ -58,7 +69,7 @@ export default function WatercolorSoft({
                 />
               </div>
             )}
-            <h1 className="font-amatic-sc text-4xl md:text-6xl text-slate-800 leading-tight">
+            <h1 className={`${headingFont} text-4xl md:text-6xl text-slate-800 leading-tight`}>
               {student.name}
             </h1>
             {about.subtitle && (
@@ -87,8 +98,8 @@ export default function WatercolorSoft({
       {projects.length > 0 && (
         <section id="projects" className="scroll-mt-20 pb-20">
           <div className="max-w-5xl mx-auto px-6">
-            <h2 className="font-amatic-sc text-3xl md:text-4xl text-slate-700 text-center mb-2">
-              פרויקטים
+            <h2 className={`${headingFont} text-3xl md:text-4xl text-slate-700 text-center mb-2`}>
+              {customization?.sectionLabels?.projects ?? "פרויקטים"}
             </h2>
             <div className="w-16 h-0.5 bg-gradient-to-l from-sky-300 to-teal-300 mx-auto rounded-full mb-12" />
 
@@ -119,7 +130,7 @@ export default function WatercolorSoft({
                       </a>
                     )}
                     <div className="p-6">
-                      <h3 className="font-amatic-sc text-xl text-slate-800">
+                      <h3 className={`${headingFont} text-xl text-slate-800`}>
                         {project.title}
                       </h3>
                       {project.description && (
@@ -177,15 +188,15 @@ export default function WatercolorSoft({
       {cvSections.length > 0 && (
         <section id="cv" className="scroll-mt-20 pb-20">
           <div className="max-w-5xl mx-auto px-6">
-            <h2 className="font-amatic-sc text-3xl md:text-4xl text-slate-700 text-center mb-2">
-              קורות חיים
+            <h2 className={`${headingFont} text-3xl md:text-4xl text-slate-700 text-center mb-2`}>
+              {customization?.sectionLabels?.cv ?? "קורות חיים"}
             </h2>
             <div className="w-16 h-0.5 bg-gradient-to-l from-teal-300 to-emerald-300 mx-auto rounded-full mb-12" />
 
             <div className="max-w-3xl mx-auto space-y-10">
               {cvSections.map((section) => (
                 <div key={section.id}>
-                  <h3 className="font-amatic-sc text-xl text-sky-700 mb-5">
+                  <h3 className={`${headingFont} text-xl text-sky-700 mb-5`}>
                     {section.title}
                   </h3>
                   <div className="space-y-4">
@@ -227,8 +238,8 @@ export default function WatercolorSoft({
       {/* Contact */}
       <footer id="contact" className="scroll-mt-20 pb-16">
         <div className="max-w-5xl mx-auto px-6">
-          <h2 className="font-amatic-sc text-3xl md:text-4xl text-slate-700 text-center mb-2">
-            צור קשר
+          <h2 className={`${headingFont} text-3xl md:text-4xl text-slate-700 text-center mb-2`}>
+            {customization?.sectionLabels?.contact ?? "צור קשר"}
           </h2>
           <div className="w-16 h-0.5 bg-gradient-to-l from-sky-300 to-emerald-300 mx-auto rounded-full mb-10" />
 

@@ -24,7 +24,11 @@ export default function ChatBubbles({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-open-sans';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
+
   const time = (offset: number) => {
     const h = 9 + Math.floor(offset / 60);
     const m = offset % 60;
@@ -32,7 +36,16 @@ export default function ChatBubbles({
   };
 
   return (
-    <div className="min-h-screen bg-[#e5ddd5] font-open-sans scroll-smooth" dir="rtl">
+    <div
+      className={`min-h-screen bg-[#e5ddd5] ${bodyFont} scroll-smooth`}
+      dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#075e54',
+        '--t-accent': customization?.colors?.accent ?? '#25d366',
+        '--t-bg': customization?.colors?.bg ?? '#e5ddd5',
+        '--t-text': customization?.colors?.text ?? '#303030',
+      } as React.CSSProperties}
+    >
       {/* Chat header */}
       <nav className="sticky top-0 z-50 bg-[#075e54] text-white">
         <div className="max-w-2xl mx-auto px-4 flex items-center gap-3 h-14">
@@ -42,13 +55,13 @@ export default function ChatBubbles({
             <div className="w-10 h-10 rounded-full bg-[#128c7e]" />
           )}
           <div className="flex-1">
-            <p className="font-bold font-rubik text-sm">{student.name}</p>
+            <p className={`font-bold ${headingFont} text-sm`}>{student.name}</p>
             <p className="text-[10px] text-white/60">מחובר/ת</p>
           </div>
           <div className="flex items-center gap-4">
-            <a href="#about" className="text-xs text-white/50 hover:text-white transition-colors">אודות</a>
-            <a href="#projects" className="text-xs text-white/50 hover:text-white transition-colors">עבודות</a>
-            <a href="#cv" className="text-xs text-white/50 hover:text-white transition-colors">ניסיון</a>
+            <a href="#about" className="text-xs text-white/50 hover:text-white transition-colors">{customization?.sectionLabels?.about ?? "אודות"}</a>
+            <a href="#projects" className="text-xs text-white/50 hover:text-white transition-colors">{customization?.sectionLabels?.projects ?? "פרויקטים"}</a>
+            <a href="#cv" className="text-xs text-white/50 hover:text-white transition-colors">{customization?.sectionLabels?.cv ?? "קורות חיים"}</a>
           </div>
         </div>
       </nav>

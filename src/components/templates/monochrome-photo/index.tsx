@@ -3,13 +3,6 @@
 import type { TemplateProps } from "../types";
 import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 
-const NAV_ITEMS = [
-  { id: "about", label: "אודות" },
-  { id: "projects", label: "פרויקטים" },
-  { id: "cv", label: "קורות חיים" },
-  { id: "contact", label: "צור קשר" },
-];
-
 export default function MonochromePhoto({
   student,
   about,
@@ -17,11 +10,28 @@ export default function MonochromePhoto({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-karantina';
+
+  const NAV_ITEMS = [
+    { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? "יצירת קשר" },
+  ];
+
   return (
     <div
       className="min-h-screen bg-white text-neutral-900 font-open-sans scroll-smooth"
       dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#171717',
+        '--t-accent': customization?.colors?.accent ?? '#525252',
+        '--t-bg': customization?.colors?.bg ?? '#ffffff',
+        '--t-text': customization?.colors?.text ?? '#262626',
+      } as React.CSSProperties}
     >
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-neutral-200">
@@ -56,7 +66,7 @@ export default function MonochromePhoto({
           </div>
         )}
         <div className={`${student.image ? "absolute bottom-0 left-0 right-0" : ""} max-w-5xl mx-auto px-6 pb-12`}>
-          <h1 className="text-5xl md:text-7xl font-karantina font-bold text-white leading-tight drop-shadow-lg">
+          <h1 className={`text-5xl md:text-7xl ${headingFont} font-bold text-white leading-tight drop-shadow-lg`}>
             {student.name}
           </h1>
           {about.subtitle && (
@@ -71,7 +81,7 @@ export default function MonochromePhoto({
         {/* About */}
         {about.body && (
           <section id="about" className="py-16 scroll-mt-16">
-            <h2 className="text-3xl font-karantina font-bold mb-6">
+            <h2 className={`text-3xl ${headingFont} font-bold mb-6`}>
               {about.title || "אודות"}
             </h2>
             <div className="border-r-2 border-neutral-300 pr-6">
@@ -85,7 +95,7 @@ export default function MonochromePhoto({
         {/* Projects */}
         {projects.length > 0 && (
           <section id="projects" className="py-16 scroll-mt-16">
-            <h2 className="text-3xl font-karantina font-bold mb-10">פרויקטים</h2>
+            <h2 className={`text-3xl ${headingFont} font-bold mb-10`}>{customization?.sectionLabels?.projects ?? "פרויקטים"}</h2>
             <div className="space-y-16">
               {projects.map((project, idx) => (
                 <div
@@ -155,7 +165,7 @@ export default function MonochromePhoto({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv" className="py-16 scroll-mt-16">
-            <h2 className="text-3xl font-karantina font-bold mb-10">קורות חיים</h2>
+            <h2 className={`text-3xl ${headingFont} font-bold mb-10`}>{customization?.sectionLabels?.cv ?? "קורות חיים"}</h2>
             <div className="space-y-12">
               {cvSections.map((section) => (
                 <div key={section.id}>
@@ -194,8 +204,8 @@ export default function MonochromePhoto({
 
         {/* Contact */}
         <footer id="contact" className="py-16 border-t border-neutral-200 scroll-mt-16">
-          <h2 className="text-3xl font-karantina font-bold mb-8">צור קשר</h2>
-          <div className="flex flex-wrap gap-8 text-sm font-heebo text-neutral-500">
+          <h2 className={`text-3xl ${headingFont} font-bold mb-8`}>{customization?.sectionLabels?.contact ?? "צור קשר"}</h2>
+          <div className={`flex flex-wrap gap-8 text-sm ${bodyFont} text-neutral-500`}>
             {contact.email && (
               <a
                 href={`mailto:${contact.email}`}

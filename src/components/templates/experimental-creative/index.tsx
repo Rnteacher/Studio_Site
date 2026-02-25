@@ -3,13 +3,6 @@
 import type { TemplateProps } from "../types";
 import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 
-const NAV_ITEMS = [
-  { id: "about", label: "אודות", color: "bg-amber-400" },
-  { id: "projects", label: "עבודות", color: "bg-orange-400" },
-  { id: "cv", label: "ניסיון", color: "bg-rose-400" },
-  { id: "contact", label: "קשר", color: "bg-yellow-400" },
-];
-
 export default function ExperimentalCreative({
   student,
   about,
@@ -17,9 +10,27 @@ export default function ExperimentalCreative({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-playpen-sans';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
+
+  const NAV_ITEMS = [
+    { id: "about", label: customization?.sectionLabels?.about ?? "אודות", color: "bg-amber-400" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? "עבודות", color: "bg-orange-400" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? "ניסיון", color: "bg-rose-400" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? "קשר", color: "bg-yellow-400" },
+  ];
+
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-100 font-playpen-sans scroll-smooth" dir="rtl">
+    <div className={`min-h-screen bg-neutral-950 text-neutral-100 ${bodyFont} scroll-smooth`} dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#ec4899',
+        '--t-accent': customization?.colors?.accent ?? '#8b5cf6',
+        '--t-bg': customization?.colors?.bg ?? '#fffbeb',
+        '--t-text': customization?.colors?.text ?? '#1c1917',
+      } as React.CSSProperties}
+    >
       {/* Side Navigation — desktop vertical, mobile horizontal */}
       <nav className="fixed top-0 right-0 z-50 md:top-1/2 md:-translate-y-1/2 md:right-4 w-full md:w-auto bg-neutral-950/90 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none border-b md:border-b-0 border-neutral-800">
         <div className="flex md:flex-col items-center justify-center gap-4 md:gap-6 px-4 py-3 md:px-0 md:py-0">
@@ -50,7 +61,7 @@ export default function ExperimentalCreative({
             <p className="text-amber-400 text-sm tracking-widest uppercase mb-4">
               {about.subtitle}
             </p>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black font-rubik leading-[0.9] tracking-tight">
+            <h1 className={`text-5xl md:text-7xl lg:text-8xl font-black ${headingFont} leading-[0.9] tracking-tight`}>
               {student.name}
             </h1>
             {about.body && (
@@ -77,7 +88,7 @@ export default function ExperimentalCreative({
       {/* Projects — masonry-like staggered grid */}
       {projects.length > 0 && (
         <section id="projects" className="max-w-6xl mx-auto px-6 md:px-12 py-20 scroll-mt-20">
-          <h2 className="text-4xl md:text-5xl font-black font-rubik mb-14">
+          <h2 className={`text-4xl md:text-5xl font-black ${headingFont} mb-14`}>
             <span className="text-amber-400">עבודות</span> נבחרות
           </h2>
           <div className="columns-1 md:columns-2 gap-6 space-y-6">
@@ -107,7 +118,7 @@ export default function ExperimentalCreative({
                     </a>
                   )}
                   <h3
-                    className={`font-bold font-rubik ${
+                    className={`font-bold ${headingFont} ${
                       isLarge ? "text-2xl" : "text-lg"
                     }`}
                   >
@@ -166,14 +177,14 @@ export default function ExperimentalCreative({
       {cvSections.length > 0 && (
         <section id="cv" className="py-20 scroll-mt-20">
           <div className="max-w-6xl mx-auto px-6 md:px-12">
-            <h2 className="text-4xl md:text-5xl font-black font-rubik mb-14">
+            <h2 className={`text-4xl md:text-5xl font-black ${headingFont} mb-14`}>
               <span className="text-orange-400">ניסיון</span> מקצועי
             </h2>
           </div>
           <div className="max-w-6xl mx-auto px-6 md:px-12 space-y-16">
             {cvSections.map((section) => (
               <div key={section.id}>
-                <h3 className="text-xl font-bold font-rubik mb-8 flex items-center gap-3">
+                <h3 className={`text-xl font-bold ${headingFont} mb-8 flex items-center gap-3`}>
                   <span className="w-3 h-3 rounded-full bg-orange-400" />
                   {section.title}
                 </h3>
@@ -219,7 +230,7 @@ export default function ExperimentalCreative({
         className="scroll-mt-20 bg-gradient-to-br from-amber-500/10 via-neutral-950 to-orange-500/10 border-t border-neutral-800"
       >
         <div className="max-w-6xl mx-auto px-6 md:px-12 py-20">
-          <h2 className="text-4xl md:text-5xl font-black font-rubik mb-10">
+          <h2 className={`text-4xl md:text-5xl font-black ${headingFont} mb-10`}>
             <span className="text-amber-400">בואו</span> נדבר
           </h2>
           <div className="flex flex-wrap gap-4">

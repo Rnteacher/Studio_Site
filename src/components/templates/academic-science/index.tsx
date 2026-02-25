@@ -10,26 +10,34 @@ export default function AcademicScience({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-mono';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-heebo';
+
   return (
     <div
-      className="min-h-screen text-[#1f2937] font-mono scroll-smooth"
+      className={`min-h-screen text-[#1f2937] ${bodyFont} scroll-smooth`}
       dir="rtl"
       style={{
         background: "#f9fafb",
         backgroundImage: "linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px)",
         backgroundSize: "24px 24px",
-      }}
+        '--t-primary': customization?.colors?.primary ?? '#1e40af',
+        '--t-accent': customization?.colors?.accent ?? '#3b82f6',
+        '--t-bg': customization?.colors?.bg ?? '#f8fafc',
+        '--t-text': customization?.colors?.text ?? '#1e293b',
+      } as React.CSSProperties}
     >
       {/* Nav — minimal academic */}
       <nav className="sticky top-0 z-50 bg-[#f9fafb]/90 backdrop-blur-sm border-b border-[#d1d5db]">
         <div className="max-w-4xl mx-auto px-6 flex items-center justify-between h-12">
-          <span className="font-heebo font-bold text-sm text-[#1f2937] truncate">{student.name}</span>
+          <span className={`${headingFont} font-bold text-sm text-[#1f2937] truncate`}>{student.name}</span>
           <div className="flex items-center gap-6">
-            <a href="#about" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">1. אודות</a>
-            <a href="#projects" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">2. פרויקטים</a>
-            <a href="#cv" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">3. קורות חיים</a>
-            <a href="#contact" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">4. התכתבות</a>
+            <a href="#about" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">1. {customization?.sectionLabels?.about ?? "אודות"}</a>
+            <a href="#projects" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">2. {customization?.sectionLabels?.projects ?? "פרויקטים"}</a>
+            <a href="#cv" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">3. {customization?.sectionLabels?.cv ?? "קורות חיים"}</a>
+            <a href="#contact" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">4. {customization?.sectionLabels?.contact ?? "התכתבות"}</a>
           </div>
         </div>
       </nav>
@@ -40,7 +48,7 @@ export default function AcademicScience({
           {student.image && (
             <img src={student.image} alt={student.name} className="w-28 h-28 rounded-full object-cover mx-auto mb-6 border-2 border-[#d1d5db]" />
           )}
-          <h1 className="text-3xl md:text-4xl font-bold font-heebo mb-3 leading-tight">{student.name}</h1>
+          <h1 className={`text-3xl md:text-4xl font-bold ${headingFont} mb-3 leading-tight`}>{student.name}</h1>
           {about.subtitle && (
             <p className="text-[#6b7280] text-lg italic">{about.subtitle}</p>
           )}
@@ -52,7 +60,7 @@ export default function AcademicScience({
 
         {/* 1. About — Abstract */}
         <section id="about" className="mb-16 scroll-mt-16">
-          <h2 className="text-xl font-bold font-heebo mb-4 text-[#2563eb]">
+          <h2 className={`text-xl font-bold ${headingFont} mb-4 text-[#2563eb]`}>
             <span className="text-[#6b7280] font-mono">1.</span> {about.title || "תקציר"}
           </h2>
           <div className="border-r-2 border-[#2563eb] pr-6">
@@ -67,8 +75,8 @@ export default function AcademicScience({
         {/* 2. Projects — References/Citations */}
         {projects.length > 0 && (
           <section id="projects" className="mb-16 scroll-mt-16">
-            <h2 className="text-xl font-bold font-heebo mb-6 text-[#2563eb]">
-              <span className="text-[#6b7280] font-mono">2.</span> פרויקטים
+            <h2 className={`text-xl font-bold ${headingFont} mb-6 text-[#2563eb]`}>
+              <span className="text-[#6b7280] font-mono">2.</span> {customization?.sectionLabels?.projects ?? "פרויקטים"}
             </h2>
             <div className="space-y-6">
               {projects.map((project, pi) => (
@@ -76,7 +84,7 @@ export default function AcademicScience({
                   <div className="flex gap-3">
                     <span className="text-[#6b7280] font-mono text-sm shrink-0">[{pi + 1}]</span>
                     <div className="flex-1">
-                      <h3 className="font-bold font-heebo text-lg mb-1">{project.title}</h3>
+                      <h3 className={`font-bold ${headingFont} text-lg mb-1`}>{project.title}</h3>
                       {project.tags.length > 0 && (
                         <p className="text-xs text-[#2563eb] mb-2 italic">
                           מילות מפתח: {project.tags.join(", ")}
@@ -111,13 +119,13 @@ export default function AcademicScience({
         {/* 3. CV — Structured */}
         {cvSections.length > 0 && (
           <section id="cv" className="mb-16 scroll-mt-16">
-            <h2 className="text-xl font-bold font-heebo mb-6 text-[#2563eb]">
-              <span className="text-[#6b7280] font-mono">3.</span> קורות חיים
+            <h2 className={`text-xl font-bold ${headingFont} mb-6 text-[#2563eb]`}>
+              <span className="text-[#6b7280] font-mono">3.</span> {customization?.sectionLabels?.cv ?? "קורות חיים"}
             </h2>
             <div className="space-y-8">
               {cvSections.map((section, si) => (
                 <div key={section.id} className="bg-white/60 border border-[#d1d5db] rounded-lg p-6">
-                  <h3 className="font-bold font-heebo text-lg mb-4 pb-2 border-b border-[#e5e7eb]">
+                  <h3 className={`font-bold ${headingFont} text-lg mb-4 pb-2 border-b border-[#e5e7eb]`}>
                     <span className="text-[#6b7280] font-mono text-sm">3.{si + 1}</span> {section.title}
                   </h3>
                   <table className="w-full text-sm">
@@ -148,7 +156,7 @@ export default function AcademicScience({
 
         {/* 4. Contact — Correspondence */}
         <footer id="contact" className="mb-16 scroll-mt-16">
-          <h2 className="text-xl font-bold font-heebo mb-6 text-[#2563eb]">
+          <h2 className={`text-xl font-bold ${headingFont} mb-6 text-[#2563eb]`}>
             <span className="text-[#6b7280] font-mono">4.</span> התכתבות
           </h2>
           <div className="bg-white/60 border border-[#d1d5db] rounded-lg p-6">

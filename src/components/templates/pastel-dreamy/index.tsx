@@ -10,24 +10,34 @@ export default function PastelDreamy({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-fredoka';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-doodle';
+
   return (
     <div
       className="min-h-screen bg-gradient-to-b from-[#fce4ec] via-[#f3e5f5] to-[#e8f5e9] text-[#4a4a5a] font-playpen-sans scroll-smooth"
       dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#c084fc',
+        '--t-accent': customization?.colors?.accent ?? '#f9a8d4',
+        '--t-bg': customization?.colors?.bg ?? '#fdf4ff',
+        '--t-text': customization?.colors?.text ?? '#581c87',
+      } as React.CSSProperties}
     >
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-white/40 backdrop-blur-md border-b border-white/50">
         <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="text-sm font-rubik-doodle font-bold text-[#9c6b98]">
+          <span className={`text-sm ${headingFont} font-bold text-[#9c6b98]`}>
             {student.name}
           </span>
           <div className="flex items-center gap-6">
             {[
-              { id: "about", label: "אודות" },
-              { id: "projects", label: "פרויקטים" },
-              { id: "cv", label: "קורות חיים" },
-              { id: "contact", label: "צור קשר" },
+              { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+              { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+              { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
+              { id: "contact", label: customization?.sectionLabels?.contact ?? "צור קשר" },
             ].map((item) => (
               <a
                 key={item.id}
@@ -56,7 +66,7 @@ export default function PastelDreamy({
             <div className="absolute top-1/2 -right-6 w-6 h-6 rounded-full bg-[#f3e5f5]/80 -z-10" />
           </div>
         )}
-        <h1 className="text-5xl md:text-6xl font-rubik-doodle font-bold text-[#7b5ea7] leading-tight">
+        <h1 className={`text-5xl md:text-6xl ${headingFont} font-bold text-[#7b5ea7] leading-tight`}>
           {student.name}
         </h1>
         {about.subtitle && (
@@ -70,7 +80,7 @@ export default function PastelDreamy({
         {/* About */}
         {about.body && (
           <section id="about" className="py-14 scroll-mt-20">
-            <h2 className="text-2xl font-rubik-doodle font-bold text-[#7b5ea7] mb-6 text-center">
+            <h2 className={`text-2xl ${headingFont} font-bold text-[#7b5ea7] mb-6 text-center`}>
               {about.title || "אודות"}
             </h2>
             <div className="bg-white/50 backdrop-blur-sm rounded-[2rem] p-8 shadow-sm max-w-3xl mx-auto">
@@ -84,8 +94,8 @@ export default function PastelDreamy({
         {/* Projects */}
         {projects.length > 0 && (
           <section id="projects" className="py-14 scroll-mt-20">
-            <h2 className="text-2xl font-rubik-doodle font-bold text-[#7b5ea7] mb-10 text-center">
-              פרויקטים
+            <h2 className={`text-2xl ${headingFont} font-bold text-[#7b5ea7] mb-10 text-center`}>
+              {customization?.sectionLabels?.projects ?? "פרויקטים"}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {projects.map((project) => (
@@ -104,7 +114,7 @@ export default function PastelDreamy({
                     </div>
                   )}
                   <div className="p-6">
-                    <h3 className="text-lg font-rubik-doodle font-bold text-[#7b5ea7]">
+                    <h3 className={`text-lg ${headingFont} font-bold text-[#7b5ea7]`}>
                       {project.title}
                     </h3>
                     {project.description && (
@@ -159,8 +169,8 @@ export default function PastelDreamy({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv" className="py-14 scroll-mt-20">
-            <h2 className="text-2xl font-rubik-doodle font-bold text-[#7b5ea7] mb-10 text-center">
-              קורות חיים
+            <h2 className={`text-2xl ${headingFont} font-bold text-[#7b5ea7] mb-10 text-center`}>
+              {customization?.sectionLabels?.cv ?? "קורות חיים"}
             </h2>
             <div className="max-w-3xl mx-auto space-y-8">
               {cvSections.map((section) => (
@@ -168,7 +178,7 @@ export default function PastelDreamy({
                   key={section.id}
                   className="bg-white/50 backdrop-blur-sm rounded-[1.5rem] p-8 shadow-sm"
                 >
-                  <h3 className="text-lg font-rubik-doodle font-bold text-[#9c6b98] mb-5">
+                  <h3 className={`text-lg ${headingFont} font-bold text-[#9c6b98] mb-5`}>
                     {section.title}
                   </h3>
                   <div className="space-y-4">
@@ -214,8 +224,8 @@ export default function PastelDreamy({
           id="contact"
           className="py-14 border-t border-white/50 scroll-mt-20"
         >
-          <h2 className="text-2xl font-rubik-doodle font-bold text-[#7b5ea7] mb-8 text-center">
-            צור קשר
+          <h2 className={`text-2xl ${headingFont} font-bold text-[#7b5ea7] mb-8 text-center`}>
+            {customization?.sectionLabels?.contact ?? "צור קשר"}
           </h2>
           <div className="bg-white/50 backdrop-blur-sm rounded-[1.5rem] p-8 shadow-sm max-w-2xl mx-auto text-center">
             <div className="flex flex-wrap justify-center gap-8 text-sm">

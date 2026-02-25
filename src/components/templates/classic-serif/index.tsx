@@ -3,13 +3,6 @@
 import type { TemplateProps } from "../types";
 import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 
-const NAV_ITEMS = [
-  { id: "about", label: "אודות" },
-  { id: "projects", label: "פרויקטים" },
-  { id: "cv", label: "קורות חיים" },
-  { id: "contact", label: "יצירת קשר" },
-];
-
 export default function ClassicSerif({
   student,
   about,
@@ -17,9 +10,29 @@ export default function ClassicSerif({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-fredoka';
+
+  const NAV_ITEMS = [
+    { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? "יצירת קשר" },
+  ];
+
   return (
-    <div className="min-h-screen font-heebo scroll-smooth" dir="rtl">
+    <div
+      className={`min-h-screen ${bodyFont} scroll-smooth`}
+      dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#1b2a4a',
+        '--t-accent': customization?.colors?.accent ?? '#c9b97a',
+        '--t-bg': customization?.colors?.bg ?? '#faf8f3',
+        '--t-text': customization?.colors?.text ?? '#4a4a4a',
+      } as React.CSSProperties}
+    >
       {/* Mobile Header — collapses sidebar into horizontal strip */}
       <header className="lg:hidden bg-[#1b2a4a] text-white">
         <div className="flex flex-col items-center py-8 px-6 gap-4">
@@ -31,7 +44,7 @@ export default function ClassicSerif({
             />
           )}
           <h1
-            className="text-2xl font-bold font-fredoka"
+            className={`text-2xl font-bold ${headingFont}`}
           >
             {student.name}
           </h1>
@@ -68,7 +81,7 @@ export default function ClassicSerif({
             )}
             <div className="text-center">
               <h1
-                className="text-2xl font-bold leading-tight font-fredoka"
+                className={`text-2xl font-bold leading-tight ${headingFont}`}
               >
                 {student.name}
               </h1>
@@ -153,9 +166,9 @@ export default function ClassicSerif({
             {/* About */}
             <section id="about" className="mb-20 scroll-mt-16">
               <h2
-                className="text-3xl font-bold text-[#1b2a4a] mb-6 font-fredoka"
+                className={`text-3xl font-bold text-[#1b2a4a] mb-6 ${headingFont}`}
               >
-                {about.title || "אודות"}
+                {about.title || (customization?.sectionLabels?.about ?? "אודות")}
               </h2>
               <div className="w-16 h-0.5 bg-[#c9b97a] mb-8" />
               {about.body && (
@@ -171,9 +184,9 @@ export default function ClassicSerif({
             {projects.length > 0 && (
               <section id="projects" className="mb-20 scroll-mt-16">
                 <h2
-                  className="text-3xl font-bold text-[#1b2a4a] mb-6 font-fredoka"
+                  className={`text-3xl font-bold text-[#1b2a4a] mb-6 ${headingFont}`}
                 >
-                  פרויקטים
+                  {customization?.sectionLabels?.projects ?? "פרויקטים"}
                 </h2>
                 <div className="w-16 h-0.5 bg-[#c9b97a] mb-10" />
                 <div className="space-y-10">
@@ -183,7 +196,7 @@ export default function ClassicSerif({
                       className="border-b border-[#e5e0d5] pb-10 last:border-b-0"
                     >
                       <h3
-                        className="text-xl font-bold text-[#1b2a4a] mb-2 font-fredoka"
+                        className={`text-xl font-bold text-[#1b2a4a] mb-2 ${headingFont}`}
                       >
                         {project.title}
                       </h3>
@@ -241,9 +254,9 @@ export default function ClassicSerif({
             {cvSections.length > 0 && (
               <section id="cv" className="mb-20 scroll-mt-16">
                 <h2
-                  className="text-3xl font-bold text-[#1b2a4a] mb-6 font-fredoka"
+                  className={`text-3xl font-bold text-[#1b2a4a] mb-6 ${headingFont}`}
                 >
-                  קורות חיים
+                  {customization?.sectionLabels?.cv ?? "קורות חיים"}
                 </h2>
                 <div className="w-16 h-0.5 bg-[#c9b97a] mb-10" />
                 <div className="space-y-12">

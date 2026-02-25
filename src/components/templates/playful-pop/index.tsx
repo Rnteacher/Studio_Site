@@ -3,13 +3,6 @@
 import type { TemplateProps } from "../types";
 import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 
-const NAV_ITEMS = [
-  { id: "about", label: "אודות" },
-  { id: "projects", label: "פרויקטים" },
-  { id: "cv", label: "קורות חיים" },
-  { id: "contact", label: "צור קשר" },
-];
-
 const COLORS = ["#ff6b6b", "#ffd93d", "#6bcb77", "#4d96ff"];
 
 export default function PlayfulPop({
@@ -19,20 +12,37 @@ export default function PlayfulPop({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-fredoka';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-bubbles';
+
+  const navItems = [
+    { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? "צור קשר" },
+  ];
+
   return (
     <div
-      className="min-h-screen bg-[#fffbf0] text-neutral-800 font-fredoka scroll-smooth"
+      className={`min-h-screen bg-[#fffbf0] text-neutral-800 ${bodyFont} scroll-smooth`}
       dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#ff6b6b',
+        '--t-accent': customization?.colors?.accent ?? '#ffd93d',
+        '--t-bg': customization?.colors?.bg ?? '#fffbf0',
+        '--t-text': customization?.colors?.text ?? '#262626',
+      } as React.CSSProperties}
     >
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-[#fffbf0]/90 backdrop-blur-sm border-b-2 border-dashed border-[#ffd93d]">
         <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="font-rubik-bubbles text-2xl font-bold text-[#ff6b6b]">
+          <span className={`${headingFont} text-2xl font-bold text-[#ff6b6b]`}>
             {student.name}
           </span>
           <div className="flex items-center gap-4">
-            {NAV_ITEMS.map((item, i) => (
+            {navItems.map((item, i) => (
               <a
                 key={item.id}
                 href={`#${item.id}`}
@@ -75,7 +85,7 @@ export default function PlayfulPop({
             </div>
           )}
           <div className="text-center md:text-right flex-1">
-            <h1 className="font-rubik-bubbles text-6xl md:text-8xl font-bold leading-tight">
+            <h1 className={`${headingFont} text-6xl md:text-8xl font-bold leading-tight`}>
               <span className="text-[#ff6b6b]">{student.name.split(" ")[0]}</span>
               {student.name.includes(" ") && (
                 <span className="text-[#4d96ff]"> {student.name.split(" ").slice(1).join(" ")}</span>
@@ -104,8 +114,8 @@ export default function PlayfulPop({
         {/* About */}
         {about.body && (
           <section id="about" className="py-12 scroll-mt-16">
-            <h2 className="font-rubik-bubbles text-4xl font-bold text-[#6bcb77] mb-6">
-              {about.title || "אודות"} ✿
+            <h2 className={`${headingFont} text-4xl font-bold text-[#6bcb77] mb-6`}>
+              {about.title || (customization?.sectionLabels?.about ?? "אודות")} ✿
             </h2>
             <div className="bg-white rounded-3xl p-8 border-2 border-dashed border-[#6bcb77]/40 shadow-sm">
               <p className="text-neutral-600 leading-relaxed whitespace-pre-line text-lg">
@@ -118,8 +128,8 @@ export default function PlayfulPop({
         {/* Projects */}
         {projects.length > 0 && (
           <section id="projects" className="py-12 scroll-mt-16">
-            <h2 className="font-rubik-bubbles text-4xl font-bold text-[#ff6b6b] mb-8">
-              פרויקטים ★
+            <h2 className={`${headingFont} text-4xl font-bold text-[#ff6b6b] mb-8`}>
+              {customization?.sectionLabels?.projects ?? "פרויקטים"} ★
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {projects.map((project, idx) => (
@@ -137,7 +147,7 @@ export default function PlayfulPop({
                   )}
                   <div className="p-6">
                     <h3
-                      className="font-rubik-bubbles text-2xl font-bold"
+                      className={`${headingFont} text-2xl font-bold`}
                       style={{ color: COLORS[idx % COLORS.length] }}
                     >
                       {project.title}
@@ -195,8 +205,8 @@ export default function PlayfulPop({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv" className="py-12 scroll-mt-16">
-            <h2 className="font-rubik-bubbles text-4xl font-bold text-[#4d96ff] mb-8">
-              קורות חיים ◆
+            <h2 className={`${headingFont} text-4xl font-bold text-[#4d96ff] mb-8`}>
+              {customization?.sectionLabels?.cv ?? "קורות חיים"} ◆
             </h2>
             <div className="space-y-8">
               {cvSections.map((section, secIdx) => (
@@ -206,7 +216,7 @@ export default function PlayfulPop({
                   style={{ borderColor: COLORS[secIdx % COLORS.length] + "40" }}
                 >
                   <h3
-                    className="font-rubik-bubbles text-2xl font-bold mb-4"
+                    className={`${headingFont} text-2xl font-bold mb-4`}
                     style={{ color: COLORS[secIdx % COLORS.length] }}
                   >
                     {section.title}
@@ -247,8 +257,8 @@ export default function PlayfulPop({
 
         {/* Contact */}
         <footer id="contact" className="py-12 scroll-mt-16">
-          <h2 className="font-rubik-bubbles text-4xl font-bold text-[#ffd93d] mb-8">
-            צור קשר ♡
+          <h2 className={`${headingFont} text-4xl font-bold text-[#ffd93d] mb-8`}>
+            {customization?.sectionLabels?.contact ?? "צור קשר"} ♡
           </h2>
           <div className="bg-white rounded-3xl p-8 border-2 border-dashed border-[#ffd93d]/40 shadow-sm text-center">
             <div className="flex flex-wrap justify-center gap-6 text-sm">

@@ -67,6 +67,7 @@ export type Database = {
           contact_email: string
           contact_phone: string
           contact_website: string | null
+          custom_settings: Record<string, unknown>
           created_at: string
           updated_at: string
         }
@@ -83,6 +84,7 @@ export type Database = {
           contact_email?: string
           contact_phone?: string
           contact_website?: string | null
+          custom_settings?: Record<string, unknown>
           created_at?: string
           updated_at?: string
         }
@@ -99,6 +101,7 @@ export type Database = {
           contact_email?: string
           contact_phone?: string
           contact_website?: string | null
+          custom_settings?: Record<string, unknown>
           created_at?: string
           updated_at?: string
         }

@@ -3,13 +3,6 @@
 import type { TemplateProps } from "../types";
 import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 
-const NAV_ITEMS = [
-  { id: "about", label: "אודות" },
-  { id: "projects", label: "פרויקטים" },
-  { id: "cv", label: "קורות חיים" },
-  { id: "contact", label: "יצירת קשר" },
-];
-
 export default function ModernDark({
   student,
   about,
@@ -17,16 +10,34 @@ export default function ModernDark({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
+
+  const NAV_ITEMS = [
+    { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? "יצירת קשר" },
+  ];
+
+
   return (
     <div
-      className="min-h-screen bg-gray-950 text-gray-100 font-heebo scroll-smooth selection:bg-lime-400 selection:text-gray-950"
+      className={`min-h-screen bg-gray-950 text-gray-100 ${bodyFont} scroll-smooth selection:bg-lime-400 selection:text-gray-950`}
       dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#a3e635',
+        '--t-accent': customization?.colors?.accent ?? '#22d3ee',
+        '--t-bg': customization?.colors?.bg ?? '#030712',
+        '--t-text': customization?.colors?.text ?? '#f3f4f6',
+      } as React.CSSProperties}
     >
       {/* Sticky Navigation */}
       <nav className="sticky top-0 z-50 bg-gray-950/80 backdrop-blur-lg border-b border-lime-400/10">
         <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="text-sm font-rubik font-bold text-lime-400 tracking-wider">
+          <span className={`text-sm ${headingFont} font-bold text-lime-400 tracking-wider`}>
             {student.name}
           </span>
           <div className="flex items-center gap-8">
@@ -70,7 +81,7 @@ export default function ModernDark({
 
             {/* Name & About */}
             <div className="text-center md:text-right flex-1">
-              <h1 className="text-5xl md:text-7xl font-rubik font-black tracking-tight text-white">
+              <h1 className={`text-5xl md:text-7xl ${headingFont} font-black tracking-tight text-white`}>
                 {student.name}
               </h1>
               {about.subtitle && (
@@ -92,8 +103,8 @@ export default function ModernDark({
       {projects.length > 0 && (
         <section id="projects" className="scroll-mt-20 py-20">
           <div className="max-w-5xl mx-auto px-6">
-            <h2 className="text-3xl md:text-4xl font-rubik font-bold mb-2 text-white">
-              פרויקטים
+            <h2 className={`text-3xl md:text-4xl ${headingFont} font-bold mb-2 text-white`}>
+              {customization?.sectionLabels?.projects ?? "פרויקטים"}
             </h2>
             <div className="w-20 h-1 bg-gradient-to-l from-lime-400 to-cyan-400 rounded-full mb-14" />
 
@@ -120,7 +131,7 @@ export default function ModernDark({
                   )}
 
                   <div className="p-6">
-                    <h3 className="text-xl font-rubik font-bold text-white group-hover:text-lime-400 transition-colors">
+                    <h3 className={`text-xl ${headingFont} font-bold text-white group-hover:text-lime-400 transition-colors`}>
                       {project.title}
                     </h3>
                     {project.description && (
@@ -177,8 +188,8 @@ export default function ModernDark({
       {cvSections.length > 0 && (
         <section id="cv" className="scroll-mt-20 py-20">
           <div className="max-w-5xl mx-auto px-6">
-            <h2 className="text-3xl md:text-4xl font-rubik font-bold mb-2 text-white">
-              קורות חיים
+            <h2 className={`text-3xl md:text-4xl ${headingFont} font-bold mb-2 text-white`}>
+              {customization?.sectionLabels?.cv ?? "קורות חיים"}
             </h2>
             <div className="w-20 h-1 bg-gradient-to-l from-cyan-400 to-lime-400 rounded-full mb-14" />
 
@@ -188,7 +199,7 @@ export default function ModernDark({
                   key={section.id}
                   className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 border-r-4 border-r-lime-400"
                 >
-                  <h3 className="text-lg font-rubik font-bold text-lime-400 mb-6">
+                  <h3 className={`text-lg ${headingFont} font-bold text-lime-400 mb-6`}>
                     {section.title}
                   </h3>
                   <div className="space-y-5">
@@ -230,8 +241,8 @@ export default function ModernDark({
       {/* Contact / Footer */}
       <footer id="contact" className="scroll-mt-20 py-20 border-t border-zinc-800">
         <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-rubik font-bold mb-2 text-white">
-            יצירת קשר
+          <h2 className={`text-3xl md:text-4xl ${headingFont} font-bold mb-2 text-white`}>
+            {customization?.sectionLabels?.contact ?? "יצירת קשר"}
           </h2>
           <div className="w-20 h-1 bg-gradient-to-l from-lime-400 to-cyan-400 rounded-full mb-10" />
 

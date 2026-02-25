@@ -10,18 +10,29 @@ export default function StageScreen({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-karantina';
+
   return (
-    <div className="min-h-screen bg-[#0c0c0c] text-[#e8e0d0] font-heebo scroll-smooth border-x-4 border-[#b91c1c]" dir="rtl">
+    <div className={`min-h-screen bg-[#0c0c0c] text-[#e8e0d0] ${bodyFont} scroll-smooth border-x-4 border-[#b91c1c]`} dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#e11d48',
+        '--t-accent': customization?.colors?.accent ?? '#be123c',
+        '--t-bg': customization?.colors?.bg ?? '#0f0f0f',
+        '--t-text': customization?.colors?.text ?? '#e5e5e5',
+      } as React.CSSProperties}
+    >
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-[#0c0c0c]/90 backdrop-blur-sm border-b border-[#b91c1c]/30">
         <div className="max-w-4xl mx-auto px-6 flex items-center justify-between h-12">
-          <span className="font-karantina text-xl text-[#c9a44a]">{student.name}</span>
+          <span className={`${headingFont} text-xl text-[#c9a44a]`}>{student.name}</span>
           <div className="flex items-center gap-6">
-            <a href="#about" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">אודות</a>
-            <a href="#projects" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">הפקות</a>
-            <a href="#cv" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">קורות חיים</a>
-            <a href="#contact" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">דלת במה</a>
+            <a href="#about" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.about ?? "אודות"}</a>
+            <a href="#projects" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.projects ?? "הפקות"}</a>
+            <a href="#cv" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.cv ?? "קורות חיים"}</a>
+            <a href="#contact" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.contact ?? "דלת במה"}</a>
           </div>
         </div>
       </nav>
@@ -32,7 +43,7 @@ export default function StageScreen({
           {student.image && (
             <img src={student.image} alt={student.name} className="w-36 h-36 md:w-44 md:h-44 rounded-full object-cover mx-auto mb-8 border-2 border-[#c9a44a]/40" style={{ boxShadow: "0 0 60px rgba(201,164,74,0.15)" }} />
           )}
-          <h1 className="text-5xl md:text-7xl font-bold font-karantina text-[#c9a44a] mb-4 leading-none" style={{ textShadow: "0 0 30px rgba(201,164,74,0.2)" }}>
+          <h1 className={`text-5xl md:text-7xl font-bold ${headingFont} text-[#c9a44a] mb-4 leading-none`} style={{ textShadow: "0 0 30px rgba(201,164,74,0.2)" }}>
             {student.name}
           </h1>
           {about.subtitle && (
@@ -49,10 +60,10 @@ export default function StageScreen({
       <div className="max-w-4xl mx-auto px-6 py-16 space-y-20">
         {/* About */}
         <section id="about" className="scroll-mt-16">
-          <h2 className="text-3xl font-bold font-karantina text-[#c9a44a] mb-2">אודות</h2>
+          <h2 className={`text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>{customization?.sectionLabels?.about ?? "אודות"}</h2>
           <div className="w-20 h-0.5 bg-[#b91c1c] mb-6" />
           <div className="bg-[#1a1a1a] rounded-sm p-8 border border-[#b91c1c]/15">
-            <h3 className="text-xl font-bold font-karantina text-[#c9a44a] mb-3">{about.title || student.name}</h3>
+            <h3 className={`text-xl font-bold ${headingFont} text-[#c9a44a] mb-3`}>{about.title || student.name}</h3>
             {about.body && (
               <p className="text-[#e8e0d0]/70 leading-[1.8] whitespace-pre-line">{about.body}</p>
             )}
@@ -62,7 +73,7 @@ export default function StageScreen({
         {/* Projects — Film strip cards */}
         {projects.length > 0 && (
           <section id="projects" className="scroll-mt-16">
-            <h2 className="text-3xl font-bold font-karantina text-[#c9a44a] mb-2">הפקות</h2>
+            <h2 className={`text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>הפקות</h2>
             <div className="w-20 h-0.5 bg-[#b91c1c] mb-8" />
             <div className="space-y-8">
               {projects.map((project) => (
@@ -74,7 +85,7 @@ export default function StageScreen({
                     ))}
                   </div>
                   <div className="p-6">
-                    <h3 className="text-2xl font-bold font-karantina text-[#c9a44a] mb-2">{project.title}</h3>
+                    <h3 className={`text-2xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>{project.title}</h3>
                     {project.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-3">
                         {project.tags.map((tag) => (
@@ -118,12 +129,12 @@ export default function StageScreen({
         {/* CV — Playbill */}
         {cvSections.length > 0 && (
           <section id="cv" className="scroll-mt-16">
-            <h2 className="text-3xl font-bold font-karantina text-[#c9a44a] mb-2">תוכניה</h2>
+            <h2 className={`text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>תוכניה</h2>
             <div className="w-20 h-0.5 bg-[#b91c1c] mb-8" />
             <div className="space-y-10">
               {cvSections.map((section) => (
                 <div key={section.id} className="bg-[#1a1a1a] border border-[#b91c1c]/15 p-6">
-                  <h3 className="text-2xl font-bold font-karantina text-[#c9a44a] mb-5 pb-2 border-b border-[#c9a44a]/20">
+                  <h3 className={`text-2xl font-bold ${headingFont} text-[#c9a44a] mb-5 pb-2 border-b border-[#c9a44a]/20`}>
                     {section.title}
                   </h3>
                   <div className="space-y-5">
@@ -147,7 +158,7 @@ export default function StageScreen({
 
         {/* Contact — Stage Door */}
         <footer id="contact" className="scroll-mt-16 border-t border-[#b91c1c]/20 pt-10">
-          <h2 className="text-3xl font-bold font-karantina text-[#c9a44a] mb-6">דלת הבמה</h2>
+          <h2 className={`text-3xl font-bold ${headingFont} text-[#c9a44a] mb-6`}>דלת הבמה</h2>
           <div className="flex flex-wrap gap-4">
             {contact.email && (
               <a href={`mailto:${contact.email}`} className="flex items-center gap-2 bg-[#b91c1c] text-white px-5 py-2.5 text-sm hover:bg-[#991b1b] transition-colors">

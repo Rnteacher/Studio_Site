@@ -3,13 +3,6 @@
 import type { TemplateProps } from "../types";
 import { Mail, Phone, Globe, ExternalLink } from "lucide-react";
 
-const NAV_ITEMS = [
-  { id: "about", label: "אודות" },
-  { id: "projects", label: "פרויקטים" },
-  { id: "cv", label: "קורות חיים" },
-  { id: "contact", label: "יצירת קשר" },
-];
-
 export default function SidebarCreative({
   student,
   about,
@@ -17,9 +10,28 @@ export default function SidebarCreative({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-rubik';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-dirt';
+
+  const NAV_ITEMS = [
+    { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? "יצירת קשר" },
+  ];
+
+
   return (
-    <div className="min-h-screen font-rubik scroll-smooth" dir="rtl">
+    <div className={`min-h-screen ${bodyFont} scroll-smooth`} dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#f97316',
+        '--t-accent': customization?.colors?.accent ?? '#fb923c',
+        '--t-bg': customization?.colors?.bg ?? '#1c1917',
+        '--t-text': customization?.colors?.text ?? '#e7e5e4',
+      } as React.CSSProperties}
+    >
       {/* Mobile Header */}
       <header className="lg:hidden text-white" style={{ background: "linear-gradient(135deg, #6b21a8 0%, #1e3a5f 100%)" }}>
         <div className="flex flex-col items-center py-8 px-6 gap-4">
@@ -30,7 +42,7 @@ export default function SidebarCreative({
               className="w-24 h-24 rounded-full object-cover border-4 border-[#f97316] rotate-3"
             />
           )}
-          <h1 className="text-2xl font-bold font-rubik-dirt text-white">
+          <h1 className={`text-2xl font-bold ${headingFont} text-white`}>
             {student.name}
           </h1>
           {about.subtitle && (
@@ -60,7 +72,7 @@ export default function SidebarCreative({
               />
             )}
             <div className="text-center">
-              <h1 className="text-2xl font-bold leading-tight font-rubik-dirt">
+              <h1 className={`text-2xl font-bold leading-tight ${headingFont}`}>
                 {student.name}
               </h1>
               {about.subtitle && (
@@ -119,7 +131,7 @@ export default function SidebarCreative({
           <div className="max-w-3xl mx-auto px-6 md:px-10 py-16 lg:py-20 relative z-10">
             {/* About */}
             <section id="about" className="mb-20 scroll-mt-16">
-              <h2 className="text-3xl font-bold text-[#6b21a8] mb-6 font-rubik-dirt">
+              <h2 className={`text-3xl font-bold text-[#6b21a8] mb-6 ${headingFont}`}>
                 {about.title || "אודות"}
               </h2>
               <div className="w-16 h-1 bg-[#f97316] mb-8 rounded-full" />
@@ -131,12 +143,12 @@ export default function SidebarCreative({
             {/* Projects */}
             {projects.length > 0 && (
               <section id="projects" className="mb-20 scroll-mt-16">
-                <h2 className="text-3xl font-bold text-[#6b21a8] mb-6 font-rubik-dirt">פרויקטים</h2>
+                <h2 className={`text-3xl font-bold text-[#6b21a8] mb-6 ${headingFont}`}>{customization?.sectionLabels?.projects ?? "פרויקטים"}</h2>
                 <div className="w-16 h-1 bg-[#f97316] mb-10 rounded-full" />
                 <div className="space-y-10">
                   {projects.map((project) => (
                     <article key={project.id} className="border-r-4 border-[#6b21a8] pr-6 pb-10">
-                      <h3 className="text-xl font-bold text-[#3a3a4a] mb-2 font-rubik-dirt">{project.title}</h3>
+                      <h3 className={`text-xl font-bold text-[#3a3a4a] mb-2 ${headingFont}`}>{project.title}</h3>
                       {project.tags.length > 0 && (
                         <div className="flex flex-wrap gap-2 mb-3">
                           {project.tags.map((tag, i) => (
@@ -173,12 +185,12 @@ export default function SidebarCreative({
             {/* CV */}
             {cvSections.length > 0 && (
               <section id="cv" className="mb-20 scroll-mt-16">
-                <h2 className="text-3xl font-bold text-[#6b21a8] mb-6 font-rubik-dirt">קורות חיים</h2>
+                <h2 className={`text-3xl font-bold text-[#6b21a8] mb-6 ${headingFont}`}>{customization?.sectionLabels?.cv ?? "קורות חיים"}</h2>
                 <div className="w-16 h-1 bg-[#f97316] mb-10 rounded-full" />
                 <div className="space-y-12">
                   {cvSections.map((section) => (
                     <div key={section.id}>
-                      <h3 className="text-lg font-bold text-[#6b21a8] mb-6 pb-2 border-b-2 border-[#f97316]/40 font-rubik-dirt">
+                      <h3 className={`text-lg font-bold text-[#6b21a8] mb-6 pb-2 border-b-2 border-[#f97316]/40 ${headingFont}`}>
                         {section.title}
                       </h3>
                       <div className="relative pr-8 space-y-8">
@@ -203,7 +215,7 @@ export default function SidebarCreative({
 
             {/* Contact — mobile only */}
             <footer id="contact" className="lg:hidden pt-10 border-t border-[#e5e0d5] scroll-mt-16">
-              <h2 className="text-2xl font-bold text-[#6b21a8] mb-6 font-rubik-dirt">יצירת קשר</h2>
+              <h2 className={`text-2xl font-bold text-[#6b21a8] mb-6 ${headingFont}`}>{customization?.sectionLabels?.contact ?? "יצירת קשר"}</h2>
               <div className="space-y-4">
                 {contact.email && (
                   <a href={`mailto:${contact.email}`} className="flex items-center gap-3 text-[#5a5a6a] hover:text-[#f97316] transition-colors">

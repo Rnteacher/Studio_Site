@@ -12,27 +12,39 @@ export default function ModernBold({
   cvSections,
   projects,
   isPreview,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
   return (
-    <div className="min-h-screen bg-gray-950 text-white font-heebo scroll-smooth" dir="rtl">
+    <div
+      className={`min-h-screen bg-gray-950 text-white ${bodyFont} scroll-smooth`}
+      dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#6366f1',
+        '--t-accent': customization?.colors?.accent ?? '#a855f7',
+        '--t-bg': customization?.colors?.bg ?? '#030712',
+        '--t-text': customization?.colors?.text ?? '#ffffff',
+      } as React.CSSProperties}
+    >
       {/* Sticky Navigation - glassmorphism */}
       <nav className="sticky top-0 z-50 bg-gray-950/60 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-14">
-          <span className="font-rubik font-black text-white text-sm truncate">
+          <span className={`${headingFont} font-black text-white text-sm truncate`}>
             {student.name}
           </span>
           <div className="flex items-center gap-6">
             <a href="#about" className="text-sm text-gray-400 hover:text-white transition-colors">
-              אודות
+              {customization?.sectionLabels?.about ?? "אודות"}
             </a>
             <a href="#projects" className="text-sm text-gray-400 hover:text-white transition-colors">
-              פרויקטים
+              {customization?.sectionLabels?.projects ?? "פרויקטים"}
             </a>
             <a href="#cv" className="text-sm text-gray-400 hover:text-white transition-colors">
-              קורות חיים
+              {customization?.sectionLabels?.cv ?? "קורות חיים"}
             </a>
             <a href="#contact" className="text-sm text-gray-400 hover:text-white transition-colors">
-              יצירת קשר
+              {customization?.sectionLabels?.contact ?? "יצירת קשר"}
             </a>
           </div>
         </div>
@@ -53,7 +65,7 @@ export default function ModernBold({
             />
           )}
           <div className="text-center md:text-right">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-black font-rubik mb-4 bg-gradient-to-l from-purple-300 via-white to-white bg-clip-text text-transparent leading-tight">
+            <h1 className={`text-5xl md:text-6xl lg:text-7xl font-black ${headingFont} mb-4 bg-gradient-to-l from-purple-300 via-white to-white bg-clip-text text-transparent leading-tight`}>
               {student.name}
             </h1>
             {about.subtitle && (
@@ -86,9 +98,9 @@ export default function ModernBold({
       <div className="max-w-6xl mx-auto px-6 py-20 space-y-24">
         {/* About */}
         <section id="about">
-          <h2 className="text-3xl font-black font-rubik mb-8">אודות</h2>
+          <h2 className={`text-3xl font-black ${headingFont} mb-8`}>{customization?.sectionLabels?.about ?? "אודות"}</h2>
           <div className="bg-gray-900/50 rounded-2xl p-8 md:p-10 border border-white/5">
-            <h3 className="text-xl font-bold font-rubik mb-4 text-purple-300">
+            <h3 className={`text-xl font-bold ${headingFont} mb-4 text-purple-300`}>
               {about.title || student.name}
             </h3>
             {about.body && (
@@ -102,7 +114,7 @@ export default function ModernBold({
         {/* Projects - Large cards with hover */}
         {projects.length > 0 && (
           <section id="projects">
-            <h2 className="text-3xl font-black font-rubik mb-10">פרויקטים</h2>
+            <h2 className={`text-3xl font-black ${headingFont} mb-10`}>{customization?.sectionLabels?.projects ?? "פרויקטים"}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {projects.map((project) => (
                 <div
@@ -121,7 +133,7 @@ export default function ModernBold({
                     )}
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-bold font-rubik mb-2 group-hover:text-purple-300 transition-colors">
+                    <h3 className={`text-xl font-bold ${headingFont} mb-2 group-hover:text-purple-300 transition-colors`}>
                       {project.title}
                     </h3>
                     {project.description && (
@@ -176,11 +188,11 @@ export default function ModernBold({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv">
-            <h2 className="text-3xl font-black font-rubik mb-10">קורות חיים</h2>
+            <h2 className={`text-3xl font-black ${headingFont} mb-10`}>{customization?.sectionLabels?.cv ?? "קורות חיים"}</h2>
             <div className="space-y-10">
               {cvSections.map((section) => (
                 <div key={section.id}>
-                  <h3 className="text-xl font-bold font-rubik mb-5 text-purple-300">
+                  <h3 className={`text-xl font-bold ${headingFont} mb-5 text-purple-300`}>
                     {section.title}
                   </h3>
                   <div className="space-y-4">
@@ -218,7 +230,7 @@ export default function ModernBold({
 
         {/* Contact */}
         <footer id="contact" className="border-t border-white/10 pt-12">
-          <h2 className="text-3xl font-black font-rubik mb-8">בואו נדבר</h2>
+          <h2 className={`text-3xl font-black ${headingFont} mb-8`}>{customization?.sectionLabels?.contact ?? "בואו נדבר"}</h2>
           <div className="flex flex-wrap gap-4">
             {contact.email && (
               <a

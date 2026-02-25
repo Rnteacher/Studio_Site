@@ -10,11 +10,21 @@ export default function TechTerminal({
   socialLinks,
   cvSections,
   projects,
+  customization,
 }: TemplateProps) {
+  const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-mono';
+  const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-pixels';
+
   return (
     <div
-      className="min-h-screen bg-[#0a0a0a] text-[#b0b0b0] font-mono scroll-smooth selection:bg-[#00ff41]/20"
+      className={`min-h-screen bg-[#0a0a0a] text-[#b0b0b0] ${bodyFont} scroll-smooth selection:bg-[#00ff41]/20`}
       dir="rtl"
+      style={{
+        '--t-primary': customization?.colors?.primary ?? '#00ff41',
+        '--t-accent': customization?.colors?.accent ?? '#00ff41',
+        '--t-bg': customization?.colors?.bg ?? '#0a0a0a',
+        '--t-text': customization?.colors?.text ?? '#b0b0b0',
+      } as React.CSSProperties}
     >
       {/* Top bar */}
       <nav className="sticky top-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-sm border-b border-[#00ff41]/20">
@@ -24,9 +34,9 @@ export default function TechTerminal({
           </span>
           <div className="flex items-center gap-6">
             {[
-              { id: "about", label: "אודות" },
-              { id: "projects", label: "פרויקטים" },
-              { id: "cv", label: "קורות_חיים" },
+              { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
+              { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
+              { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
               { id: "contact", label: "צור_קשר" },
             ].map((item) => (
               <a
@@ -55,7 +65,7 @@ export default function TechTerminal({
             <p className="font-mono text-[#00ff41]/50 text-sm mb-2">
               $ whoami
             </p>
-            <h1 className="text-4xl md:text-5xl font-rubik-pixels font-bold text-[#00ff41] leading-tight">
+            <h1 className={`text-4xl md:text-5xl ${headingFont} font-bold text-[#00ff41] leading-tight`}>
               {student.name}
             </h1>
             {about.subtitle && (
@@ -77,7 +87,7 @@ export default function TechTerminal({
         {/* About */}
         {about.body && (
           <section id="about" className="py-12 scroll-mt-16">
-            <h2 className="font-rubik-pixels text-lg text-[#00ff41] mb-6">
+            <h2 className={`${headingFont} text-lg text-[#00ff41] mb-6`}>
               <span className="text-[#00ff41]/40">&gt; </span>
               {about.title || "אודות"}
             </h2>
@@ -92,7 +102,7 @@ export default function TechTerminal({
         {/* Projects */}
         {projects.length > 0 && (
           <section id="projects" className="py-12 scroll-mt-16">
-            <h2 className="font-rubik-pixels text-lg text-[#00ff41] mb-6">
+            <h2 className={`${headingFont} text-lg text-[#00ff41] mb-6`}>
               <span className="text-[#00ff41]/40">&gt; </span>
               פרויקטים
               <span className="text-[#00ff41]/30 text-sm mr-3">
@@ -111,7 +121,7 @@ export default function TechTerminal({
                         <span className="font-mono text-[#00ff41]/40 text-xs">
                           [{String(idx).padStart(2, "0")}]
                         </span>
-                        <h3 className="font-rubik-pixels text-[#00ff41] font-bold text-lg">
+                        <h3 className={`${headingFont} text-[#00ff41] font-bold text-lg`}>
                           {project.title}
                         </h3>
                       </div>
@@ -175,9 +185,9 @@ export default function TechTerminal({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv" className="py-12 scroll-mt-16">
-            <h2 className="font-rubik-pixels text-lg text-[#00ff41] mb-6">
+            <h2 className={`${headingFont} text-lg text-[#00ff41] mb-6`}>
               <span className="text-[#00ff41]/40">&gt; </span>
-              קורות חיים
+              {customization?.sectionLabels?.cv ?? "קורות חיים"}
             </h2>
             <div className="space-y-6">
               {cvSections.map((section) => (
@@ -185,7 +195,7 @@ export default function TechTerminal({
                   key={section.id}
                   className="border border-[#00ff41]/10 bg-[#0f0f0f] p-6"
                 >
-                  <h3 className="font-rubik-pixels text-[#00ff41]/70 font-bold mb-4 text-sm">
+                  <h3 className={`${headingFont} text-[#00ff41]/70 font-bold mb-4 text-sm`}>
                     --- {section.title} ---
                   </h3>
                   <div className="space-y-3">
@@ -221,9 +231,9 @@ export default function TechTerminal({
           id="contact"
           className="py-12 border-t border-[#00ff41]/10 scroll-mt-16"
         >
-          <h2 className="font-rubik-pixels text-lg text-[#00ff41] mb-6">
+          <h2 className={`${headingFont} text-lg text-[#00ff41] mb-6`}>
             <span className="text-[#00ff41]/40">&gt; </span>
-            צור קשר
+            {customization?.sectionLabels?.contact ?? "צור קשר"}
           </h2>
           <div className="border border-[#00ff41]/10 bg-[#0f0f0f] p-6 font-mono text-sm">
             <div className="space-y-2">
