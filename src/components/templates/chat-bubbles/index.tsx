@@ -74,7 +74,7 @@ export default function ChatBubbles({
           {/* System message */}
           <div className="flex justify-center my-3">
             <span className="bg-[#ffeeba] text-[#5a5a5a] text-[11px] px-3 py-1 rounded-md shadow-sm">
-              {about.title || "אודות"}
+              {about.title || (customization?.sectionLabels?.about ?? "אודות")}
             </span>
           </div>
 
@@ -109,7 +109,7 @@ export default function ChatBubbles({
           <section id="projects" className="mb-2 scroll-mt-16">
             <div className="flex justify-center my-3">
               <span className="bg-[#ffeeba] text-[#5a5a5a] text-[11px] px-3 py-1 rounded-md shadow-sm">
-                פרויקטים
+                {customization?.sectionLabels?.projects ?? "פרויקטים"}
               </span>
             </div>
 
@@ -170,7 +170,7 @@ export default function ChatBubbles({
           <section id="cv" className="mb-2 scroll-mt-16">
             <div className="flex justify-center my-3">
               <span className="bg-[#ffeeba] text-[#5a5a5a] text-[11px] px-3 py-1 rounded-md shadow-sm">
-                קורות חיים
+                {customization?.sectionLabels?.cv ?? "קורות חיים"}
               </span>
             </div>
 
@@ -209,7 +209,7 @@ export default function ChatBubbles({
         <section id="contact" className="mb-4 scroll-mt-16">
           <div className="flex justify-center my-3">
             <span className="bg-[#ffeeba] text-[#5a5a5a] text-[11px] px-3 py-1 rounded-md shadow-sm">
-              יצירת קשר
+              {customization?.sectionLabels?.contact ?? "יצירת קשר"}
             </span>
           </div>
 

@@ -317,7 +317,7 @@ export default function ClassicSerif({
               <h2
                 className="text-2xl font-bold text-[#1b2a4a] mb-6 font-fredoka"
               >
-                יצירת קשר
+                {customization?.sectionLabels?.contact ?? "יצירת קשר"}
               </h2>
               <div className="space-y-4">
                 {contact.email && (

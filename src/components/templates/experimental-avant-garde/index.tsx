@@ -199,8 +199,8 @@ export default function ExperimentalAvantGarde({
         <section id="cv" className="scroll-mt-20 relative py-24">
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-l from-transparent via-lime-400/50 to-transparent" />
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-5xl md:text-6xl font-black ${headingFont} mb-16">
-              <span className="text-lime-400">{"{"}</span> קורות חיים{" "}
+            <h2 className={`text-5xl md:text-6xl font-black ${headingFont} mb-16`}>
+              <span className="text-lime-400">{"{"}</span> {customization?.sectionLabels?.cv ?? "קורות חיים"}{" "}
               <span className="text-lime-400">{"}"}</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -213,7 +213,7 @@ export default function ExperimentalAvantGarde({
                   <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-emerald-400" />
                   <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-emerald-400" />
                   <div className="p-6">
-                    <h3 className="text-lg font-bold ${headingFont} mb-5 pb-3 border-b border-neutral-800">
+                    <h3 className={`text-lg font-bold ${headingFont} mb-5 pb-3 border-b border-neutral-800`}>
                       {section.title}
                     </h3>
                     <div className="space-y-4">
@@ -252,8 +252,8 @@ export default function ExperimentalAvantGarde({
       <footer id="contact" className="scroll-mt-20 relative py-20">
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-l from-emerald-400 via-lime-400 to-emerald-400" />
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-5xl md:text-6xl font-black ${headingFont} mb-12">
-            <span className="text-emerald-400">{"{"}</span> קשר{" "}
+          <h2 className={`text-5xl md:text-6xl font-black ${headingFont} mb-12`}>
+            <span className="text-emerald-400">{"{"}</span> {customization?.sectionLabels?.contact ?? "קשר"}{" "}
             <span className="text-emerald-400">{"}"}</span>
           </h2>
           <div className="flex flex-wrap gap-4">

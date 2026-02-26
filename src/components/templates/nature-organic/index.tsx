@@ -96,7 +96,7 @@ export default function NatureOrganic({
               <span className="inline-block w-8 h-8 rounded-full bg-[#2d5016]/10 flex items-center justify-center text-sm">
                 ~
               </span>
-              {about.title || "אודות"}
+              {about.title || (customization?.sectionLabels?.about ?? "אודות")}
             </h2>
             <div className="bg-white/60 rounded-3xl p-8 shadow-sm border border-[#2d5016]/5">
               <p className="text-[#2d5016]/80 leading-relaxed whitespace-pre-line text-lg">

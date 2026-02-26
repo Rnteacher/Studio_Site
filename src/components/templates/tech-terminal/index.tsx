@@ -37,7 +37,7 @@ export default function TechTerminal({
               { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
               { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
               { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
-              { id: "contact", label: "צור_קשר" },
+              { id: "contact", label: customization?.sectionLabels?.contact ?? "צור_קשר" },
             ].map((item) => (
               <a
                 key={item.id}
@@ -89,7 +89,7 @@ export default function TechTerminal({
           <section id="about" className="py-12 scroll-mt-16">
             <h2 className={`${headingFont} text-lg text-[#00ff41] mb-6`}>
               <span className="text-[#00ff41]/40">&gt; </span>
-              {about.title || "אודות"}
+              {about.title || (customization?.sectionLabels?.about ?? "אודות")}
             </h2>
             <div className="border border-[#00ff41]/10 bg-[#0f0f0f] p-6">
               <p className="text-[#b0b0b0]/80 leading-relaxed whitespace-pre-line font-mono text-sm">
@@ -104,7 +104,7 @@ export default function TechTerminal({
           <section id="projects" className="py-12 scroll-mt-16">
             <h2 className={`${headingFont} text-lg text-[#00ff41] mb-6`}>
               <span className="text-[#00ff41]/40">&gt; </span>
-              פרויקטים
+              {customization?.sectionLabels?.projects ?? "פרויקטים"}
               <span className="text-[#00ff41]/30 text-sm mr-3">
                 [{projects.length}]
               </span>

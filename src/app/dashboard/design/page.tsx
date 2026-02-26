@@ -14,7 +14,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Check, RotateCcw, Palette, Type, Tag } from "lucide-react";
+import { Check, RotateCcw, Palette, Type, Tag, Settings } from "lucide-react";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import type { TemplateCustomSettings } from "@/types/portfolio";
 import { TEMPLATE_DEFAULTS } from "@/components/templates/defaults";
@@ -206,9 +213,125 @@ export default function DesignPage() {
 
   return (
     <div className="space-y-8">
-      {/* ── Template Picker ── */}
       <section>
-        <h1 className="text-2xl font-bold font-rubik mb-4">בחר תבנית עיצוב</h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold font-rubik">בחר תבנית עיצוב</h1>
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors border rounded-lg px-3 py-1.5 hover:bg-muted">
+                <Settings className="h-4 w-4" />
+                התאמה אישית
+              </button>
+            </DialogTrigger>
+            <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 font-rubik">
+                  <Palette className="h-5 w-5" />
+                  התאמה אישית
+                </DialogTitle>
+              </DialogHeader>
+
+              <div className="space-y-6 pt-2">
+                {/* Reset */}
+                <div className="flex justify-end">
+                  <button
+                    onClick={handleReset}
+                    className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-destructive transition-colors"
+                  >
+                    <RotateCcw className="h-3.5 w-3.5" />
+                    איפוס לברירת מחדל
+                  </button>
+                </div>
+
+                {/* Colors */}
+                <div className="space-y-3">
+                  <h3 className="text-sm font-semibold flex items-center gap-1.5">
+                    <Palette className="h-4 w-4 text-muted-foreground" />
+                    צבעים
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {COLOR_FIELDS.map((field) => (
+                      <ColorInput
+                        key={field.key}
+                        label={field.label}
+                        color={settings.colors?.[field.key] ?? defaults?.colors[field.key] ?? ""}
+                        onChange={(val) => updateColor(field.key, val)}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Fonts */}
+                <div className="space-y-3">
+                  <h3 className="text-sm font-semibold flex items-center gap-1.5">
+                    <Type className="h-4 w-4 text-muted-foreground" />
+                    פונטים
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-muted-foreground">פונט גוף</Label>
+                      <Select
+                        value={settings.bodyFont ?? defaults?.bodyFont ?? ""}
+                        onValueChange={(val) => updateFont("bodyFont", val)}
+                      >
+                        <SelectTrigger className="h-9">
+                          <SelectValue placeholder="ברירת מחדל של התבנית" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {AVAILABLE_FONTS.map((f) => (
+                            <SelectItem key={f.key} value={f.key}>
+                              <span className={`font-${f.key}`}>{f.label}</span>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-muted-foreground">פונט כותרות</Label>
+                      <Select
+                        value={settings.headingFont ?? defaults?.headingFont ?? ""}
+                        onValueChange={(val) => updateFont("headingFont", val)}
+                      >
+                        <SelectTrigger className="h-9">
+                          <SelectValue placeholder="ברירת מחדל של התבנית" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {AVAILABLE_FONTS.map((f) => (
+                            <SelectItem key={f.key} value={f.key}>
+                              <span className={`font-${f.key}`}>{f.label}</span>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section Labels */}
+                <div className="space-y-3">
+                  <h3 className="text-sm font-semibold flex items-center gap-1.5">
+                    <Tag className="h-4 w-4 text-muted-foreground" />
+                    כותרות
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {LABEL_FIELDS.map((field) => (
+                      <div key={field.key} className="space-y-1.5">
+                        <Label className="text-xs text-muted-foreground">{field.label}</Label>
+                        <Input
+                          value={settings.sectionLabels?.[field.key] ?? ""}
+                          onChange={(e) => updateLabel(field.key, e.target.value)}
+                          placeholder={field.placeholder}
+                          className="h-8 text-sm"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {(templates ?? []).map((template, idx) => {
             const isSelected = portfolio?.templateId === template.id;
@@ -237,108 +360,6 @@ export default function DesignPage() {
               </button>
             );
           })}
-        </div>
-      </section>
-
-      {/* ── Customization Panel ── */}
-      <section className="border rounded-xl p-5 bg-muted/30 space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold font-rubik flex items-center gap-2">
-            <Palette className="h-5 w-5" />
-            התאמה אישית
-          </h2>
-          <button
-            onClick={handleReset}
-            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-destructive transition-colors"
-          >
-            <RotateCcw className="h-3.5 w-3.5" />
-            איפוס לברירת מחדל
-          </button>
-        </div>
-
-        {/* Colors */}
-        <div className="space-y-3">
-          <h3 className="text-sm font-semibold flex items-center gap-1.5">
-            <Palette className="h-4 w-4 text-muted-foreground" />
-            צבעים
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {COLOR_FIELDS.map((field) => (
-              <ColorInput
-                key={field.key}
-                label={field.label}
-                color={settings.colors?.[field.key] ?? defaults?.colors[field.key] ?? ""}
-                onChange={(val) => updateColor(field.key, val)}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Fonts */}
-        <div className="space-y-3">
-          <h3 className="text-sm font-semibold flex items-center gap-1.5">
-            <Type className="h-4 w-4 text-muted-foreground" />
-            פונטים
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="space-y-1.5">
-              <Label className="text-xs text-muted-foreground">פונט גוף</Label>
-              <Select
-                value={settings.bodyFont ?? defaults?.bodyFont ?? ""}
-                onValueChange={(val) => updateFont("bodyFont", val)}
-              >
-                <SelectTrigger className="h-9">
-                  <SelectValue placeholder="ברירת מחדל של התבנית" />
-                </SelectTrigger>
-                <SelectContent>
-                  {AVAILABLE_FONTS.map((f) => (
-                    <SelectItem key={f.key} value={f.key}>
-                      <span className={`font-${f.key}`}>{f.label}</span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs text-muted-foreground">פונט כותרות</Label>
-              <Select
-                value={settings.headingFont ?? defaults?.headingFont ?? ""}
-                onValueChange={(val) => updateFont("headingFont", val)}
-              >
-                <SelectTrigger className="h-9">
-                  <SelectValue placeholder="ברירת מחדל של התבנית" />
-                </SelectTrigger>
-                <SelectContent>
-                  {AVAILABLE_FONTS.map((f) => (
-                    <SelectItem key={f.key} value={f.key}>
-                      <span className={`font-${f.key}`}>{f.label}</span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </div>
-
-        {/* Section Labels */}
-        <div className="space-y-3">
-          <h3 className="text-sm font-semibold flex items-center gap-1.5">
-            <Tag className="h-4 w-4 text-muted-foreground" />
-            כותרות סקשנים
-          </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {LABEL_FIELDS.map((field) => (
-              <div key={field.key} className="space-y-1.5">
-                <Label className="text-xs text-muted-foreground">{field.label}</Label>
-                <Input
-                  value={settings.sectionLabels?.[field.key] ?? ""}
-                  onChange={(e) => updateLabel(field.key, e.target.value)}
-                  placeholder={field.placeholder}
-                  className="h-8 text-sm"
-                />
-              </div>
-            ))}
-          </div>
         </div>
       </section>
     </div>

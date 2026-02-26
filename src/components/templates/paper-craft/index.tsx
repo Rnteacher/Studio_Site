@@ -110,7 +110,7 @@ export default function PaperCraft({
         <section id="projects" className="scroll-mt-20 pb-16">
           <div className="max-w-4xl mx-auto px-6">
             <h2 className="font-amatic-sc text-4xl md:text-5xl font-bold text-stone-700 mb-10 text-center">
-              פרויקטים
+              {customization?.sectionLabels?.projects ?? "פרויקטים"}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -194,7 +194,7 @@ export default function PaperCraft({
         <section id="cv" className="scroll-mt-20 pb-16">
           <div className="max-w-4xl mx-auto px-6">
             <h2 className="font-amatic-sc text-4xl md:text-5xl font-bold text-stone-700 mb-10 text-center">
-              קורות חיים
+              {customization?.sectionLabels?.cv ?? "קורות חיים"}
             </h2>
 
             <div
@@ -248,7 +248,7 @@ export default function PaperCraft({
       <footer id="contact" className="scroll-mt-20 pb-16">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="font-amatic-sc text-4xl md:text-5xl font-bold text-stone-700 mb-8 text-center">
-            צור קשר
+            {customization?.sectionLabels?.contact ?? "צור קשר"}
           </h2>
 
           <div
