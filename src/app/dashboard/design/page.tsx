@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Check, RotateCcw, Palette, Type, Tag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { TemplateCustomSettings } from "@/types/portfolio";
+import { TEMPLATE_DEFAULTS } from "@/components/templates/defaults";
 
 const CARD_COLORS = [
   "#D946EF", "#F97316", "#06B6D4", "#10B981",
@@ -91,6 +92,10 @@ export default function DesignPage() {
   const { toast } = useToast();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Resolve the current template's name (slug) → look up defaults
+  const currentTemplateName = templates?.find((t) => t.id === portfolio?.templateId)?.name ?? "classic-elegant";
+  const defaults = TEMPLATE_DEFAULTS[currentTemplateName];
+
   // Local state for customization (to enable optimistic / debounced updates)
   const [settings, setSettings] = useState<TemplateCustomSettings>({});
 
@@ -112,7 +117,8 @@ export default function DesignPage() {
             id: portfolio.id,
             custom_settings: newSettings as unknown as Record<string, unknown>,
           });
-        } catch {
+        } catch (err) {
+          console.error("Customization save failed:", err);
           toast({ title: "שגיאה", description: "השמירה נכשלה", variant: "destructive" });
         }
       }, 600);
@@ -167,7 +173,8 @@ export default function DesignPage() {
         custom_settings: {} as unknown as Record<string, unknown>,
       });
       toast({ title: "אופס", description: "ההתאמות אופסו לברירת מחדל" });
-    } catch {
+    } catch (err) {
+      console.error("Reset failed:", err);
       toast({ title: "שגיאה", description: "האיפוס נכשל", variant: "destructive" });
     }
   };
@@ -180,7 +187,8 @@ export default function DesignPage() {
         template_id: templateId,
       });
       toast({ title: "עודכן", description: "התבנית נבחרה בהצלחה" });
-    } catch {
+    } catch (err) {
+      console.error("Template select failed:", err);
       toast({ title: "שגיאה", description: "הבחירה נכשלה", variant: "destructive" });
     }
   };
@@ -259,7 +267,7 @@ export default function DesignPage() {
               <ColorInput
                 key={field.key}
                 label={field.label}
-                color={settings.colors?.[field.key] ?? ""}
+                color={settings.colors?.[field.key] ?? defaults?.colors[field.key] ?? ""}
                 onChange={(val) => updateColor(field.key, val)}
               />
             ))}
@@ -276,7 +284,7 @@ export default function DesignPage() {
             <div className="space-y-1.5">
               <Label className="text-xs text-muted-foreground">פונט גוף</Label>
               <Select
-                value={settings.bodyFont ?? ""}
+                value={settings.bodyFont ?? defaults?.bodyFont ?? ""}
                 onValueChange={(val) => updateFont("bodyFont", val)}
               >
                 <SelectTrigger className="h-9">
@@ -294,7 +302,7 @@ export default function DesignPage() {
             <div className="space-y-1.5">
               <Label className="text-xs text-muted-foreground">פונט כותרות</Label>
               <Select
-                value={settings.headingFont ?? ""}
+                value={settings.headingFont ?? defaults?.headingFont ?? ""}
                 onValueChange={(val) => updateFont("headingFont", val)}
               >
                 <SelectTrigger className="h-9">
