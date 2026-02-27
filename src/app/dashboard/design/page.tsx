@@ -75,7 +75,7 @@ function ColorInput({
         type="color"
         value={color || "#000000"}
         onChange={(e) => onChange(e.target.value)}
-        className="w-10 h-10 rounded-lg border cursor-pointer shrink-0 p-0.5"
+        className="w-10 h-10 rounded-full border cursor-pointer shrink-0 appearance-none [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-full [&::-webkit-color-swatch]:border-none [&::-moz-color-swatch]:rounded-full [&::-moz-color-swatch]:border-none"
       />
       <div className="flex-1 space-y-1">
         <Label className="text-xs text-muted-foreground">{label}</Label>

@@ -30,15 +30,40 @@ const SECTION_TYPES = [
 
 function EntryEditor({
   entry,
+  index,
   onChange,
   onRemove,
+  onDragStart,
+  onDragOver,
+  onDrop,
+  onDragEnd,
+  isDragging,
+  isDragOver,
 }: {
   entry: CvEntry;
+  index: number;
   onChange: (updated: CvEntry) => void;
   onRemove: () => void;
+  onDragStart: (idx: number) => void;
+  onDragOver: (idx: number) => void;
+  onDrop: (idx: number) => void;
+  onDragEnd: () => void;
+  isDragging: boolean;
+  isDragOver: boolean;
 }) {
   return (
-    <div className="border rounded p-3 space-y-2 bg-muted/30">
+    <div
+      draggable
+      onDragStart={(e) => { e.stopPropagation(); onDragStart(index); e.dataTransfer.effectAllowed = "move"; }}
+      onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); onDragOver(index); }}
+      onDrop={(e) => { e.preventDefault(); e.stopPropagation(); onDrop(index); }}
+      onDragEnd={onDragEnd}
+      className={cn(
+        "border rounded p-3 space-y-2 bg-muted/30 transition-opacity",
+        isDragging && "opacity-40",
+        isDragOver && "border-t-2 border-primary",
+      )}
+    >
       <div className="flex items-center justify-between">
         <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
         <Button variant="ghost" size="icon" onClick={onRemove} className="h-7 w-7">
@@ -85,6 +110,8 @@ function SectionEditor({
   const [localTitle, setLocalTitle] = useState(section.title);
   const [localEntries, setLocalEntries] = useState<CvEntry[]>(section.entries);
   const [dirty, setDirty] = useState(false);
+  const [entryDragIdx, setEntryDragIdx] = useState<number | null>(null);
+  const [entryDragOverIdx, setEntryDragOverIdx] = useState<number | null>(null);
 
   // Sync from server when section data changes (e.g., after save)
   const lastSectionRef = useRef(section);
@@ -117,6 +144,21 @@ function SectionEditor({
   const addEntry = () => {
     setLocalEntries([...localEntries, { title: "", subtitle: "", dateRange: "", description: "" }]);
     setDirty(true);
+  };
+
+  const handleEntryDrop = (targetIdx: number) => {
+    if (entryDragIdx === null || entryDragIdx === targetIdx) {
+      setEntryDragIdx(null);
+      setEntryDragOverIdx(null);
+      return;
+    }
+    const items = [...localEntries];
+    const [moved] = items.splice(entryDragIdx, 1);
+    items.splice(targetIdx, 0, moved);
+    setLocalEntries(items);
+    setDirty(true);
+    setEntryDragIdx(null);
+    setEntryDragOverIdx(null);
   };
 
   const handleSave = () => {
@@ -175,8 +217,15 @@ function SectionEditor({
               <EntryEditor
                 key={idx}
                 entry={entry}
+                index={idx}
                 onChange={(updated) => updateEntry(idx, updated)}
                 onRemove={() => removeEntry(idx)}
+                onDragStart={setEntryDragIdx}
+                onDragOver={setEntryDragOverIdx}
+                onDrop={handleEntryDrop}
+                onDragEnd={() => { setEntryDragIdx(null); setEntryDragOverIdx(null); }}
+                isDragging={entryDragIdx === idx}
+                isDragOver={entryDragOverIdx === idx && entryDragIdx !== idx}
               />
             ))}
           </div>

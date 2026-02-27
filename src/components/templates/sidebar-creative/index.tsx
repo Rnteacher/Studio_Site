@@ -62,8 +62,8 @@ export default function SidebarCreative({
 
       <div className="flex flex-col lg:flex-row min-h-screen">
         {/* Desktop Sidebar — purple-to-navy gradient */}
-        <aside className="hidden lg:flex lg:flex-col lg:w-72 xl:w-80 text-white lg:sticky lg:top-0 lg:h-screen overflow-y-auto shrink-0" style={{ background: "linear-gradient(180deg, #6b21a8 0%, #1e3a5f 100%)" }}>
-          <div className="flex flex-col items-center p-8 pt-12 gap-5 flex-1">
+        <aside className="hidden lg:flex lg:flex-col lg:w-72 xl:w-80 text-white shrink-0" style={{ background: "linear-gradient(180deg, #6b21a8 0%, #1e3a5f 100%)" }}>
+          <div className="flex flex-col items-center p-8 pt-12 gap-5 flex-1 sticky top-0 h-screen overflow-y-auto">
             {student.image && (
               <img
                 src={student.image}
@@ -213,8 +213,8 @@ export default function SidebarCreative({
               </section>
             )}
 
-            {/* Contact — mobile only */}
-            <footer id="contact" className="lg:hidden pt-10 border-t border-[#e5e0d5] scroll-mt-16">
+            {/* Contact */}
+            <footer id="contact" className="pt-10 border-t border-[#e5e0d5] scroll-mt-16">
               <h2 className={`text-2xl font-bold text-[#6b21a8] mb-6 ${headingFont}`}>{customization?.sectionLabels?.contact ?? "יצירת קשר"}</h2>
               <div className="space-y-4">
                 {contact.email && (
@@ -243,8 +243,6 @@ export default function SidebarCreative({
                 </div>
               )}
             </footer>
-
-            <div id="contact" className="hidden lg:block scroll-mt-16" />
 
             <div className="mt-16 pt-8 border-t border-[#e5e0d5] text-center">
               <p className="text-xs text-[#b0a890]">{student.name} &copy; {new Date().getFullYear()}</p>
