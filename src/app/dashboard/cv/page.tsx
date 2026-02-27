@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Trash2, GripVertical, Download, ChevronDown, ChevronUp, Save } from "lucide-react";
+import { Plus, Trash2, GripVertical, Download, ChevronDown, ChevronUp, Save, ArrowUp, ArrowDown } from "lucide-react";
 import type { CvSection, CvEntry } from "@/types/portfolio";
 
 const SECTION_TYPES = [
@@ -31,41 +31,31 @@ const SECTION_TYPES = [
 function EntryEditor({
   entry,
   index,
+  total,
   onChange,
   onRemove,
-  onDragStart,
-  onDragOver,
-  onDrop,
-  onDragEnd,
-  isDragging,
-  isDragOver,
+  onMoveUp,
+  onMoveDown,
 }: {
   entry: CvEntry;
   index: number;
+  total: number;
   onChange: (updated: CvEntry) => void;
   onRemove: () => void;
-  onDragStart: (idx: number) => void;
-  onDragOver: (idx: number) => void;
-  onDrop: (idx: number) => void;
-  onDragEnd: () => void;
-  isDragging: boolean;
-  isDragOver: boolean;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
 }) {
   return (
-    <div
-      draggable
-      onDragStart={(e) => { e.stopPropagation(); onDragStart(index); e.dataTransfer.effectAllowed = "move"; }}
-      onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); onDragOver(index); }}
-      onDrop={(e) => { e.preventDefault(); e.stopPropagation(); onDrop(index); }}
-      onDragEnd={onDragEnd}
-      className={cn(
-        "border rounded p-3 space-y-2 bg-muted/30 transition-opacity",
-        isDragging && "opacity-40",
-        isDragOver && "border-t-2 border-primary",
-      )}
-    >
+    <div className="border rounded p-3 space-y-2 bg-muted/30">
       <div className="flex items-center justify-between">
-        <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
+        <div className="flex items-center gap-0.5">
+          <Button variant="ghost" size="icon" onClick={onMoveUp} disabled={index === 0} className="h-7 w-7">
+            <ArrowUp className="h-3 w-3" />
+          </Button>
+          <Button variant="ghost" size="icon" onClick={onMoveDown} disabled={index === total - 1} className="h-7 w-7">
+            <ArrowDown className="h-3 w-3" />
+          </Button>
+        </div>
         <Button variant="ghost" size="icon" onClick={onRemove} className="h-7 w-7">
           <Trash2 className="h-3 w-3" />
         </Button>
@@ -110,8 +100,6 @@ function SectionEditor({
   const [localTitle, setLocalTitle] = useState(section.title);
   const [localEntries, setLocalEntries] = useState<CvEntry[]>(section.entries);
   const [dirty, setDirty] = useState(false);
-  const [entryDragIdx, setEntryDragIdx] = useState<number | null>(null);
-  const [entryDragOverIdx, setEntryDragOverIdx] = useState<number | null>(null);
 
   // Sync from server when section data changes (e.g., after save)
   const lastSectionRef = useRef(section);
@@ -146,19 +134,13 @@ function SectionEditor({
     setDirty(true);
   };
 
-  const handleEntryDrop = (targetIdx: number) => {
-    if (entryDragIdx === null || entryDragIdx === targetIdx) {
-      setEntryDragIdx(null);
-      setEntryDragOverIdx(null);
-      return;
-    }
+  const moveEntry = (fromIdx: number, toIdx: number) => {
+    if (toIdx < 0 || toIdx >= localEntries.length) return;
     const items = [...localEntries];
-    const [moved] = items.splice(entryDragIdx, 1);
-    items.splice(targetIdx, 0, moved);
+    const [moved] = items.splice(fromIdx, 1);
+    items.splice(toIdx, 0, moved);
     setLocalEntries(items);
     setDirty(true);
-    setEntryDragIdx(null);
-    setEntryDragOverIdx(null);
   };
 
   const handleSave = () => {
@@ -218,14 +200,11 @@ function SectionEditor({
                 key={idx}
                 entry={entry}
                 index={idx}
+                total={localEntries.length}
                 onChange={(updated) => updateEntry(idx, updated)}
                 onRemove={() => removeEntry(idx)}
-                onDragStart={setEntryDragIdx}
-                onDragOver={setEntryDragOverIdx}
-                onDrop={handleEntryDrop}
-                onDragEnd={() => { setEntryDragIdx(null); setEntryDragOverIdx(null); }}
-                isDragging={entryDragIdx === idx}
-                isDragOver={entryDragOverIdx === idx && entryDragIdx !== idx}
+                onMoveUp={() => moveEntry(idx, idx - 1)}
+                onMoveDown={() => moveEntry(idx, idx + 1)}
               />
             ))}
           </div>
