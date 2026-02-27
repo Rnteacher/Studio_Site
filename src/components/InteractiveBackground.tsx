@@ -10,9 +10,9 @@ interface Particle {
   radius: number;
 }
 
-const PARTICLE_COUNT = 50;
-const CONNECTION_DIST = 130;
-const MOUSE_RADIUS = 180;
+const PARTICLE_COUNT = 140;
+const CONNECTION_DIST = 100;
+const MOUSE_RADIUS = 200;
 const MOUSE_STRENGTH = 0.02;
 
 export default function InteractiveBackground() {
@@ -21,6 +21,7 @@ export default function InteractiveBackground() {
   const mouse = useRef({ x: -9999, y: -9999, active: false });
   const animRef = useRef<number>(0);
   const colorRef = useRef("200, 100, 160");
+  const sizeRef = useRef({ w: 0, h: 0 });
 
   const initParticles = useCallback((w: number, h: number) => {
     particles.current = Array.from({ length: PARTICLE_COUNT }, () => ({
@@ -28,8 +29,9 @@ export default function InteractiveBackground() {
       y: Math.random() * h,
       vx: (Math.random() - 0.5) * 0.6,
       vy: (Math.random() - 0.5) * 0.6,
-      radius: Math.random() * 2 + 1,
+      radius: Math.random() * 1.8 + 0.8,
     }));
+    sizeRef.current = { w, h };
   }, []);
 
   useEffect(() => {
@@ -52,12 +54,28 @@ export default function InteractiveBackground() {
     const resize = () => {
       const rect = canvas.parentElement!.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      canvas.style.width = `${rect.width}px`;
-      canvas.style.height = `${rect.height}px`;
+      const newW = rect.width;
+      const newH = rect.height;
+      canvas.width = newW * dpr;
+      canvas.height = newH * dpr;
+      canvas.style.width = `${newW}px`;
+      canvas.style.height = `${newH}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      if (particles.current.length === 0) initParticles(rect.width, rect.height);
+      if (particles.current.length === 0) {
+        initParticles(newW, newH);
+      } else {
+        // Scale particle positions proportionally to new size
+        const prev = sizeRef.current;
+        if (prev.w > 0 && prev.h > 0) {
+          const sx = newW / prev.w;
+          const sy = newH / prev.h;
+          for (const p of particles.current) {
+            p.x *= sx;
+            p.y *= sy;
+          }
+        }
+        sizeRef.current = { w: newW, h: newH };
+      }
     };
 
     readColor();
@@ -122,7 +140,7 @@ export default function InteractiveBackground() {
           const dy = pts[i].y - pts[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < CONNECTION_DIST) {
-            const opacity = (1 - dist / CONNECTION_DIST) * 0.25;
+            const opacity = (1 - dist / CONNECTION_DIST) * 0.3;
             ctx.beginPath();
             ctx.moveTo(pts[i].x, pts[i].y);
             ctx.lineTo(pts[j].x, pts[j].y);
