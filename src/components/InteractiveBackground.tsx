@@ -1,203 +1,15 @@
 "use client";
 
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect } from "react";
 
-interface Particle {
+const STAR_SIZE = 3;
+const STAR_MIN_SCALE = 0.2;
+const OVERFLOW_THRESHOLD = 50;
+
+interface Star {
   x: number;
   y: number;
-  vx: number;
-  vy: number;
-  radius: number;
-}
-
-const PARTICLE_COUNT = 140;
-const CONNECTION_DIST = 100;
-const MOUSE_RADIUS = 200;
-const MOUSE_STRENGTH = 0.02;
-
-export default function InteractiveBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particles = useRef<Particle[]>([]);
-  const mouse = useRef({ x: -9999, y: -9999, active: false });
-  const animRef = useRef<number>(0);
-  const colorRef = useRef("200, 100, 160");
-  const sizeRef = useRef({ w: 0, h: 0 });
-
-  const initParticles = useCallback((w: number, h: number) => {
-    particles.current = Array.from({ length: PARTICLE_COUNT }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.6,
-      vy: (Math.random() - 0.5) * 0.6,
-      radius: Math.random() * 1.8 + 0.8,
-    }));
-    sizeRef.current = { w, h };
-  }, []);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    // Read --primary CSS variable and convert HSL to RGB
-    const readColor = () => {
-      const style = getComputedStyle(document.documentElement);
-      const hsl = style.getPropertyValue("--primary").trim();
-      if (!hsl) return;
-      const [h, s, l] = hsl.split(/\s+/).map(parseFloat);
-      if (isNaN(h)) return;
-      const rgb = hslToRgb(h, s / 100, l / 100);
-      colorRef.current = `${rgb[0]}, ${rgb[1]}, ${rgb[2]}`;
-    };
-
-    const resize = () => {
-      const rect = canvas.parentElement!.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
-      const newW = rect.width;
-      const newH = rect.height;
-      canvas.width = newW * dpr;
-      canvas.height = newH * dpr;
-      canvas.style.width = `${newW}px`;
-      canvas.style.height = `${newH}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      if (particles.current.length === 0) {
-        initParticles(newW, newH);
-      } else {
-        // Scale particle positions proportionally to new size
-        const prev = sizeRef.current;
-        if (prev.w > 0 && prev.h > 0) {
-          const sx = newW / prev.w;
-          const sy = newH / prev.h;
-          for (const p of particles.current) {
-            p.x *= sx;
-            p.y *= sy;
-          }
-        }
-        sizeRef.current = { w: newW, h: newH };
-      }
-    };
-
-    readColor();
-    resize();
-
-    // Watch for theme changes
-    const observer = new MutationObserver(readColor);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-
-    const onMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mouse.current = { x: e.clientX - rect.left, y: e.clientY - rect.top, active: true };
-    };
-    const onMouseLeave = () => {
-      mouse.current.active = false;
-    };
-
-    canvas.addEventListener("mousemove", onMouseMove);
-    canvas.addEventListener("mouseleave", onMouseLeave);
-    window.addEventListener("resize", resize);
-
-    const draw = () => {
-      const w = canvas.width / (window.devicePixelRatio || 1);
-      const h = canvas.height / (window.devicePixelRatio || 1);
-      const c = colorRef.current;
-      ctx.clearRect(0, 0, w, h);
-
-      const pts = particles.current;
-
-      // Update positions
-      for (const p of pts) {
-        // Mouse attraction
-        if (mouse.current.active) {
-          const dx = mouse.current.x - p.x;
-          const dy = mouse.current.y - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < MOUSE_RADIUS && dist > 0) {
-            const force = (1 - dist / MOUSE_RADIUS) * MOUSE_STRENGTH;
-            p.vx += dx / dist * force;
-            p.vy += dy / dist * force;
-          }
-        }
-
-        // Damping
-        p.vx *= 0.995;
-        p.vy *= 0.995;
-
-        p.x += p.vx;
-        p.y += p.vy;
-
-        // Wrap around edges
-        if (p.x < -10) p.x = w + 10;
-        if (p.x > w + 10) p.x = -10;
-        if (p.y < -10) p.y = h + 10;
-        if (p.y > h + 10) p.y = -10;
-      }
-
-      // Draw connections
-      for (let i = 0; i < pts.length; i++) {
-        for (let j = i + 1; j < pts.length; j++) {
-          const dx = pts[i].x - pts[j].x;
-          const dy = pts[i].y - pts[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < CONNECTION_DIST) {
-            const opacity = (1 - dist / CONNECTION_DIST) * 0.3;
-            ctx.beginPath();
-            ctx.moveTo(pts[i].x, pts[i].y);
-            ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.strokeStyle = `rgba(${c}, ${opacity})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Draw mouse connections
-      if (mouse.current.active) {
-        for (const p of pts) {
-          const dx = mouse.current.x - p.x;
-          const dy = mouse.current.y - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < MOUSE_RADIUS) {
-            const opacity = (1 - dist / MOUSE_RADIUS) * 0.35;
-            ctx.beginPath();
-            ctx.moveTo(mouse.current.x, mouse.current.y);
-            ctx.lineTo(p.x, p.y);
-            ctx.strokeStyle = `rgba(${c}, ${opacity})`;
-            ctx.lineWidth = 1.5;
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Draw particles
-      for (const p of pts) {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${c}, 0.5)`;
-        ctx.fill();
-      }
-
-      animRef.current = requestAnimationFrame(draw);
-    };
-
-    animRef.current = requestAnimationFrame(draw);
-
-    return () => {
-      cancelAnimationFrame(animRef.current);
-      canvas.removeEventListener("mousemove", onMouseMove);
-      canvas.removeEventListener("mouseleave", onMouseLeave);
-      window.removeEventListener("resize", resize);
-      observer.disconnect();
-    };
-  }, [initParticles]);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 pointer-events-auto"
-      aria-hidden="true"
-    />
-  );
+  z: number;
 }
 
 function hslToRgb(h: number, s: number, l: number): [number, number, number] {
@@ -212,4 +24,229 @@ function hslToRgb(h: number, s: number, l: number): [number, number, number] {
   else if (h < 300) { r = x; b = c; }
   else { r = c; b = x; }
   return [Math.round((r + m) * 255), Math.round((g + m) * 255), Math.round((b + m) * 255)];
+}
+
+export default function InteractiveBackground() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    let scale = 1;
+    let width = 0;
+    let height = 0;
+    const stars: Star[] = [];
+    let pointerX: number | null = null;
+    let pointerY: number | null = null;
+    const velocity = { x: 0, y: 0, tx: 0, ty: 0, z: 0.0005 };
+    let touchInput = false;
+    let animId = 0;
+    let starColor = "rgb(200, 100, 160)";
+
+    // Read primary color from CSS
+    const readColor = () => {
+      const style = getComputedStyle(document.documentElement);
+      const hsl = style.getPropertyValue("--primary").trim();
+      if (!hsl) return;
+      const [h, s, l] = hsl.split(/\s+/).map(parseFloat);
+      if (isNaN(h)) return;
+      const rgb = hslToRgb(h, s / 100, l / 100);
+      starColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+    };
+
+    const starCount = () => {
+      const parent = canvas.parentElement;
+      if (!parent) return 200;
+      const rect = parent.getBoundingClientRect();
+      return Math.floor((rect.width + rect.height) / 8);
+    };
+
+    const generate = () => {
+      const count = starCount();
+      stars.length = 0;
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: 0,
+          y: 0,
+          z: STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE),
+        });
+      }
+    };
+
+    const placeStar = (star: Star) => {
+      star.x = Math.random() * width;
+      star.y = Math.random() * height;
+    };
+
+    const recycleStar = (star: Star) => {
+      let direction = "z";
+      const vx = Math.abs(velocity.x);
+      const vy = Math.abs(velocity.y);
+
+      if (vx > 1 || vy > 1) {
+        let axis: string;
+        if (vx > vy) {
+          axis = Math.random() < vx / (vx + vy) ? "h" : "v";
+        } else {
+          axis = Math.random() < vy / (vx + vy) ? "v" : "h";
+        }
+        if (axis === "h") {
+          direction = velocity.x > 0 ? "l" : "r";
+        } else {
+          direction = velocity.y > 0 ? "t" : "b";
+        }
+      }
+
+      star.z = STAR_MIN_SCALE + Math.random() * (1 - STAR_MIN_SCALE);
+
+      if (direction === "z") {
+        star.z = 0.1;
+        star.x = Math.random() * width;
+        star.y = Math.random() * height;
+      } else if (direction === "l") {
+        star.x = -OVERFLOW_THRESHOLD;
+        star.y = height * Math.random();
+      } else if (direction === "r") {
+        star.x = width + OVERFLOW_THRESHOLD;
+        star.y = height * Math.random();
+      } else if (direction === "t") {
+        star.x = width * Math.random();
+        star.y = -OVERFLOW_THRESHOLD;
+      } else if (direction === "b") {
+        star.x = width * Math.random();
+        star.y = height + OVERFLOW_THRESHOLD;
+      }
+    };
+
+    const resize = () => {
+      const parent = canvas.parentElement;
+      if (!parent) return;
+      const rect = parent.getBoundingClientRect();
+      scale = window.devicePixelRatio || 1;
+      width = rect.width * scale;
+      height = rect.height * scale;
+      canvas.width = width;
+      canvas.height = height;
+      canvas.style.width = `${rect.width}px`;
+      canvas.style.height = `${rect.height}px`;
+      stars.forEach(placeStar);
+    };
+
+    const update = () => {
+      velocity.tx *= 0.96;
+      velocity.ty *= 0.96;
+      velocity.x += (velocity.tx - velocity.x) * 0.8;
+      velocity.y += (velocity.ty - velocity.y) * 0.8;
+
+      for (const star of stars) {
+        star.x += velocity.x * star.z;
+        star.y += velocity.y * star.z;
+        star.x += (star.x - width / 2) * velocity.z * star.z;
+        star.y += (star.y - height / 2) * velocity.z * star.z;
+        star.z += velocity.z;
+
+        if (
+          star.x < -OVERFLOW_THRESHOLD ||
+          star.x > width + OVERFLOW_THRESHOLD ||
+          star.y < -OVERFLOW_THRESHOLD ||
+          star.y > height + OVERFLOW_THRESHOLD
+        ) {
+          recycleStar(star);
+        }
+      }
+    };
+
+    const render = () => {
+      for (const star of stars) {
+        context.beginPath();
+        context.lineCap = "round";
+        context.lineWidth = STAR_SIZE * star.z * scale;
+        context.globalAlpha = 0.5 + 0.5 * Math.random();
+        context.strokeStyle = starColor;
+        context.beginPath();
+        context.moveTo(star.x, star.y);
+
+        let tailX = velocity.x * 2;
+        let tailY = velocity.y * 2;
+        if (Math.abs(tailX) < 0.1) tailX = 0.5;
+        if (Math.abs(tailY) < 0.1) tailY = 0.5;
+
+        context.lineTo(star.x + tailX, star.y + tailY);
+        context.stroke();
+      }
+    };
+
+    const step = () => {
+      context.clearRect(0, 0, width, height);
+      update();
+      render();
+      animId = requestAnimationFrame(step);
+    };
+
+    const movePointer = (x: number, y: number) => {
+      if (typeof pointerX === "number" && typeof pointerY === "number") {
+        const ox = x - pointerX;
+        const oy = y - pointerY;
+        velocity.tx += (ox / (8 * scale)) * (touchInput ? 1 : -1);
+        velocity.ty += (oy / (8 * scale)) * (touchInput ? 1 : -1);
+      }
+      pointerX = x;
+      pointerY = y;
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      touchInput = false;
+      movePointer(e.clientX, e.clientY);
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      touchInput = true;
+      movePointer(e.touches[0].clientX, e.touches[0].clientY);
+      e.preventDefault();
+    };
+
+    const onMouseLeave = () => {
+      pointerX = null;
+      pointerY = null;
+    };
+
+    readColor();
+    generate();
+    resize();
+    animId = requestAnimationFrame(step);
+
+    // Watch for theme changes
+    const observer = new MutationObserver(readColor);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    canvas.addEventListener("mousemove", onMouseMove);
+    canvas.addEventListener("touchmove", onTouchMove, { passive: false });
+    canvas.addEventListener("touchend", onMouseLeave);
+    document.addEventListener("mouseleave", onMouseLeave);
+    window.addEventListener("resize", resize);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      canvas.removeEventListener("mousemove", onMouseMove);
+      canvas.removeEventListener("touchmove", onTouchMove);
+      canvas.removeEventListener("touchend", onMouseLeave);
+      document.removeEventListener("mouseleave", onMouseLeave);
+      window.removeEventListener("resize", resize);
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 pointer-events-auto"
+      aria-hidden="true"
+    />
+  );
 }
