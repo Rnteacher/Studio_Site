@@ -11,6 +11,7 @@ export default function PaperCraft({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-amatic-sc';
@@ -25,7 +26,7 @@ export default function PaperCraft({
   return (
     <div
       className={`min-h-screen bg-[#faf8f0] text-stone-800 ${bodyFont} scroll-smooth`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#57534e',
         '--t-accent': customization?.colors?.accent ?? '#78716c',

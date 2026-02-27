@@ -33,6 +33,9 @@ export default function ProjectsPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
+  const [titleEn, setTitleEn] = useState("");
+  const [descriptionEn, setDescriptionEn] = useState("");
+  const [tagsEn, setTagsEn] = useState("");
   const [driveFolderUrl, setDriveFolderUrl] = useState("");
   const [syncing, setSyncing] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -42,6 +45,9 @@ export default function ProjectsPage() {
     setTitle("");
     setDescription("");
     setTags("");
+    setTitleEn("");
+    setDescriptionEn("");
+    setTagsEn("");
     setDriveFolderUrl("");
     setDialogOpen(true);
   };
@@ -51,6 +57,9 @@ export default function ProjectsPage() {
     setTitle(project.title);
     setDescription(project.description);
     setTags(project.tags.join(", "));
+    setTitleEn(project.titleEn ?? "");
+    setDescriptionEn(project.descriptionEn ?? "");
+    setTagsEn((project.tagsEn ?? []).join(", "));
     setDriveFolderUrl(project.driveFolderUrl ?? "");
     setDialogOpen(true);
   };
@@ -58,6 +67,7 @@ export default function ProjectsPage() {
   const handleSave = async () => {
     if (!portfolio) return;
     const tagArr = tags.split(",").map((t) => t.trim()).filter(Boolean);
+    const tagEnArr = tagsEn.split(",").map((t) => t.trim()).filter(Boolean);
 
     try {
       if (editingProject) {
@@ -67,6 +77,9 @@ export default function ProjectsPage() {
           title,
           description,
           tags: tagArr,
+          title_en: titleEn,
+          description_en: descriptionEn,
+          tags_en: tagEnArr,
           drive_folder_url: driveFolderUrl || null,
         });
         toast({ title: "עודכן", description: "הפרויקט עודכן בהצלחה" });
@@ -76,6 +89,9 @@ export default function ProjectsPage() {
           title,
           description,
           tags: tagArr,
+          title_en: titleEn,
+          description_en: descriptionEn,
+          tags_en: tagEnArr,
           drive_folder_url: driveFolderUrl || undefined,
           sort_order: (projects?.length ?? 0),
         });
@@ -165,7 +181,7 @@ export default function ProjectsPage() {
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="font-semibold">{project.title || "ללא שם"}</h3>
+                  <h3 className="font-semibold">{project.title || "ללא שם"}{project.titleEn ? ` (${project.titleEn})` : ""}</h3>
                   {project.description && (
                     <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
                       {project.description}
@@ -225,22 +241,40 @@ export default function ProjectsPage() {
       )}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
             <DialogTitle>{editingProject ? "עריכת פרויקט" : "פרויקט חדש"}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>שם הפרויקט</Label>
-              <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>שם הפרויקט</Label>
+                <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+              </div>
+              <div className="space-y-2" dir="ltr">
+                <Label>Project Name</Label>
+                <Input value={titleEn} onChange={(e) => setTitleEn(e.target.value)} />
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label>תיאור</Label>
-              <Textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>תיאור</Label>
+                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} />
+              </div>
+              <div className="space-y-2" dir="ltr">
+                <Label>Description</Label>
+                <Textarea value={descriptionEn} onChange={(e) => setDescriptionEn(e.target.value)} rows={3} />
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label>תגיות (מופרדות בפסיק)</Label>
-              <Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="עיצוב, אנימציה, 3D" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>תגיות (מופרדות בפסיק)</Label>
+                <Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="עיצוב, אנימציה, 3D" />
+              </div>
+              <div className="space-y-2" dir="ltr">
+                <Label>Tags (comma separated)</Label>
+                <Input value={tagsEn} onChange={(e) => setTagsEn(e.target.value)} placeholder="Design, Animation, 3D" />
+              </div>
             </div>
             <div className="space-y-2">
               <Label>קישור לתיקיית Google Drive</Label>

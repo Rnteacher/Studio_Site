@@ -11,6 +11,7 @@ export default function SidebarDark({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-fredoka';
@@ -24,7 +25,7 @@ export default function SidebarDark({
 
 
   return (
-    <div className={`min-h-screen ${bodyFont} scroll-smooth`} dir="rtl"
+    <div className={`min-h-screen ${bodyFont} scroll-smooth`} dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#50c878',
         '--t-accent': customization?.colors?.accent ?? '#50c878',

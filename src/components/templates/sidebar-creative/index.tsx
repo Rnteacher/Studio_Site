@@ -11,6 +11,7 @@ export default function SidebarCreative({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-rubik';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-dirt';
@@ -24,7 +25,7 @@ export default function SidebarCreative({
 
 
   return (
-    <div className={`min-h-screen ${bodyFont} scroll-smooth`} dir="rtl"
+    <div className={`min-h-screen ${bodyFont} scroll-smooth`} dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#f97316',
         '--t-accent': customization?.colors?.accent ?? '#fb923c',

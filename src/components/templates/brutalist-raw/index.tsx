@@ -11,6 +11,7 @@ export default function BrutalistRaw({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ?? "Heebo";
   const headingFont = customization?.headingFont ?? "Rubik Dirt";
@@ -25,7 +26,7 @@ export default function BrutalistRaw({
   return (
     <div
       className="min-h-screen bg-[--t-bg] text-[--t-text] scroll-smooth selection:bg-[--t-primary] selection:text-[--t-bg]"
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         "--t-primary": customization?.colors?.primary ?? "#000000",
         "--t-accent": customization?.colors?.accent ?? "#e8e4dc",

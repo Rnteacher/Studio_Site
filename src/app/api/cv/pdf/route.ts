@@ -5,6 +5,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const portfolioId = searchParams.get("portfolioId");
+    const lang = searchParams.get("lang") ?? "he";
 
     if (!portfolioId) {
       return NextResponse.json({ error: "Missing portfolioId" }, { status: 400 });
@@ -60,33 +61,37 @@ export async function GET(request: Request) {
     // The Font object IS the fontStore (Font = fontStore in react-pdf source)
     const fontStore = Font;
 
-    // ── Style definitions (RTL — textAlign: "right" for Hebrew) ──
+    // ── Style definitions ──
+    const textAlign = lang === "en" ? "left" : "right";
     const styles: Record<string, Record<string, unknown>> = {
       page: { fontFamily: "Heebo", padding: 40, fontSize: 10 },
       header: { textAlign: "center", marginBottom: 20, paddingBottom: 15, borderBottomWidth: 1, borderBottomColor: "#e5e7eb" },
       name: { fontSize: 22, fontWeight: 700, marginBottom: 4, textAlign: "center" },
       contactRow: { fontSize: 9, color: "#6b7280", marginTop: 4, textAlign: "center" },
       section: { marginTop: 16 },
-      sectionTitle: { fontSize: 13, fontWeight: 700, marginBottom: 8, paddingBottom: 4, borderBottomWidth: 1, borderBottomColor: "#e5e7eb", textAlign: "right" },
+      sectionTitle: { fontSize: 13, fontWeight: 700, marginBottom: 8, paddingBottom: 4, borderBottomWidth: 1, borderBottomColor: "#e5e7eb", textAlign },
       entry: { marginBottom: 8 },
-      entryTitle: { fontSize: 11, fontWeight: 700, textAlign: "right" },
-      entrySubtitle: { fontSize: 9, color: "#6b7280", textAlign: "right" },
-      entryDate: { fontSize: 8, color: "#9ca3af", textAlign: "right" },
-      entryDesc: { fontSize: 9, color: "#4b5563", marginTop: 2, textAlign: "right" },
+      entryTitle: { fontSize: 11, fontWeight: 700, textAlign },
+      entrySubtitle: { fontSize: 9, color: "#6b7280", textAlign },
+      entryDate: { fontSize: 8, color: "#9ca3af", textAlign },
+      entryDesc: { fontSize: 9, color: "#4b5563", marginTop: 2, textAlign },
     };
 
     // ── Data extraction ──
     const studentRow = portfolio.students as Record<string, unknown> | null;
-    const studentName = (studentRow?.name as string) ?? "";
+    const studentName = (lang === "en" && studentRow?.name_en ? studentRow.name_en as string : (studentRow?.name as string)) ?? "";
     const contactParts: string[] = [];
     if (studentRow?.email) contactParts.push(studentRow.email as string);
     if (studentRow?.phone) contactParts.push(studentRow.phone as string);
     if (studentRow?.website) contactParts.push(studentRow.website as string);
 
-    const sections = (cvSections ?? []).map((s) => ({
-      title: s.title as string,
-      entries: (s.entries as Array<{ title: string; subtitle?: string; dateRange?: string; description?: string }>) ?? [],
-    }));
+    const sections = (cvSections ?? []).map((s) => {
+      const row = s as Record<string, unknown>;
+      return {
+        title: (lang === "en" && row.title_en ? row.title_en : s.title) as string,
+        entries: ((lang === "en" && row.entries_en ? row.entries_en : s.entries) as Array<{ title: string; subtitle?: string; dateRange?: string; description?: string }>) ?? [],
+      };
+    });
 
     // ── Build react-pdf internal tree directly ──
     // This is the format the reconciler outputs: {type, box, style, props, children}
@@ -133,11 +138,13 @@ export async function GET(request: Request) {
     const pageChildren: (PdfNode | PdfTextInstance)[] = [headerView];
 
     // About section
-    if (portfolio.about_body) {
+    const pRow = portfolio as Record<string, unknown>;
+    const aboutBody = (lang === "en" && pRow.about_body_en ? pRow.about_body_en : portfolio.about_body) as string | null;
+    if (aboutBody) {
       pageChildren.push(
         node("VIEW", styles.section, [
-          node("TEXT", styles.sectionTitle, [text("אודות")]),
-          node("TEXT", styles.entryDesc, [text(portfolio.about_body)]),
+          node("TEXT", styles.sectionTitle, [text(lang === "en" ? "About" : "אודות")]),
+          node("TEXT", styles.entryDesc, [text(aboutBody)]),
         ]),
       );
     }

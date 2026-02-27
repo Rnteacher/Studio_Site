@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import type { TemplateProps } from "./types";
+import type { TemplateProps, Lang } from "./types";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const loading = () => <Skeleton className="h-[600px] w-full" />;
@@ -44,6 +44,7 @@ const templates: Record<string, React.ComponentType<TemplateProps>> = {
 
 interface RendererProps extends TemplateProps {
   templateName: string;
+  lang?: Lang;
 }
 
 export function TemplateRenderer({ templateName, ...props }: RendererProps) {

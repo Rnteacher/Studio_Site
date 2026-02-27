@@ -25,6 +25,7 @@ export default function ChatBubbles({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-open-sans';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
@@ -38,7 +39,7 @@ export default function ChatBubbles({
   return (
     <div
       className={`min-h-screen bg-[#e5ddd5] ${bodyFont} scroll-smooth`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#075e54',
         '--t-accent': customization?.colors?.accent ?? '#25d366',

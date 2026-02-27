@@ -13,13 +13,14 @@ export default function ModernBold({
   projects,
   isPreview,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
   return (
     <div
       className={`min-h-screen bg-gray-950 text-white ${bodyFont} scroll-smooth`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#6366f1',
         '--t-accent': customization?.colors?.accent ?? '#a855f7',

@@ -11,6 +11,7 @@ export default function ModernGradient({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-fredoka';
@@ -26,7 +27,7 @@ export default function ModernGradient({
   return (
     <div
       className={`min-h-screen bg-slate-50 text-slate-800 ${bodyFont} scroll-smooth`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#7c3aed',
         '--t-accent': customization?.colors?.accent ?? '#3b82f6',

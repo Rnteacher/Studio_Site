@@ -11,6 +11,7 @@ export default function ExperimentalRetro({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-pixels';
@@ -26,7 +27,7 @@ export default function ExperimentalRetro({
   return (
     <div
       className={`min-h-screen bg-amber-50 text-neutral-900 ${bodyFont} scroll-smooth selection:bg-fuchsia-500 selection:text-white`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#f59e0b',
         '--t-accent': customization?.colors?.accent ?? '#ef4444',

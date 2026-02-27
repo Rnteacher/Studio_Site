@@ -1,5 +1,7 @@
 import type { Portfolio, CvSection, ProjectWithMedia } from "@/types/portfolio";
 
+export type Lang = "he" | "en";
+
 export interface TemplateCustomization {
   colors?: {
     primary?: string;
@@ -14,6 +16,10 @@ export interface TemplateCustomization {
     projects?: string;
     cv?: string;
     contact?: string;
+    aboutEn?: string;
+    projectsEn?: string;
+    cvEn?: string;
+    contactEn?: string;
   };
 }
 
@@ -38,4 +44,5 @@ export interface TemplateProps {
   projects: ProjectWithMedia[];
   isPreview?: boolean;
   customization?: TemplateCustomization;
+  lang?: Lang;
 }

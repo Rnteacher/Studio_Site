@@ -11,6 +11,7 @@ export default function ExperimentalAvantGarde({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-dirt';
@@ -25,7 +26,7 @@ export default function ExperimentalAvantGarde({
   return (
     <div
       className={`min-h-screen bg-black text-white ${bodyFont} scroll-smooth selection:bg-emerald-400 selection:text-black`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#34d399',
         '--t-accent': customization?.colors?.accent ?? '#a3e635',

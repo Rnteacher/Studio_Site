@@ -27,6 +27,7 @@ export default function ProfilePage() {
   const updateProfile = useUpdateStudentProfile();
   const { toast } = useToast();
 
+  const [nameEn, setNameEn] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [image, setImage] = useState("");
@@ -39,6 +40,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (profile) {
+      setNameEn(profile.nameEn ?? "");
       setEmail(profile.email);
       setPhone(profile.phone);
       setImage(profile.image);
@@ -75,6 +77,7 @@ export default function ProfilePage() {
     try {
       await updateProfile.mutateAsync({
         id: profile.id,
+        name_en: nameEn,
         email,
         phone,
         image,
@@ -130,11 +133,23 @@ export default function ProfilePage() {
         </Button>
       </div>
 
-      {/* Name (read-only) */}
+      {/* Name */}
       <section className="space-y-2">
-        <Label>שם</Label>
-        <p className="text-lg font-semibold text-heading">{profile.name}</p>
-        <p className="text-xs text-muted-foreground">השם נקבע על ידי מנהל המערכת</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label>שם</Label>
+            <p className="text-lg font-semibold text-heading">{profile.name}</p>
+            <p className="text-xs text-muted-foreground">השם נקבע על ידי מנהל המערכת</p>
+          </div>
+          <div className="space-y-2" dir="ltr">
+            <Label>Name (English)</Label>
+            <Input
+              value={nameEn}
+              onChange={(e) => { setNameEn(e.target.value); markDirty(); }}
+              placeholder="e.g. Daniel Cohen"
+            />
+          </div>
+        </div>
       </section>
 
       {/* Image */}

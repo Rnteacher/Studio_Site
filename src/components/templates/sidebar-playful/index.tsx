@@ -13,6 +13,7 @@ export default function SidebarPlayful({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-fredoka';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-bubbles';
@@ -26,7 +27,7 @@ export default function SidebarPlayful({
 
 
   return (
-    <div className={`min-h-screen ${bodyFont} scroll-smooth`} dir="rtl"
+    <div className={`min-h-screen ${bodyFont} scroll-smooth`} dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#ec4899',
         '--t-accent': customization?.colors?.accent ?? '#a855f7',

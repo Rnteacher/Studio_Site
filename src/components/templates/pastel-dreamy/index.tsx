@@ -11,6 +11,7 @@ export default function PastelDreamy({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-fredoka';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-doodle';
@@ -18,7 +19,7 @@ export default function PastelDreamy({
   return (
     <div
       className="min-h-screen bg-gradient-to-b from-[#fce4ec] via-[#f3e5f5] to-[#e8f5e9] text-[#4a4a5a] font-playpen-sans scroll-smooth"
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#c084fc',
         '--t-accent': customization?.colors?.accent ?? '#f9a8d4',

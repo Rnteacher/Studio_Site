@@ -11,6 +11,7 @@ export default function NewspaperVintage({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-karantina';
@@ -19,7 +20,7 @@ export default function NewspaperVintage({
   const dateStr = today.toLocaleDateString("he-IL", { year: "numeric", month: "long", day: "numeric" });
 
   return (
-    <div className={`min-h-screen bg-[#f5f0e1] text-[#2c2417] ${bodyFont} scroll-smooth`} dir="rtl"
+    <div className={`min-h-screen bg-[#f5f0e1] text-[#2c2417] ${bodyFont} scroll-smooth`} dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#1a1a1a',
         '--t-accent': customization?.colors?.accent ?? '#8b0000',

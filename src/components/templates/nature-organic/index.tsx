@@ -11,6 +11,7 @@ export default function NatureOrganic({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-open-sans';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-fredoka';
@@ -18,7 +19,7 @@ export default function NatureOrganic({
   return (
     <div
       className={`min-h-screen bg-[#f0f7e6] text-[#2d5016] ${bodyFont} scroll-smooth`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#16a34a',
         '--t-accent': customization?.colors?.accent ?? '#65a30d',

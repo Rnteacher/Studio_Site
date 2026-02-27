@@ -1,13 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import { useMyPortfolio } from "@/hooks/usePortfolio";
 import { useCvSections } from "@/hooks/useCvSections";
 import { useProjects } from "@/hooks/useProjects";
 import { useTemplate } from "@/hooks/useTemplates";
 import { TemplateRenderer } from "@/components/templates/TemplateRenderer";
+import { LanguageToggle } from "@/components/portfolio/LanguageToggle";
+import { resolvePortfolioLang } from "@/lib/resolveLanguage";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircle } from "lucide-react";
 import Link from "next/link";
+import type { Lang } from "@/components/templates/types";
 
 export default function PreviewPage() {
   const { data, isLoading: loadingPortfolio } = useMyPortfolio();
@@ -16,6 +20,7 @@ export default function PreviewPage() {
   const { data: cvSections } = useCvSections(portfolio?.id);
   const { data: projects } = useProjects(portfolio?.id);
   const { data: template } = useTemplate(portfolio?.templateId ?? null);
+  const [lang, setLang] = useState<Lang>("he");
 
   if (loadingPortfolio) {
     return (
@@ -65,40 +70,54 @@ export default function PreviewPage() {
     );
   }
 
+  const resolved = resolvePortfolioLang(
+    lang,
+    portfolio,
+    { name: student?.name ?? "", nameEn: student?.nameEn ?? "", image: student?.image ?? "" },
+    cvSections ?? [],
+    projects ?? [],
+    portfolio.customSettings,
+  );
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold font-rubik">תצוגה מקדימה</h1>
-        {portfolio.status === "draft" && (
-          <span className="text-sm bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">
-            טיוטה
-          </span>
-        )}
-        {portfolio.status === "published" && (
-          <span className="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full">
-            פורסם
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setLang(lang === "he" ? "en" : "he")}
+            className="text-sm px-3 py-1 rounded-full border bg-muted hover:bg-accent transition-colors"
+          >
+            {lang === "he" ? "EN 🌐" : "עב 🌐"}
+          </button>
+          {portfolio.status === "draft" && (
+            <span className="text-sm bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">
+              טיוטה
+            </span>
+          )}
+          {portfolio.status === "published" && (
+            <span className="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full">
+              פורסם
+            </span>
+          )}
+        </div>
       </div>
       <div className="border rounded-lg overflow-hidden bg-background">
         <TemplateRenderer
           templateName={template?.name ?? "classic-clean"}
-          student={{ name: student?.name ?? "", image: student?.image ?? "" }}
+          student={resolved.student}
           portfolio={portfolio}
-          about={{
-            title: portfolio.aboutTitle,
-            subtitle: portfolio.aboutSubtitle ?? "",
-            body: portfolio.aboutBody,
-          }}
+          about={resolved.about}
           contact={{
             email: student?.email ?? "",
             phone: student?.phone ?? "",
             website: student?.website ?? "",
           }}
           socialLinks={student?.socialLinks ?? {}}
-          cvSections={cvSections ?? []}
-          projects={projects ?? []}
-          customization={portfolio.customSettings}
+          cvSections={resolved.cvSections}
+          projects={resolved.projects}
+          customization={resolved.customization}
+          lang={lang}
           isPreview
         />
       </div>

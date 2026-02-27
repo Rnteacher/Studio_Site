@@ -11,6 +11,7 @@ export default function TechTerminal({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-mono';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-pixels';
@@ -18,7 +19,7 @@ export default function TechTerminal({
   return (
     <div
       className={`min-h-screen bg-[#0a0a0a] text-[#b0b0b0] ${bodyFont} scroll-smooth selection:bg-[#00ff41]/20`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#00ff41',
         '--t-accent': customization?.colors?.accent ?? '#00ff41',

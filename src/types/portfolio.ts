@@ -22,6 +22,10 @@ export interface TemplateCustomSettings {
     projects?: string;
     cv?: string;
     contact?: string;
+    aboutEn?: string;
+    projectsEn?: string;
+    cvEn?: string;
+    contactEn?: string;
   };
 }
 
@@ -35,6 +39,9 @@ export interface Portfolio {
   aboutTitle: string;
   aboutBody: string;
   aboutSubtitle: string;
+  aboutTitleEn: string;
+  aboutBodyEn: string;
+  aboutSubtitleEn: string;
   contactEmail: string;
   contactPhone: string;
   contactWebsite: string | null;
@@ -48,6 +55,9 @@ export interface CvEntry {
   subtitle?: string;
   dateRange?: string;
   description?: string;
+  titleEn?: string;
+  subtitleEn?: string;
+  descriptionEn?: string;
 }
 
 export interface CvSection {
@@ -55,7 +65,9 @@ export interface CvSection {
   portfolioId: string;
   sectionType: "education" | "experience" | "skills" | "awards" | "custom";
   title: string;
+  titleEn: string;
   entries: CvEntry[];
+  entriesEn: CvEntry[];
   sortOrder: number;
   createdAt: string;
   updatedAt: string;
@@ -67,6 +79,9 @@ export interface Project {
   title: string;
   description: string;
   tags: string[];
+  titleEn: string;
+  descriptionEn: string;
+  tagsEn: string[];
   driveFolderUrl: string | null;
   thumbnailUrl: string | null;
   sortOrder: number;

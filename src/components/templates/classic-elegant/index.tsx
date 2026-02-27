@@ -13,6 +13,7 @@ export default function ClassicElegant({
   projects,
   isPreview,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-fredoka';
@@ -20,7 +21,7 @@ export default function ClassicElegant({
   return (
     <div
       className={`min-h-screen bg-stone-50 text-stone-900 ${bodyFont} scroll-smooth`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#1c1917',
         '--t-accent': customization?.colors?.accent ?? '#78716c',

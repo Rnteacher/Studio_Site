@@ -11,6 +11,7 @@ export default function ClassicSerif({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-fredoka';
@@ -25,7 +26,7 @@ export default function ClassicSerif({
   return (
     <div
       className={`min-h-screen ${bodyFont} scroll-smooth`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#1b2a4a',
         '--t-accent': customization?.colors?.accent ?? '#c9b97a',

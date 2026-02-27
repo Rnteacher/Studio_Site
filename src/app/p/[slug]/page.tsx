@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { TemplateRenderer } from "@/components/templates/TemplateRenderer";
-import { StickyContactBar } from "@/components/portfolio/StickyContactBar";
+import { PortfolioPageClient } from "@/components/portfolio/PortfolioPageClient";
 import type { Metadata } from "next";
 import type { Portfolio, CvSection, CvEntry, ProjectWithMedia, ProjectMedia } from "@/types/portfolio";
 
@@ -39,7 +38,9 @@ async function getPortfolioData(slug: string) {
     portfolioId: row.portfolio_id,
     sectionType: row.section_type as CvSection["sectionType"],
     title: row.title,
+    titleEn: (row as Record<string, unknown>).title_en as string ?? "",
     entries: (row.entries as unknown as CvEntry[]) ?? [],
+    entriesEn: ((row as Record<string, unknown>).entries_en as unknown as CvEntry[]) ?? [],
     sortOrder: row.sort_order,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
@@ -51,6 +52,9 @@ async function getPortfolioData(slug: string) {
     title: row.title,
     description: row.description,
     tags: row.tags ?? [],
+    titleEn: (row as Record<string, unknown>).title_en as string ?? "",
+    descriptionEn: (row as Record<string, unknown>).description_en as string ?? "",
+    tagsEn: ((row as Record<string, unknown>).tags_en as string[]) ?? [],
     driveFolderUrl: row.drive_folder_url,
     thumbnailUrl: row.thumbnail_url,
     sortOrder: row.sort_order,
@@ -76,6 +80,7 @@ async function getPortfolioData(slug: string) {
   const studentRow = portfolio.students as Record<string, unknown> | null;
   const student = {
     name: (studentRow?.name as string) ?? "",
+    nameEn: (studentRow?.name_en as string) ?? "",
     image: (studentRow?.image as string) ?? "",
     email: (studentRow?.email as string) ?? "",
     phone: (studentRow?.phone as string) ?? "",
@@ -83,6 +88,7 @@ async function getPortfolioData(slug: string) {
     socialLinks: (studentRow?.social_links as Record<string, string>) ?? {},
   };
 
+  const p = portfolio as Record<string, unknown>;
   const mappedPortfolio: Portfolio = {
     id: portfolio.id,
     studentId: portfolio.student_id,
@@ -92,11 +98,14 @@ async function getPortfolioData(slug: string) {
     status: portfolio.status as Portfolio["status"],
     aboutTitle: portfolio.about_title,
     aboutBody: portfolio.about_body,
-    aboutSubtitle: (portfolio as Record<string, unknown>).about_subtitle as string ?? "",
+    aboutSubtitle: (p.about_subtitle as string) ?? "",
+    aboutTitleEn: (p.about_title_en as string) ?? "",
+    aboutBodyEn: (p.about_body_en as string) ?? "",
+    aboutSubtitleEn: (p.about_subtitle_en as string) ?? "",
     contactEmail: portfolio.contact_email,
     contactPhone: portfolio.contact_phone,
     contactWebsite: portfolio.contact_website,
-    customSettings: ((portfolio as Record<string, unknown>).custom_settings as Record<string, unknown>) ?? {},
+    customSettings: (p.custom_settings as Record<string, unknown>) ?? {},
     createdAt: portfolio.created_at,
     updatedAt: portfolio.updated_at,
   };
@@ -128,41 +137,16 @@ export default async function PortfolioPage({ params }: Props) {
   if (!data) notFound();
 
   return (
-    <>
-      <TemplateRenderer
-        templateName={data.templateName}
-        student={{ name: data.student.name, image: data.student.image }}
-        portfolio={data.portfolio}
-        about={{
-          title: data.portfolio.aboutTitle,
-          subtitle: data.portfolio.aboutSubtitle ?? "",
-          body: data.portfolio.aboutBody,
-        }}
-        contact={{
-          email: data.student.email,
-          phone: data.student.phone,
-          website: data.student.website,
-        }}
-        socialLinks={data.student.socialLinks}
-        cvSections={data.cvSections}
-        projects={data.projects}
-        customization={data.portfolio.customSettings}
-      />
-      {data.cvSections.length > 0 && (
-        <a
-          href={`/api/cv/pdf?portfolioId=${data.portfolio.id}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="fixed bottom-20 md:bottom-6 left-4 z-40 flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-full shadow-lg hover:bg-primary/90 transition-colors text-sm font-medium"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-          הורד קורות חיים
-        </a>
-      )}
-      <StickyContactBar
-        email={data.student.email}
-        phone={data.student.phone}
-      />
-    </>
+    <PortfolioPageClient
+      portfolio={data.portfolio}
+      student={{ name: data.student.name, nameEn: data.student.nameEn, image: data.student.image }}
+      templateName={data.templateName}
+      cvSections={data.cvSections}
+      projects={data.projects}
+      email={data.student.email}
+      phone={data.student.phone}
+      website={data.student.website}
+      socialLinks={data.student.socialLinks}
+    />
   );
 }

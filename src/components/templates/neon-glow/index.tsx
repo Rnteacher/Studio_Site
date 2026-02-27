@@ -11,6 +11,7 @@ export default function NeonGlow({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-rubik';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
@@ -25,7 +26,7 @@ export default function NeonGlow({
   return (
     <div
       className={`min-h-screen bg-[#0a0a14] text-gray-300 ${bodyFont} scroll-smooth selection:bg-[#ff00ff]/30`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#ff00ff',
         '--t-accent': customization?.colors?.accent ?? '#00ffff',

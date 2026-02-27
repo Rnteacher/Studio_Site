@@ -11,6 +11,9 @@ function mapProject(row: Record<string, unknown>): Project {
     title: row.title as string,
     description: row.description as string,
     tags: (row.tags as string[]) ?? [],
+    titleEn: (row.title_en as string) ?? "",
+    descriptionEn: (row.description_en as string) ?? "",
+    tagsEn: (row.tags_en as string[]) ?? [],
     driveFolderUrl: (row.drive_folder_url as string) ?? null,
     thumbnailUrl: (row.thumbnail_url as string) ?? null,
     sortOrder: row.sort_order as number,
@@ -64,6 +67,9 @@ export function useCreateProject() {
       title: string;
       description?: string;
       tags?: string[];
+      title_en?: string;
+      description_en?: string;
+      tags_en?: string[];
       drive_folder_url?: string;
       sort_order?: number;
     }) => {
@@ -92,6 +98,9 @@ export function useUpdateProject() {
       title?: string;
       description?: string;
       tags?: string[];
+      title_en?: string;
+      description_en?: string;
+      tags_en?: string[];
       drive_folder_url?: string | null;
       thumbnail_url?: string | null;
       sort_order?: number;

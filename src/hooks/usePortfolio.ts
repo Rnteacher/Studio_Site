@@ -6,7 +6,7 @@ import type { Portfolio } from "@/types/portfolio";
 
 export interface PortfolioWithStudent {
   portfolio: Portfolio;
-  student: { name: string; image: string; email: string; phone: string; website: string; socialLinks: Record<string, string> };
+  student: { name: string; nameEn: string; image: string; email: string; phone: string; website: string; socialLinks: Record<string, string> };
 }
 
 function mapPortfolio(row: Record<string, unknown>): Portfolio {
@@ -20,6 +20,9 @@ function mapPortfolio(row: Record<string, unknown>): Portfolio {
     aboutTitle: (row.about_title as string) ?? "",
     aboutBody: (row.about_body as string) ?? "",
     aboutSubtitle: (row.about_subtitle as string) ?? "",
+    aboutTitleEn: (row.about_title_en as string) ?? "",
+    aboutBodyEn: (row.about_body_en as string) ?? "",
+    aboutSubtitleEn: (row.about_subtitle_en as string) ?? "",
     contactEmail: (row.contact_email as string) ?? "",
     contactPhone: (row.contact_phone as string) ?? "",
     contactWebsite: (row.contact_website as string) ?? null,
@@ -33,6 +36,7 @@ function mapStudentFromJoin(row: Record<string, unknown>): PortfolioWithStudent[
   const s = row.students as Record<string, unknown> | null;
   return {
     name: (s?.name as string) ?? "",
+    nameEn: (s?.name_en as string) ?? "",
     image: (s?.image as string) ?? "",
     email: (s?.email as string) ?? "",
     phone: (s?.phone as string) ?? "",
@@ -51,7 +55,7 @@ export function useMyPortfolio() {
 
       const { data, error } = await supabase
         .from("portfolios")
-        .select("*, students(name, image, email, phone, website, social_links)")
+        .select("*, students(name, name_en, image, email, phone, website, social_links)")
         .eq("user_id", user.id)
         .single();
       if (error) throw error;
@@ -70,7 +74,7 @@ export function usePortfolioBySlug(slug: string) {
       const supabase = createClient();
       const { data, error } = await supabase
         .from("portfolios")
-        .select("*, students(name, image, email, phone, website, social_links)")
+        .select("*, students(name, name_en, image, email, phone, website, social_links)")
         .eq("slug", slug)
         .eq("status", "published")
         .single();
@@ -91,7 +95,7 @@ export function useAllPortfolios() {
       const supabase = createClient();
       const { data, error } = await supabase
         .from("portfolios")
-        .select("*, students(name, image, email, phone, website, social_links)")
+        .select("*, students(name, name_en, image, email, phone, website, social_links)")
         .order("updated_at", { ascending: false });
       if (error) throw error;
       return (data ?? []).map((row) => ({
@@ -113,6 +117,9 @@ export function useUpdatePortfolio() {
       about_title: string;
       about_body: string;
       about_subtitle: string;
+      about_title_en: string;
+      about_body_en: string;
+      about_subtitle_en: string;
       contact_email: string;
       contact_phone: string;
       contact_website: string | null;

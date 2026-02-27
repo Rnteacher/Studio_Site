@@ -11,6 +11,7 @@ export default function WatercolorSoft({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-amatic-sc';
@@ -26,7 +27,7 @@ export default function WatercolorSoft({
   return (
     <div
       className="min-h-screen bg-gradient-to-b from-[#e0f2fe] via-white to-[#f0fdf4] text-slate-700 font-open-sans scroll-smooth"
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#6366f1',
         '--t-accent': customization?.colors?.accent ?? '#a78bfa',

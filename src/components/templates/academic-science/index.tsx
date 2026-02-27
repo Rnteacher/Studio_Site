@@ -11,6 +11,7 @@ export default function AcademicScience({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-mono';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-heebo';
@@ -18,7 +19,7 @@ export default function AcademicScience({
   return (
     <div
       className={`min-h-screen text-[#1f2937] ${bodyFont} scroll-smooth`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         background: "#f9fafb",
         backgroundImage: "linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px)",

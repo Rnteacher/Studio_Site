@@ -11,6 +11,7 @@ export default function ExperimentalCreative({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-playpen-sans';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
@@ -23,7 +24,7 @@ export default function ExperimentalCreative({
   ];
 
   return (
-    <div className={`min-h-screen bg-neutral-950 text-neutral-100 ${bodyFont} scroll-smooth`} dir="rtl"
+    <div className={`min-h-screen bg-neutral-950 text-neutral-100 ${bodyFont} scroll-smooth`} dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#ec4899',
         '--t-accent': customization?.colors?.accent ?? '#8b5cf6',

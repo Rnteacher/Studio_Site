@@ -10,7 +10,9 @@ function mapCvSection(row: Record<string, unknown>): CvSection {
     portfolioId: row.portfolio_id as string,
     sectionType: row.section_type as CvSection["sectionType"],
     title: row.title as string,
+    titleEn: (row.title_en as string) ?? "",
     entries: (row.entries as CvEntry[]) ?? [],
+    entriesEn: (row.entries_en as CvEntry[]) ?? [],
     sortOrder: row.sort_order as number,
     createdAt: row.created_at as string,
     updatedAt: row.updated_at as string,
@@ -43,7 +45,9 @@ export function useCreateCvSection() {
       portfolio_id: string;
       section_type: string;
       title: string;
+      title_en?: string;
       entries?: CvEntry[];
+      entries_en?: CvEntry[];
       sort_order?: number;
     }) => {
       const supabase = createClient();
@@ -53,7 +57,9 @@ export function useCreateCvSection() {
           portfolio_id: input.portfolio_id,
           section_type: input.section_type,
           title: input.title,
+          title_en: input.title_en ?? "",
           entries: JSON.parse(JSON.stringify(input.entries ?? [])),
+          entries_en: JSON.parse(JSON.stringify(input.entries_en ?? [])),
           sort_order: input.sort_order ?? 0,
         })
         .select()
@@ -75,14 +81,18 @@ export function useUpdateCvSection() {
       id: string;
       portfolio_id: string;
       title?: string;
+      title_en?: string;
       entries?: CvEntry[];
+      entries_en?: CvEntry[];
       sort_order?: number;
     }) => {
       const supabase = createClient();
       const { id, portfolio_id, ...rest } = updates;
       const updateData: Record<string, unknown> = {};
       if (rest.title !== undefined) updateData.title = rest.title;
+      if (rest.title_en !== undefined) updateData.title_en = rest.title_en;
       if (rest.entries !== undefined) updateData.entries = JSON.parse(JSON.stringify(rest.entries));
+      if (rest.entries_en !== undefined) updateData.entries_en = JSON.parse(JSON.stringify(rest.entries_en));
       if (rest.sort_order !== undefined) updateData.sort_order = rest.sort_order;
 
       const { data, error } = await supabase

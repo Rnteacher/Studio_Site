@@ -11,6 +11,7 @@ export default function TechStartup({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
@@ -22,7 +23,7 @@ export default function TechStartup({
   ];
 
   return (
-    <div className={`min-h-screen bg-[#f8fafc] text-[#1e293b] ${bodyFont} scroll-smooth`} dir="rtl"
+    <div className={`min-h-screen bg-[#f8fafc] text-[#1e293b] ${bodyFont} scroll-smooth`} dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#3b82f6',
         '--t-accent': customization?.colors?.accent ?? '#06b6d4',

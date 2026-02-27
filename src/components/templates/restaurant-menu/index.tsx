@@ -19,6 +19,7 @@ export default function RestaurantMenu({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-amatic-sc';
@@ -26,7 +27,7 @@ export default function RestaurantMenu({
   return (
     <div
       className={`min-h-screen bg-[#1c1008] text-[#e8dcc8] ${bodyFont} scroll-smooth`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#c9a44a',
         '--t-accent': customization?.colors?.accent ?? '#8b2332',

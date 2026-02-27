@@ -11,6 +11,7 @@ export default function GeometricSharp({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
@@ -26,7 +27,7 @@ export default function GeometricSharp({
   return (
     <div
       className={`min-h-screen bg-[#1a1a2e] text-white ${headingFont} scroll-smooth`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#ef4444',
         '--t-accent': customization?.colors?.accent ?? '#f97316',

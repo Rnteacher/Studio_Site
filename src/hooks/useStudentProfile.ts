@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 export interface StudentProfile {
   id: string;
   name: string;
+  nameEn: string;
   email: string;
   phone: string;
   website: string;
@@ -19,6 +20,7 @@ function mapRow(row: Record<string, unknown>): StudentProfile {
   return {
     id: row.id as string,
     name: row.name as string,
+    nameEn: (row.name_en as string) ?? "",
     email: (row.email as string) ?? "",
     phone: (row.phone as string) ?? "",
     website: (row.website as string) ?? "",
@@ -57,6 +59,7 @@ export function useUpdateStudentProfile() {
       phone: string;
       website: string;
       image: string;
+      name_en: string;
       short_description: string;
       long_description: string;
       social_links: Record<string, string>;

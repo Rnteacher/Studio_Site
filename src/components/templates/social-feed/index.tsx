@@ -11,6 +11,7 @@ export default function SocialFeed({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-open-sans';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
@@ -18,7 +19,7 @@ export default function SocialFeed({
   return (
     <div
       className={`min-h-screen bg-[#fafafa] text-[#262626] ${bodyFont} scroll-smooth`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#262626',
         '--t-accent': customization?.colors?.accent ?? '#e1306c',

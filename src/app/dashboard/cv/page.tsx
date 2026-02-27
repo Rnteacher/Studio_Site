@@ -60,27 +60,56 @@ function EntryEditor({
           <Trash2 className="h-3 w-3" />
         </Button>
       </div>
-      <Input
-        placeholder="כותרת"
-        value={entry.title}
-        onChange={(e) => onChange({ ...entry, title: e.target.value })}
-      />
-      <Input
-        placeholder="תת-כותרת (מקום עבודה, מוסד לימודים...)"
-        value={entry.subtitle ?? ""}
-        onChange={(e) => onChange({ ...entry, subtitle: e.target.value })}
-      />
+      {/* Title */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <Input
+          placeholder="כותרת"
+          value={entry.title}
+          onChange={(e) => onChange({ ...entry, title: e.target.value })}
+        />
+        <Input
+          dir="ltr"
+          placeholder="Title"
+          value={entry.titleEn ?? ""}
+          onChange={(e) => onChange({ ...entry, titleEn: e.target.value })}
+        />
+      </div>
+      {/* Subtitle */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <Input
+          placeholder="תת-כותרת (מקום עבודה, מוסד לימודים...)"
+          value={entry.subtitle ?? ""}
+          onChange={(e) => onChange({ ...entry, subtitle: e.target.value })}
+        />
+        <Input
+          dir="ltr"
+          placeholder="Subtitle (workplace, institution...)"
+          value={entry.subtitleEn ?? ""}
+          onChange={(e) => onChange({ ...entry, subtitleEn: e.target.value })}
+        />
+      </div>
+      {/* Date range - same for both languages */}
       <Input
         placeholder="תקופה (למשל: 2020-2023)"
         value={entry.dateRange ?? ""}
         onChange={(e) => onChange({ ...entry, dateRange: e.target.value })}
       />
-      <Textarea
-        placeholder="תיאור"
-        value={entry.description ?? ""}
-        onChange={(e) => onChange({ ...entry, description: e.target.value })}
-        rows={2}
-      />
+      {/* Description */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <Textarea
+          placeholder="תיאור"
+          value={entry.description ?? ""}
+          onChange={(e) => onChange({ ...entry, description: e.target.value })}
+          rows={2}
+        />
+        <Textarea
+          dir="ltr"
+          placeholder="Description"
+          value={entry.descriptionEn ?? ""}
+          onChange={(e) => onChange({ ...entry, descriptionEn: e.target.value })}
+          rows={2}
+        />
+      </div>
     </div>
   );
 }
@@ -92,13 +121,24 @@ function SectionEditor({
   isSaving,
 }: {
   section: CvSection;
-  onSave: (updates: Partial<{ title: string; entries: CvEntry[] }>) => void;
+  onSave: (updates: Partial<{ title: string; title_en: string; entries: CvEntry[]; entries_en: CvEntry[] }>) => void;
   onDelete: () => void;
   isSaving: boolean;
 }) {
   const [collapsed, setCollapsed] = useState(false);
   const [localTitle, setLocalTitle] = useState(section.title);
-  const [localEntries, setLocalEntries] = useState<CvEntry[]>(section.entries);
+  const [localTitleEn, setLocalTitleEn] = useState(section.titleEn ?? "");
+  // Merge Hebrew entries with English overlays for unified editing
+  const mergeEntries = useCallback((he: CvEntry[], en: CvEntry[]): CvEntry[] =>
+    he.map((h, i) => ({
+      ...h,
+      titleEn: en[i]?.title ?? "",
+      subtitleEn: en[i]?.subtitle ?? "",
+      descriptionEn: en[i]?.description ?? "",
+    })), []);
+  const [localEntries, setLocalEntries] = useState<CvEntry[]>(
+    mergeEntries(section.entries, section.entriesEn ?? [])
+  );
   const [dirty, setDirty] = useState(false);
 
   // Sync from server when section data changes (e.g., after save)
@@ -106,11 +146,12 @@ function SectionEditor({
   useEffect(() => {
     if (lastSectionRef.current.id !== section.id || (!dirty && lastSectionRef.current !== section)) {
       setLocalTitle(section.title);
-      setLocalEntries(section.entries);
+      setLocalTitleEn(section.titleEn ?? "");
+      setLocalEntries(mergeEntries(section.entries, section.entriesEn ?? []));
       setDirty(false);
     }
     lastSectionRef.current = section;
-  }, [section, dirty]);
+  }, [section, dirty, mergeEntries]);
 
   const updateTitle = (val: string) => {
     setLocalTitle(val);
@@ -130,7 +171,7 @@ function SectionEditor({
   };
 
   const addEntry = () => {
-    setLocalEntries([...localEntries, { title: "", subtitle: "", dateRange: "", description: "" }]);
+    setLocalEntries([...localEntries, { title: "", subtitle: "", dateRange: "", description: "", titleEn: "", subtitleEn: "", descriptionEn: "" }]);
     setDirty(true);
   };
 
@@ -144,7 +185,17 @@ function SectionEditor({
   };
 
   const handleSave = () => {
-    onSave({ title: localTitle, entries: localEntries });
+    // Split merged entries into Hebrew and English arrays for DB
+    const heEntries: CvEntry[] = localEntries.map(({ title, subtitle, dateRange, description }) => ({
+      title, subtitle, dateRange, description,
+    }));
+    const enEntries: CvEntry[] = localEntries.map((e) => ({
+      title: e.titleEn ?? "",
+      subtitle: e.subtitleEn ?? "",
+      dateRange: e.dateRange,
+      description: e.descriptionEn ?? "",
+    }));
+    onSave({ title: localTitle, title_en: localTitleEn, entries: heEntries, entries_en: enEntries });
     setDirty(false);
   };
 
@@ -185,13 +236,23 @@ function SectionEditor({
 
       {!collapsed && (
         <div className="px-4 pb-4 space-y-3">
-          <div className="space-y-2">
-            <Label>כותרת המחלקה</Label>
-            <Input
-              value={localTitle}
-              onChange={(e) => updateTitle(e.target.value)}
-              placeholder="למשל: השכלה אקדמית"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>כותרת המחלקה</Label>
+              <Input
+                value={localTitle}
+                onChange={(e) => updateTitle(e.target.value)}
+                placeholder="למשל: השכלה אקדמית"
+              />
+            </div>
+            <div className="space-y-2" dir="ltr">
+              <Label>Section Title</Label>
+              <Input
+                value={localTitleEn}
+                onChange={(e) => { setLocalTitleEn(e.target.value); setDirty(true); }}
+                placeholder="e.g. Academic Education"
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -257,7 +318,7 @@ export default function CvPage() {
     }
   };
 
-  const handleSave = async (section: CvSection, updates: Partial<{ title: string; entries: CvEntry[] }>) => {
+  const handleSave = async (section: CvSection, updates: Partial<{ title: string; title_en: string; entries: CvEntry[]; entries_en: CvEntry[] }>) => {
     try {
       await updateSection.mutateAsync({
         id: section.id,
@@ -281,7 +342,7 @@ export default function CvPage() {
 
   if (loadingPortfolio || loadingSections) {
     return (
-      <div className="space-y-4 max-w-2xl">
+      <div className="space-y-4 max-w-5xl">
         <Skeleton className="h-8 w-48" />
         {[1, 2].map((i) => <Skeleton key={i} className="h-32 rounded-lg" />)}
       </div>
@@ -289,7 +350,7 @@ export default function CvPage() {
   }
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="max-w-5xl space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold font-rubik">קורות חיים</h1>
         {portfolio && (

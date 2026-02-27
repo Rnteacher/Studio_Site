@@ -11,12 +11,13 @@ export default function StageScreen({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-karantina';
 
   return (
-    <div className={`min-h-screen bg-[#0c0c0c] text-[#e8e0d0] ${bodyFont} scroll-smooth border-x-4 border-[#b91c1c]`} dir="rtl"
+    <div className={`min-h-screen bg-[#0c0c0c] text-[#e8e0d0] ${bodyFont} scroll-smooth border-x-4 border-[#b91c1c]`} dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#e11d48',
         '--t-accent': customization?.colors?.accent ?? '#be123c',

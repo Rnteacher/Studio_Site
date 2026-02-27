@@ -11,6 +11,7 @@ export default function MonochromePhoto({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-karantina';
@@ -25,7 +26,7 @@ export default function MonochromePhoto({
   return (
     <div
       className="min-h-screen bg-white text-neutral-900 font-open-sans scroll-smooth"
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#171717',
         '--t-accent': customization?.colors?.accent ?? '#525252',

@@ -11,6 +11,7 @@ export default function ModernDark({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-heebo';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
@@ -26,7 +27,7 @@ export default function ModernDark({
   return (
     <div
       className={`min-h-screen bg-gray-950 text-gray-100 ${bodyFont} scroll-smooth selection:bg-lime-400 selection:text-gray-950`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#a3e635',
         '--t-accent': customization?.colors?.accent ?? '#22d3ee',

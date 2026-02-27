@@ -11,12 +11,13 @@ export default function MakerWorkshop({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-rubik';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-glitch';
 
   return (
-    <div className={`min-h-screen bg-[#2b2118] text-[#d4c5a0] ${bodyFont} scroll-smooth`} dir="rtl"
+    <div className={`min-h-screen bg-[#2b2118] text-[#d4c5a0] ${bodyFont} scroll-smooth`} dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#f59e0b',
         '--t-accent': customization?.colors?.accent ?? '#ef4444',

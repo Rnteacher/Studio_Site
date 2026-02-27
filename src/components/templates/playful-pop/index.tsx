@@ -13,6 +13,7 @@ export default function PlayfulPop({
   cvSections,
   projects,
   customization,
+  lang,
 }: TemplateProps) {
   const bodyFont = customization?.bodyFont ? `font-${customization.bodyFont}` : 'font-fredoka';
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-bubbles';
@@ -27,7 +28,7 @@ export default function PlayfulPop({
   return (
     <div
       className={`min-h-screen bg-[#fffbf0] text-neutral-800 ${bodyFont} scroll-smooth`}
-      dir="rtl"
+      dir={lang === "en" ? "ltr" : "rtl"}
       style={{
         '--t-primary': customization?.colors?.primary ?? '#ff6b6b',
         '--t-accent': customization?.colors?.accent ?? '#ffd93d',
