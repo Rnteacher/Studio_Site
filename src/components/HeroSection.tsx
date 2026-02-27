@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Palette, Music, Camera, Wrench } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import InteractiveBackground from "./InteractiveBackground";
 
 const HeroSection = () => {
   const { data: content } = useSiteContent();
@@ -12,23 +13,8 @@ const HeroSection = () => {
   const title = hero.title ?? "סטודיו דוריאן";
 
   return (
-    <section
-      className="relative overflow-hidden py-20 md:py-32"
-      style={hero.background_image ? { backgroundImage: `url(${hero.background_image})`, backgroundSize: "cover", backgroundPosition: "center" } : undefined}
-    >
-      {hero.background_image && <div className="absolute inset-0 bg-background/80" />}
-
-      {/* Decorative elements */}
-      <div className="absolute top-10 left-10 text-6xl opacity-10 select-none">🎨</div>
-      <div className="absolute top-20 right-20 text-5xl opacity-10 select-none">🎵</div>
-      <div className="absolute bottom-10 left-1/4 text-4xl opacity-10 select-none">📸</div>
-      <div className="absolute bottom-20 right-1/3 text-5xl opacity-10 select-none">🧵</div>
-
-      {/* Floating decorative circles */}
-      <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-primary/5 flex items-center justify-center overflow-hidden">
-        <img src="/images/durian-logo.jpeg" alt="סטודיו דוריאן" className="w-40 h-40 object-contain mix-blend-multiply opacity-30" />
-      </div>
-      <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-secondary/30" />
+    <section className="relative overflow-hidden py-20 md:py-32">
+      <InteractiveBackground />
 
       <div className="container mx-auto px-4 text-center relative z-10">
         {/* Creative icons row */}
