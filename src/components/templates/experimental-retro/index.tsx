@@ -72,8 +72,8 @@ export default function ExperimentalRetro({
               </div>
             )}
 
-            <div className="text-center md:text-start flex-1">
-              <h1 className={`${headingFont} text-5xl md:text-7xl font-black tracking-tight leading-none`}>
+            <div className="text-center md:text-start flex-1 min-w-0">
+              <h1 className={`${headingFont} text-5xl md:text-7xl font-black tracking-tight leading-none break-words`}>
                 {student.name}
               </h1>
               {about.subtitle && (
@@ -223,7 +223,7 @@ export default function ExperimentalRetro({
                 <div className="w-3 h-3 rounded-full bg-red-500" />
                 <div className="w-3 h-3 rounded-full bg-yellow-500" />
                 <div className="w-3 h-3 rounded-full bg-green-500" />
-                <span className={`text-neutral-500 text-xs ${lang === "en" ? "ml-4" : "mr-4"}`}>
+                <span className="text-neutral-500 text-xs ms-4">
                   cv.exe -- {student.name}
                 </span>
               </div>
@@ -234,7 +234,7 @@ export default function ExperimentalRetro({
                     <p className="text-lime-400 font-bold text-base mb-4">
                       {">"} {section.title}
                     </p>
-                    <div className={`space-y-3 ${lang === "en" ? "pl-6" : "pr-6"}`}>
+                    <div className="space-y-3 ps-6">
                       {section.entries.map((entry, i) => (
                         <div key={i} className="text-neutral-300">
                           <div className="flex items-start gap-2">
@@ -243,18 +243,18 @@ export default function ExperimentalRetro({
                               {entry.title}
                             </span>
                             {entry.dateRange && (
-                              <span className={`text-blue-400 ${lang === "en" ? "ml-auto" : "mr-auto"} text-xs`}>
+                              <span className="text-blue-400 ms-auto text-xs">
                                 [{entry.dateRange}]
                               </span>
                             )}
                           </div>
                           {entry.subtitle && (
-                            <p className={`text-yellow-400/80 text-xs ${lang === "en" ? "pl-5" : "pr-5"} mt-0.5`}>
+                            <p className="text-yellow-400/80 text-xs ps-5 mt-0.5">
                               -- {entry.subtitle}
                             </p>
                           )}
                           {entry.description && (
-                            <p className={`text-neutral-500 text-xs ${lang === "en" ? "pl-5" : "pr-5"} mt-1 leading-relaxed`}>
+                            <p className="text-neutral-500 text-xs ps-5 mt-1 leading-relaxed">
                               {entry.description}
                             </p>
                           )}
