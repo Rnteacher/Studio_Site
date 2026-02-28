@@ -40,6 +40,17 @@ const templates: Record<string, React.ComponentType<TemplateProps>> = {
   "stage-screen": dynamic(() => import("./stage-screen"), { loading }),
   "tech-startup": dynamic(() => import("./tech-startup"), { loading }),
   "academic-science": dynamic(() => import("./academic-science"), { loading }),
+  "tech-glitch": dynamic(() => import("./tech-glitch"), { loading }),
+  "facebook-style": dynamic(() => import("./facebook-style"), { loading }),
+  // Batch 4: 8 more templates
+  "brush-strokes": dynamic(() => import("./brush-strokes"), { loading }),
+  "polaroid-photos": dynamic(() => import("./polaroid-photos"), { loading }),
+  "colorful-chaos": dynamic(() => import("./colorful-chaos"), { loading }),
+  "news-modern": dynamic(() => import("./news-modern"), { loading }),
+  "architect-office": dynamic(() => import("./architect-office"), { loading }),
+  "woodwork-craft": dynamic(() => import("./woodwork-craft"), { loading }),
+  "childish-art": dynamic(() => import("./childish-art"), { loading }),
+  "max-chaos": dynamic(() => import("./max-chaos"), { loading }),
 };
 
 interface RendererProps extends TemplateProps {

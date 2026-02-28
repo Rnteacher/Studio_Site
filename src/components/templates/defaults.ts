@@ -160,4 +160,54 @@ export const TEMPLATE_DEFAULTS: Record<string, TemplateDefaults> = {
     bodyFont: "mono",
     headingFont: "heebo",
   },
+  "tech-glitch": {
+    colors: { primary: "#00ff41", accent: "#ff0040", bg: "#0d0d0d", text: "#e0e0e0" },
+    bodyFont: "heebo",
+    headingFont: "rubik-glitch",
+  },
+  "facebook-style": {
+    colors: { primary: "#1877f2", accent: "#42b72a", bg: "#f0f2f5", text: "#1c1e21" },
+    bodyFont: "open-sans",
+    headingFont: "rubik",
+  },
+  "brush-strokes": {
+    colors: { primary: "#e63946", accent: "#457b9d", bg: "#f1faee", text: "#1d3557" },
+    bodyFont: "heebo",
+    headingFont: "fredoka",
+  },
+  "polaroid-photos": {
+    colors: { primary: "#e8d5b7", accent: "#c7956d", bg: "#f5f0e8", text: "#3d3029" },
+    bodyFont: "heebo",
+    headingFont: "amatic-sc",
+  },
+  "colorful-chaos": {
+    colors: { primary: "#ff006e", accent: "#8338ec", bg: "#ffbe0b", text: "#1a1a2e" },
+    bodyFont: "fredoka",
+    headingFont: "rubik-bubbles",
+  },
+  "news-modern": {
+    colors: { primary: "#cc0000", accent: "#f4f4f4", bg: "#ffffff", text: "#222222" },
+    bodyFont: "open-sans",
+    headingFont: "rubik",
+  },
+  "architect-office": {
+    colors: { primary: "#2c3e50", accent: "#e67e22", bg: "#ecf0f1", text: "#2c3e50" },
+    bodyFont: "heebo",
+    headingFont: "karantina",
+  },
+  "woodwork-craft": {
+    colors: { primary: "#8b5e3c", accent: "#d4a574", bg: "#f5e6d3", text: "#3e2723" },
+    bodyFont: "heebo",
+    headingFont: "amatic-sc",
+  },
+  "childish-art": {
+    colors: { primary: "#ff6b6b", accent: "#4ecdc4", bg: "#fffef2", text: "#2d3436" },
+    bodyFont: "playpen-sans",
+    headingFont: "rubik-doodle",
+  },
+  "max-chaos": {
+    colors: { primary: "#ff00ff", accent: "#00ffff", bg: "#1a1a1a", text: "#ffffff" },
+    bodyFont: "rubik",
+    headingFont: "rubik-glitch",
+  },
 };
