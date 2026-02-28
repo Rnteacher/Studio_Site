@@ -35,10 +35,10 @@ export default function AcademicScience({
         <div className="max-w-4xl mx-auto px-6 flex items-center justify-between h-12">
           <span className={`${headingFont} font-bold text-sm text-[#1f2937] truncate`}>{student.name}</span>
           <div className="flex items-center gap-6">
-            <a href="#about" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">1. {customization?.sectionLabels?.about ?? "אודות"}</a>
-            <a href="#projects" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">2. {customization?.sectionLabels?.projects ?? "פרויקטים"}</a>
-            <a href="#cv" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">3. {customization?.sectionLabels?.cv ?? "קורות חיים"}</a>
-            <a href="#contact" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">4. {customization?.sectionLabels?.contact ?? "התכתבות"}</a>
+            <a href="#about" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">1. {customization?.sectionLabels?.about ?? (lang === "en" ? "About" : "אודות")}</a>
+            <a href="#projects" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">2. {customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "פרויקטים")}</a>
+            <a href="#cv" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">3. {customization?.sectionLabels?.cv ?? (lang === "en" ? "CV" : "קורות חיים")}</a>
+            <a href="#contact" className="text-xs text-[#6b7280] hover:text-[#2563eb] transition-colors">4. {customization?.sectionLabels?.contact ?? (lang === "en" ? "Correspondence" : "התכתבות")}</a>
           </div>
         </div>
       </nav>
@@ -62,7 +62,7 @@ export default function AcademicScience({
         {/* 1. About — Abstract */}
         <section id="about" className="mb-16 scroll-mt-16">
           <h2 className={`text-xl font-bold ${headingFont} mb-4 text-[#2563eb]`}>
-            <span className="text-[#6b7280] font-mono">1.</span> {about.title || "תקציר"}
+            <span className="text-[#6b7280] font-mono">1.</span> {about.title || (lang === "en" ? "Abstract" : "תקציר")}
           </h2>
           <div className="border-r-2 border-[#2563eb] pr-6">
             {about.body && (
@@ -77,7 +77,7 @@ export default function AcademicScience({
         {projects.length > 0 && (
           <section id="projects" className="mb-16 scroll-mt-16">
             <h2 className={`text-xl font-bold ${headingFont} mb-6 text-[#2563eb]`}>
-              <span className="text-[#6b7280] font-mono">2.</span> {customization?.sectionLabels?.projects ?? "פרויקטים"}
+              <span className="text-[#6b7280] font-mono">2.</span> {customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "פרויקטים")}
             </h2>
             <div className="space-y-6">
               {projects.map((project, pi) => (
@@ -88,7 +88,7 @@ export default function AcademicScience({
                       <h3 className={`font-bold ${headingFont} text-lg mb-1`}>{project.title}</h3>
                       {project.tags.length > 0 && (
                         <p className="text-xs text-[#2563eb] mb-2 italic">
-                          מילות מפתח: {project.tags.join(", ")}
+                          {lang === "en" ? "Keywords:" : "מילות מפתח:"} {project.tags.join(", ")}
                         </p>
                       )}
                       {project.description && (
@@ -121,7 +121,7 @@ export default function AcademicScience({
         {cvSections.length > 0 && (
           <section id="cv" className="mb-16 scroll-mt-16">
             <h2 className={`text-xl font-bold ${headingFont} mb-6 text-[#2563eb]`}>
-              <span className="text-[#6b7280] font-mono">3.</span> {customization?.sectionLabels?.cv ?? "קורות חיים"}
+              <span className="text-[#6b7280] font-mono">3.</span> {customization?.sectionLabels?.cv ?? (lang === "en" ? "CV" : "קורות חיים")}
             </h2>
             <div className="space-y-8">
               {cvSections.map((section, si) => (
@@ -158,7 +158,7 @@ export default function AcademicScience({
         {/* 4. Contact — Correspondence */}
         <footer id="contact" className="mb-16 scroll-mt-16">
           <h2 className={`text-xl font-bold ${headingFont} mb-6 text-[#2563eb]`}>
-            <span className="text-[#6b7280] font-mono">4.</span> התכתבות
+            <span className="text-[#6b7280] font-mono">4.</span> {customization?.sectionLabels?.contact ?? (lang === "en" ? "Correspondence" : "התכתבות")}
           </h2>
           <div className="bg-white/60 border border-[#d1d5db] rounded-lg p-6">
             <div className="space-y-3">
@@ -174,7 +174,7 @@ export default function AcademicScience({
               )}
               {contact.website && (
                 <a href={contact.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-[#4b5563] hover:text-[#2563eb] transition-colors">
-                  <Globe className="h-4 w-4 text-[#2563eb]" /> אתר אישי
+                  <Globe className="h-4 w-4 text-[#2563eb]" /> {lang === "en" ? "Website" : "אתר אישי"}
                 </a>
               )}
             </div>
@@ -193,7 +193,7 @@ export default function AcademicScience({
         {/* Footnote */}
         <div className="border-t border-[#d1d5db] pt-6 text-center">
           <p className="text-[10px] text-[#9ca3af]">
-            <sup>*</sup> {student.name} &copy; {new Date().getFullYear()} | מסמך זה נוצר באופן דיגיטלי
+            <sup>*</sup> {student.name} &copy; {new Date().getFullYear()} | {lang === "en" ? "This document was generated digitally" : "מסמך זה נוצר באופן דיגיטלי"}
           </p>
         </div>
       </div>

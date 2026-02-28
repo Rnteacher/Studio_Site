@@ -60,6 +60,13 @@ const LABEL_FIELDS: { key: keyof NonNullable<TemplateCustomSettings["sectionLabe
   { key: "contact", label: "יצירת קשר", placeholder: "צור קשר" },
 ];
 
+const LABEL_FIELDS_EN: { key: keyof NonNullable<TemplateCustomSettings["sectionLabels"]>; label: string; placeholder: string }[] = [
+  { key: "aboutEn", label: "About", placeholder: "About" },
+  { key: "projectsEn", label: "Projects", placeholder: "Projects" },
+  { key: "cvEn", label: "Resume / CV", placeholder: "Resume" },
+  { key: "contactEn", label: "Contact", placeholder: "Contact" },
+];
+
 function ColorInput({
   color,
   onChange,
@@ -311,7 +318,7 @@ export default function DesignPage() {
                 <div className="space-y-3">
                   <h3 className="text-sm font-semibold flex items-center gap-1.5">
                     <Tag className="h-4 w-4 text-muted-foreground" />
-                    כותרות
+                    כותרות (עברית)
                   </h3>
                   <div className="grid grid-cols-2 gap-3">
                     {LABEL_FIELDS.map((field) => (
@@ -321,6 +328,28 @@ export default function DesignPage() {
                           value={settings.sectionLabels?.[field.key] ?? ""}
                           onChange={(e) => updateLabel(field.key, e.target.value)}
                           placeholder={field.placeholder}
+                          className="h-8 text-sm"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Section Labels EN */}
+                <div className="space-y-3">
+                  <h3 className="text-sm font-semibold flex items-center gap-1.5">
+                    <Tag className="h-4 w-4 text-muted-foreground" />
+                    כותרות (English)
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {LABEL_FIELDS_EN.map((field) => (
+                      <div key={field.key} className="space-y-1.5">
+                        <Label className="text-xs text-muted-foreground">{field.label}</Label>
+                        <Input
+                          value={settings.sectionLabels?.[field.key] ?? ""}
+                          onChange={(e) => updateLabel(field.key, e.target.value)}
+                          placeholder={field.placeholder}
+                          dir="ltr"
                           className="h-8 text-sm"
                         />
                       </div>

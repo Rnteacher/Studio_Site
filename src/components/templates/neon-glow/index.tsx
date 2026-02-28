@@ -68,7 +68,7 @@ export default function NeonGlow({
               <div className="absolute -inset-1 rounded-2xl bg-gradient-to-br from-[#ff00ff]/20 to-[#00ffff]/20 -z-10 blur-sm" />
             </div>
           )}
-          <div className="text-center md:text-right flex-1">
+          <div className="text-center md:text-start flex-1">
             <h1
               className="text-5xl md:text-6xl font-bold leading-tight bg-gradient-to-l from-[#ff00ff] to-[#00ffff] bg-clip-text text-transparent"
               style={{ textShadow: "none" }}

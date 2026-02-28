@@ -17,7 +17,7 @@ export default function NewspaperVintage({
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-karantina';
 
   const today = new Date();
-  const dateStr = today.toLocaleDateString("he-IL", { year: "numeric", month: "long", day: "numeric" });
+  const dateStr = today.toLocaleDateString(lang === "en" ? "en-US" : "he-IL", { year: "numeric", month: "long", day: "numeric" });
 
   return (
     <div className={`min-h-screen bg-[#f5f0e1] text-[#2c2417] ${bodyFont} scroll-smooth`} dir={lang === "en" ? "ltr" : "rtl"}
@@ -31,12 +31,12 @@ export default function NewspaperVintage({
       {/* Edition strip */}
       <nav className="sticky top-0 z-50 bg-[#f5f0e1]/95 backdrop-blur-sm border-b-2 border-[#2c2417]">
         <div className="max-w-4xl mx-auto px-6 flex items-center justify-between h-10">
-          <span className="text-xs text-[#8b7d5a]">{dateStr} | מהדורה מיוחדת</span>
+          <span className="text-xs text-[#8b7d5a]">{dateStr} | {lang === "en" ? "Special Edition" : "מהדורה מיוחדת"}</span>
           <div className="flex items-center gap-5">
-            <a href="#about" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">{customization?.sectionLabels?.about ?? "אודות"}</a>
-            <a href="#projects" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">{customization?.sectionLabels?.projects ?? "עבודות"}</a>
-            <a href="#cv" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">{customization?.sectionLabels?.cv ?? "ניסיון"}</a>
-            <a href="#contact" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">{customization?.sectionLabels?.contact ?? "קשר"}</a>
+            <a href="#about" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">{customization?.sectionLabels?.about ?? (lang === "en" ? "About" : "אודות")}</a>
+            <a href="#projects" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">{customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "עבודות")}</a>
+            <a href="#cv" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">{customization?.sectionLabels?.cv ?? (lang === "en" ? "Experience" : "ניסיון")}</a>
+            <a href="#contact" className="text-xs text-[#8b7d5a] hover:text-[#8b0000] transition-colors">{customization?.sectionLabels?.contact ?? (lang === "en" ? "Contact" : "קשר")}</a>
           </div>
         </div>
       </nav>
@@ -45,7 +45,7 @@ export default function NewspaperVintage({
         {/* Masthead */}
         <header className="text-center mb-8">
           <div className="border-t-4 border-b-2 border-[#2c2417] py-2 mb-4">
-            <p className="text-[10px] text-[#8b7d5a] tracking-[0.5em] uppercase">פורטפוליו אישי</p>
+            <p className="text-[10px] text-[#8b7d5a] tracking-[0.5em] uppercase">{lang === "en" ? "Personal Portfolio" : "פורטפוליו אישי"}</p>
           </div>
           <h1 className={`text-5xl md:text-7xl font-bold ${headingFont} text-[#2c2417] leading-none mb-3`}>
             {student.name}
@@ -54,11 +54,11 @@ export default function NewspaperVintage({
             <p className="text-lg text-[#8b7d5a] italic font-serif">{about.subtitle}</p>
           )}
           <div className="border-t-2 border-b-4 border-[#2c2417] py-1.5 mt-4 flex items-center justify-between text-[10px] text-[#8b7d5a]">
-            <span>{projects.length} פרויקטים</span>
+            <span>{projects.length} {customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "פרויקטים")}</span>
             <span>&#10022;</span>
-            <span>{cvSections.length} תחומי ניסיון</span>
+            <span>{cvSections.length} {lang === "en" ? "Fields of Experience" : "תחומי ניסיון"}</span>
             <span>&#10022;</span>
-            <span>מהדורה {today.getFullYear()}</span>
+            <span>{lang === "en" ? "Edition" : "מהדורה"} {today.getFullYear()}</span>
           </div>
         </header>
 
@@ -69,7 +69,7 @@ export default function NewspaperVintage({
               <img src={student.image} alt={student.name} className="w-24 h-24 object-cover grayscale border border-[#d4c5a0]" />
             )}
             <div className="flex-1">
-              <h2 className={`text-2xl font-bold ${headingFont} text-[#8b0000] mb-1`}>{about.title || "כתבה ראשית"}</h2>
+              <h2 className={`text-2xl font-bold ${headingFont} text-[#8b0000] mb-1`}>{about.title || (lang === "en" ? "Lead Article" : "כתבה ראשית")}</h2>
               <div className="h-0.5 bg-[#8b0000]" />
             </div>
           </div>
@@ -87,7 +87,7 @@ export default function NewspaperVintage({
         {/* Projects — Articles */}
         {projects.length > 0 && (
           <section id="projects" className="mb-10 scroll-mt-16">
-            <h2 className={`text-3xl font-bold ${headingFont} text-[#8b0000] mb-1`}>חדשות</h2>
+            <h2 className={`text-3xl font-bold ${headingFont} text-[#8b0000] mb-1`}>{lang === "en" ? "News" : "חדשות"}</h2>
             <div className="h-0.5 bg-[#8b0000] mb-6" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {projects.map((project, pi) => (
@@ -130,7 +130,7 @@ export default function NewspaperVintage({
         {/* CV — Classified ads */}
         {cvSections.length > 0 && (
           <section id="cv" className="mb-10 scroll-mt-16">
-            <h2 className={`text-3xl font-bold ${headingFont} text-[#8b0000] mb-1`}>מודעות מסווגות</h2>
+            <h2 className={`text-3xl font-bold ${headingFont} text-[#8b0000] mb-1`}>{lang === "en" ? "Classifieds" : "מודעות מסווגות"}</h2>
             <div className="h-0.5 bg-[#8b0000] mb-6" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {cvSections.map((section) => (
@@ -158,7 +158,7 @@ export default function NewspaperVintage({
 
         {/* Contact */}
         <footer id="contact" className="scroll-mt-16">
-          <h2 className={`text-2xl font-bold ${headingFont} text-[#8b0000] mb-4`}>מערכת העיתון</h2>
+          <h2 className={`text-2xl font-bold ${headingFont} text-[#8b0000] mb-4`}>{lang === "en" ? "Editorial Office" : "מערכת העיתון"}</h2>
           <div className="flex flex-col md:flex-row gap-6 md:gap-12">
             <div className="space-y-2">
               {contact.email && (
@@ -173,7 +173,7 @@ export default function NewspaperVintage({
               )}
               {contact.website && (
                 <a href={contact.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-[#4a3f2f] hover:text-[#8b0000] transition-colors">
-                  <Globe className="h-4 w-4" /> אתר אישי
+                  <Globe className="h-4 w-4" /> {lang === "en" ? "Website" : "אתר אישי"}
                 </a>
               )}
             </div>
@@ -189,7 +189,7 @@ export default function NewspaperVintage({
           </div>
 
           <div className="mt-10 pt-4 border-t-4 border-b-2 border-[#2c2417] text-center">
-            <p className="text-[10px] text-[#8b7d5a] py-2">{student.name} &copy; {new Date().getFullYear()} | כל הזכויות שמורות</p>
+            <p className="text-[10px] text-[#8b7d5a] py-2">{student.name} &copy; {new Date().getFullYear()} | {lang === "en" ? "All Rights Reserved" : "כל הזכויות שמורות"}</p>
           </div>
         </footer>
       </div>

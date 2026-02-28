@@ -65,7 +65,7 @@ export default function ModernBold({
               className="w-52 h-52 md:w-64 md:h-64 rounded-2xl object-cover shadow-2xl shadow-purple-500/30 shrink-0"
             />
           )}
-          <div className="text-center md:text-right">
+          <div className="text-center md:text-start">
             <h1 className={`text-5xl md:text-6xl lg:text-7xl font-black ${headingFont} mb-4 bg-gradient-to-l from-purple-300 via-white to-white bg-clip-text text-transparent leading-tight`}>
               {student.name}
             </h1>

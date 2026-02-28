@@ -16,7 +16,7 @@ export async function GET(request: Request) {
     // Fetch portfolio with student info (contact comes from students now)
     const { data: portfolio, error: portfolioError } = await supabase
       .from("portfolios")
-      .select("*, students(name, email, phone, website)")
+      .select("*, students(*)")
       .eq("id", portfolioId)
       .single();
 

@@ -30,10 +30,10 @@ export default function StageScreen({
         <div className="max-w-4xl mx-auto px-6 flex items-center justify-between h-12">
           <span className={`${headingFont} text-xl text-[#c9a44a]`}>{student.name}</span>
           <div className="flex items-center gap-6">
-            <a href="#about" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.about ?? "אודות"}</a>
-            <a href="#projects" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.projects ?? "הפקות"}</a>
-            <a href="#cv" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.cv ?? "קורות חיים"}</a>
-            <a href="#contact" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.contact ?? "דלת במה"}</a>
+            <a href="#about" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.about ?? (lang === "en" ? "About" : "אודות")}</a>
+            <a href="#projects" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.projects ?? (lang === "en" ? "Productions" : "הפקות")}</a>
+            <a href="#cv" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.cv ?? (lang === "en" ? "CV" : "קורות חיים")}</a>
+            <a href="#contact" className="text-xs text-[#e8e0d0]/40 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.contact ?? (lang === "en" ? "Stage Door" : "דלת במה")}</a>
           </div>
         </div>
       </nav>
@@ -61,7 +61,7 @@ export default function StageScreen({
       <div className="max-w-4xl mx-auto px-6 py-16 space-y-20">
         {/* About */}
         <section id="about" className="scroll-mt-16">
-          <h2 className={`text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>{customization?.sectionLabels?.about ?? "אודות"}</h2>
+          <h2 className={`text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>{customization?.sectionLabels?.about ?? (lang === "en" ? "About" : "אודות")}</h2>
           <div className="w-20 h-0.5 bg-[#b91c1c] mb-6" />
           <div className="bg-[#1a1a1a] rounded-sm p-8 border border-[#b91c1c]/15">
             <h3 className={`text-xl font-bold ${headingFont} text-[#c9a44a] mb-3`}>{about.title || student.name}</h3>
@@ -74,7 +74,7 @@ export default function StageScreen({
         {/* Projects — Film strip cards */}
         {projects.length > 0 && (
           <section id="projects" className="scroll-mt-16">
-            <h2 className={`text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>הפקות</h2>
+            <h2 className={`text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>{customization?.sectionLabels?.projects ?? (lang === "en" ? "Productions" : "הפקות")}</h2>
             <div className="w-20 h-0.5 bg-[#b91c1c] mb-8" />
             <div className="space-y-8">
               {projects.map((project) => (
@@ -130,7 +130,7 @@ export default function StageScreen({
         {/* CV — Playbill */}
         {cvSections.length > 0 && (
           <section id="cv" className="scroll-mt-16">
-            <h2 className={`text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>תוכניה</h2>
+            <h2 className={`text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>{customization?.sectionLabels?.cv ?? (lang === "en" ? "Playbill" : "תוכניה")}</h2>
             <div className="w-20 h-0.5 bg-[#b91c1c] mb-8" />
             <div className="space-y-10">
               {cvSections.map((section) => (
@@ -159,7 +159,7 @@ export default function StageScreen({
 
         {/* Contact — Stage Door */}
         <footer id="contact" className="scroll-mt-16 border-t border-[#b91c1c]/20 pt-10">
-          <h2 className={`text-3xl font-bold ${headingFont} text-[#c9a44a] mb-6`}>דלת הבמה</h2>
+          <h2 className={`text-3xl font-bold ${headingFont} text-[#c9a44a] mb-6`}>{customization?.sectionLabels?.contact ?? (lang === "en" ? "Stage Door" : "דלת הבמה")}</h2>
           <div className="flex flex-wrap gap-4">
             {contact.email && (
               <a href={`mailto:${contact.email}`} className="flex items-center gap-2 bg-[#b91c1c] text-white px-5 py-2.5 text-sm hover:bg-[#991b1b] transition-colors">
@@ -173,7 +173,7 @@ export default function StageScreen({
             )}
             {contact.website && (
               <a href={contact.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-[#1a1a1a] border border-[#c9a44a]/20 px-5 py-2.5 text-sm hover:border-[#c9a44a] transition-colors">
-                <Globe className="h-4 w-4 text-[#c9a44a]" /> אתר אישי
+                <Globe className="h-4 w-4 text-[#c9a44a]" /> {lang === "en" ? "Website" : "אתר אישי"}
               </a>
             )}
           </div>

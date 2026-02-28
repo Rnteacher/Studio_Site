@@ -70,7 +70,7 @@ export default function NatureOrganic({
           {/* Leaf decoration behind image */}
           <div className="absolute -z-10 top-4 right-4 w-48 h-48 rounded-full bg-[#2d5016]/10" />
         </div>
-        <div className="text-center md:text-right flex-1">
+        <div className="text-center md:text-start flex-1">
           <h1 className={`text-5xl md:text-6xl ${headingFont} font-bold leading-tight`}>
             {student.name}
           </h1>

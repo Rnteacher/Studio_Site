@@ -82,7 +82,7 @@ export default function PaperCraft({
                   </div>
                 </div>
               )}
-              <div className="text-center md:text-right flex-1">
+              <div className="text-center md:text-start flex-1">
                 <h1 className="font-amatic-sc text-5xl md:text-7xl font-bold text-stone-800 leading-tight">
                   {student.name}
                 </h1>

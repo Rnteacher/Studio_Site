@@ -17,10 +17,10 @@ export default function ExperimentalCreative({
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
 
   const NAV_ITEMS = [
-    { id: "about", label: customization?.sectionLabels?.about ?? "אודות", color: "bg-amber-400" },
-    { id: "projects", label: customization?.sectionLabels?.projects ?? "עבודות", color: "bg-orange-400" },
-    { id: "cv", label: customization?.sectionLabels?.cv ?? "ניסיון", color: "bg-rose-400" },
-    { id: "contact", label: customization?.sectionLabels?.contact ?? "קשר", color: "bg-yellow-400" },
+    { id: "about", label: customization?.sectionLabels?.about ?? (lang === "en" ? "About" : "אודות"), color: "bg-amber-400" },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "עבודות"), color: "bg-orange-400" },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? (lang === "en" ? "Experience" : "ניסיון"), color: "bg-rose-400" },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? (lang === "en" ? "Contact" : "קשר"), color: "bg-yellow-400" },
   ];
 
   return (
@@ -90,7 +90,7 @@ export default function ExperimentalCreative({
       {projects.length > 0 && (
         <section id="projects" className="max-w-6xl mx-auto px-6 md:px-12 py-20 scroll-mt-20">
           <h2 className={`text-4xl md:text-5xl font-black ${headingFont} mb-14`}>
-            <span className="text-amber-400">עבודות</span> נבחרות
+            <span className="text-amber-400">{customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "עבודות")}</span> {lang === "en" ? "Showcase" : "נבחרות"}
           </h2>
           <div className="columns-1 md:columns-2 gap-6 space-y-6">
             {projects.map((project, idx) => {
@@ -179,7 +179,7 @@ export default function ExperimentalCreative({
         <section id="cv" className="py-20 scroll-mt-20">
           <div className="max-w-6xl mx-auto px-6 md:px-12">
             <h2 className={`text-4xl md:text-5xl font-black ${headingFont} mb-14`}>
-              <span className="text-orange-400">ניסיון</span> מקצועי
+              <span className="text-orange-400">{customization?.sectionLabels?.cv ?? (lang === "en" ? "Experience" : "ניסיון")}</span> {lang === "en" ? "Professional" : "מקצועי"}
             </h2>
           </div>
           <div className="max-w-6xl mx-auto px-6 md:px-12 space-y-16">
@@ -232,7 +232,7 @@ export default function ExperimentalCreative({
       >
         <div className="max-w-6xl mx-auto px-6 md:px-12 py-20">
           <h2 className={`text-4xl md:text-5xl font-black ${headingFont} mb-10`}>
-            <span className="text-amber-400">בואו</span> נדבר
+            <span className="text-amber-400">{lang === "en" ? "Let's" : "בואו"}</span> {lang === "en" ? "Talk" : "נדבר"}
           </h2>
           <div className="flex flex-wrap gap-4">
             {contact.email && (
@@ -261,7 +261,7 @@ export default function ExperimentalCreative({
                 className="flex items-center gap-3 bg-neutral-900 border border-neutral-800 hover:border-yellow-500/50 px-5 py-3 rounded-full transition-colors"
               >
                 <Globe className="h-4 w-4 text-yellow-400" />
-                אתר
+                {lang === "en" ? "Website" : "אתר"}
               </a>
             )}
           </div>

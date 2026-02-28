@@ -75,7 +75,7 @@ export default function BrutalistRaw({
               {student.name}
             </h1>
             {about.subtitle && (
-              <p className="font-mono text-lg mt-4 border-r-4 border-[--t-primary] pr-4">
+              <p className="font-mono text-lg mt-4 border-s-4 border-[--t-primary] ps-4">
                 {about.subtitle}
               </p>
             )}
@@ -196,7 +196,7 @@ export default function BrutalistRaw({
                   <div className="space-y-3">
                     {section.entries.map((entry, i) => (
                       <div key={i} className="flex gap-6 font-mono text-sm">
-                        <span className="w-28 shrink-0 text-left font-bold">
+                        <span className="w-28 shrink-0 text-end font-bold">
                           {entry.dateRange || "—"}
                         </span>
                         <div className="flex-1">
@@ -255,7 +255,7 @@ export default function BrutalistRaw({
                   className="flex items-center gap-2 hover:underline underline-offset-4"
                 >
                   <Globe className="h-4 w-4" />
-                  אתר
+                  {lang === "en" ? "Website" : "אתר"}
                 </a>
               )}
             </div>

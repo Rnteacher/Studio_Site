@@ -13,7 +13,7 @@ async function getPortfolioData(slug: string) {
 
   const { data: portfolio, error } = await supabase
     .from("portfolios")
-    .select("*, templates(*), students(name, image, email, phone, website, social_links)")
+    .select("*, templates(*), students(*)")
     .eq("slug", slug)
     .eq("status", "published")
     .single();

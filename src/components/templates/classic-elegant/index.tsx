@@ -62,7 +62,7 @@ export default function ClassicElegant({
               className="w-44 h-44 rounded-full object-cover border-4 border-white/10 shadow-2xl shrink-0"
             />
           )}
-          <div className="text-center md:text-right">
+          <div className="text-center md:text-start">
             <h1 className={`text-4xl md:text-5xl font-bold ${headingFont} mb-3`}>
               {student.name}
             </h1>

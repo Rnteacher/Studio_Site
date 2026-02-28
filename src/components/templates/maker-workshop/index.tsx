@@ -44,7 +44,7 @@ export default function MakerWorkshop({
           {student.image && (
             <img src={student.image} alt={student.name} className="w-40 h-40 object-cover border-4 border-[#78716c] shrink-0" />
           )}
-          <div className="text-center md:text-right">
+          <div className="text-center md:text-start">
             <h1 className={`text-4xl md:text-5xl font-bold ${headingFont} text-[#d97706] mb-3 tracking-wide`}>
               {student.name}
             </h1>
@@ -73,7 +73,7 @@ export default function MakerWorkshop({
           <section id="projects" className="scroll-mt-16">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-3 h-3 rounded-full bg-[#78716c]" />
-              <h2 className={`text-2xl font-bold ${headingFont} text-[#d97706] uppercase tracking-wider`}>עבודות</h2>
+              <h2 className={`text-2xl font-bold ${headingFont} text-[#d97706] uppercase tracking-wider`}>{customization?.sectionLabels?.projects ?? "עבודות"}</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {projects.map((project) => (
@@ -122,7 +122,7 @@ export default function MakerWorkshop({
           <section id="cv" className="scroll-mt-16">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-3 h-3 rounded-full bg-[#78716c]" />
-              <h2 className={`text-2xl font-bold ${headingFont} text-[#d97706] uppercase tracking-wider`}>ניסיון</h2>
+              <h2 className={`text-2xl font-bold ${headingFont} text-[#d97706] uppercase tracking-wider`}>{customization?.sectionLabels?.cv ?? "ניסיון"}</h2>
             </div>
             <div className="space-y-10">
               {cvSections.map((section) => (
@@ -130,11 +130,11 @@ export default function MakerWorkshop({
                   <h3 className={`text-xl font-bold ${headingFont} text-[#d97706] mb-5 pb-2 border-b-2 border-[#78716c]/30`}>
                     {section.title}
                   </h3>
-                  <div className="relative pr-6 space-y-6">
-                    <div className="absolute right-1.5 top-1 bottom-0 w-0.5 bg-[#78716c]/30" />
+                  <div className="relative ps-6 space-y-6">
+                    <div className="absolute start-1.5 top-1 bottom-0 w-0.5 bg-[#78716c]/30" />
                     {section.entries.map((entry, i) => (
                       <div key={i} className="relative">
-                        <div className="absolute -right-[0.6rem] top-1.5 w-2.5 h-2.5 bg-[#d97706] border-2 border-[#2b2118]" />
+                        <div className="absolute -start-[0.6rem] top-1.5 w-2.5 h-2.5 bg-[#d97706] border-2 border-[#2b2118]" />
                         <div className="bg-[#3a3028] p-4 border border-[#78716c]/15">
                           <div className="flex justify-between items-start gap-4">
                             <p className="font-bold text-[#d4c5a0]">{entry.title}</p>
@@ -173,7 +173,7 @@ export default function MakerWorkshop({
             )}
             {contact.website && (
               <a href={contact.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-[#3a3028] border-2 border-[#78716c]/30 px-5 py-2.5 text-sm hover:border-[#d97706] transition-colors">
-                <Globe className="h-4 w-4 text-[#d97706]" /> אתר אישי
+                <Globe className="h-4 w-4 text-[#d97706]" /> {lang === "en" ? "Website" : "אתר אישי"}
               </a>
             )}
           </div>

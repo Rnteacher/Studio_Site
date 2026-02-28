@@ -32,10 +32,10 @@ export default function SocialFeed({
         <div className="max-w-lg mx-auto px-4 flex items-center justify-between h-12">
           <span className={`${headingFont} font-bold text-lg`}>{student.name}</span>
           <div className="flex items-center gap-4">
-            <a href="#about" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">{customization?.sectionLabels?.about ?? "אודות"}</a>
-            <a href="#projects" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">{customization?.sectionLabels?.projects ?? "פרויקטים"}</a>
-            <a href="#cv" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">{customization?.sectionLabels?.cv ?? "קורות חיים"}</a>
-            <a href="#contact" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">{customization?.sectionLabels?.contact ?? "צור קשר"}</a>
+            <a href="#about" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">{customization?.sectionLabels?.about ?? (lang === "en" ? "About" : "אודות")}</a>
+            <a href="#projects" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">{customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "פרויקטים")}</a>
+            <a href="#cv" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">{customization?.sectionLabels?.cv ?? (lang === "en" ? "Resume" : "קורות חיים")}</a>
+            <a href="#contact" className="text-xs text-[#8e8e8e] hover:text-[#262626] transition-colors">{customization?.sectionLabels?.contact ?? (lang === "en" ? "Contact" : "צור קשר")}</a>
           </div>
         </div>
       </nav>
@@ -62,15 +62,15 @@ export default function SocialFeed({
           <div className="flex justify-around py-3 border-y border-[#dbdbdb]">
             <div className="text-center">
               <p className={`font-bold ${headingFont}`}>{projects.length}</p>
-              <p className="text-xs text-[#8e8e8e]">פרויקטים</p>
+              <p className="text-xs text-[#8e8e8e]">{customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "פרויקטים")}</p>
             </div>
             <div className="text-center">
               <p className={`font-bold ${headingFont}`}>{cvSections.length}</p>
-              <p className="text-xs text-[#8e8e8e]">תחומים</p>
+              <p className="text-xs text-[#8e8e8e]">{lang === "en" ? "Fields" : "תחומים"}</p>
             </div>
             <div className="text-center">
               <p className={`font-bold ${headingFont}`}>{cvSections.reduce((a, s) => a + s.entries.length, 0)}</p>
-              <p className="text-xs text-[#8e8e8e]">כישורים</p>
+              <p className="text-xs text-[#8e8e8e]">{lang === "en" ? "Skills" : "כישורים"}</p>
             </div>
           </div>
         </header>
@@ -95,11 +95,11 @@ export default function SocialFeed({
             {student.image && <img src={student.image} alt="" className="w-8 h-8 rounded-full object-cover" />}
             <div>
               <span className="text-sm font-bold">{student.name}</span>
-              <span className="text-xs text-[#8e8e8e] mr-2">נעוץ</span>
+              <span className={`text-xs text-[#8e8e8e] ${lang === "en" ? "ml-2" : "mr-2"}`}>{lang === "en" ? "Pinned" : "נעוץ"}</span>
             </div>
           </div>
           <div className="p-4">
-            <h2 className={`font-bold ${headingFont} mb-2`}>{about.title || (customization?.sectionLabels?.about ?? "אודות")}</h2>
+            <h2 className={`font-bold ${headingFont} mb-2`}>{about.title || (customization?.sectionLabels?.about ?? (lang === "en" ? "About" : "אודות"))}</h2>
             {about.body && <p className="text-sm leading-relaxed whitespace-pre-line text-[#262626]">{about.body}</p>}
           </div>
         </section>
@@ -183,7 +183,7 @@ export default function SocialFeed({
 
         {/* Contact — Link in Bio */}
         <footer id="contact" className="bg-white rounded-lg border border-[#dbdbdb] p-4 mb-6 scroll-mt-16">
-          <h2 className={`font-bold ${headingFont} text-sm mb-3`}>{customization?.sectionLabels?.contact ?? "צור קשר"}</h2>
+          <h2 className={`font-bold ${headingFont} text-sm mb-3`}>{customization?.sectionLabels?.contact ?? (lang === "en" ? "Contact" : "צור קשר")}</h2>
           <div className="space-y-2">
             {contact.email && (
               <a href={`mailto:${contact.email}`} className="flex items-center gap-3 text-sm text-[#00376b] hover:text-[#e1306c] transition-colors p-2 rounded-lg hover:bg-[#fafafa]">
@@ -197,7 +197,7 @@ export default function SocialFeed({
             )}
             {contact.website && (
               <a href={contact.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-[#00376b] hover:text-[#e1306c] transition-colors p-2 rounded-lg hover:bg-[#fafafa]">
-                <Globe className="h-4 w-4" /> אתר אישי
+                <Globe className="h-4 w-4" /> {lang === "en" ? "Website" : "אתר אישי"}
               </a>
             )}
             {Object.entries(socialLinks).filter(([, v]) => v).map(([key, url]) => (

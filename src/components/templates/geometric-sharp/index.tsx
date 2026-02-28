@@ -90,7 +90,7 @@ export default function GeometricSharp({
                 </div>
               </div>
             )}
-            <div className="text-center md:text-right flex-1">
+            <div className="text-center md:text-start flex-1">
               <h1 className={`${headingFont}-glitch text-5xl md:text-7xl leading-tight text-white drop-shadow-lg`}>
                 {student.name}
               </h1>

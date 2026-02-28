@@ -78,7 +78,7 @@ export default function ModernGradient({
               </div>
             )}
 
-            <div className="text-center md:text-right flex-1">
+            <div className="text-center md:text-start flex-1">
               <h1 className={`text-5xl md:text-7xl ${headingFont} font-black text-white drop-shadow-lg`}>
                 {student.name}
               </h1>
@@ -216,12 +216,12 @@ export default function ModernGradient({
 
                   {/* Timeline */}
                   <div className="space-y-5 relative">
-                    <div className="absolute right-[3px] top-2 bottom-2 w-0.5 bg-gradient-to-b from-purple-300 via-blue-300 to-transparent rounded-full" />
+                    <div className="absolute start-[3px] top-2 bottom-2 w-0.5 bg-gradient-to-b from-purple-300 via-blue-300 to-transparent rounded-full" />
 
                     {section.entries.map((entry, i) => (
-                      <div key={i} className="relative pr-6">
+                      <div key={i} className="relative ps-6">
                         {/* Timeline dot */}
-                        <div className="absolute right-0 top-1.5 w-2 h-2 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 ring-2 ring-white" />
+                        <div className="absolute start-0 top-1.5 w-2 h-2 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 ring-2 ring-white" />
 
                         <div className="flex items-start justify-between gap-3">
                           <p className="font-medium text-sm text-slate-700">

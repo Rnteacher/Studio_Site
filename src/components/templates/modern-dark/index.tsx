@@ -81,7 +81,7 @@ export default function ModernDark({
             )}
 
             {/* Name & About */}
-            <div className="text-center md:text-right flex-1">
+            <div className="text-center md:text-start flex-1">
               <h1 className={`text-5xl md:text-7xl ${headingFont} font-black tracking-tight text-white`}>
                 {student.name}
               </h1>
@@ -198,7 +198,7 @@ export default function ModernDark({
               {cvSections.map((section) => (
                 <div
                   key={section.id}
-                  className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 border-r-4 border-r-lime-400"
+                  className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 border-s-4 border-s-lime-400"
                 >
                   <h3 className={`text-lg ${headingFont} font-bold text-lime-400 mb-6`}>
                     {section.title}
@@ -207,7 +207,7 @@ export default function ModernDark({
                     {section.entries.map((entry, i) => (
                       <div
                         key={i}
-                        className="relative pr-4 before:absolute before:right-0 before:top-0 before:bottom-0 before:w-px before:bg-zinc-800"
+                        className="relative ps-4 before:absolute before:start-0 before:top-0 before:bottom-0 before:w-px before:bg-zinc-800"
                       >
                         <div className="flex items-start justify-between gap-4">
                           <p className="font-medium text-sm text-gray-200">

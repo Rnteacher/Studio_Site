@@ -17,9 +17,9 @@ export default function TechStartup({
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik';
 
   const stats = [
-    { label: customization?.sectionLabels?.projects ?? "פרויקטים", value: projects.length },
-    { label: "תחומי ניסיון", value: cvSections.length },
-    { label: "כישורים", value: cvSections.reduce((acc, s) => acc + s.entries.length, 0) },
+    { label: customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "פרויקטים"), value: projects.length },
+    { label: lang === "en" ? "Fields of Experience" : "תחומי ניסיון", value: cvSections.length },
+    { label: lang === "en" ? "Skills" : "כישורים", value: cvSections.reduce((acc, s) => acc + s.entries.length, 0) },
   ];
 
   return (
@@ -36,10 +36,10 @@ export default function TechStartup({
         <div className="max-w-5xl mx-auto px-6 flex items-center justify-between h-14">
           <span className={`${headingFont} font-bold text-[#1e293b] text-sm truncate`}>{student.name}</span>
           <div className="flex items-center gap-6">
-            <a href="#about" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">{customization?.sectionLabels?.about ?? "אודות"}</a>
-            <a href="#projects" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">{customization?.sectionLabels?.projects ?? "פרויקטים"}</a>
-            <a href="#cv" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">{customization?.sectionLabels?.cv ?? "קורות חיים"}</a>
-            <a href="#contact" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">{customization?.sectionLabels?.contact ?? "יצירת קשר"}</a>
+            <a href="#about" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">{customization?.sectionLabels?.about ?? (lang === "en" ? "About" : "אודות")}</a>
+            <a href="#projects" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">{customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "פרויקטים")}</a>
+            <a href="#cv" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">{customization?.sectionLabels?.cv ?? (lang === "en" ? "Resume" : "קורות חיים")}</a>
+            <a href="#contact" className="text-sm text-[#64748b] hover:text-[#3b82f6] transition-colors">{customization?.sectionLabels?.contact ?? (lang === "en" ? "Contact" : "יצירת קשר")}</a>
           </div>
         </div>
       </nav>
@@ -53,7 +53,7 @@ export default function TechStartup({
           {student.image && (
             <img src={student.image} alt={student.name} className="w-40 h-40 md:w-48 md:h-48 rounded-2xl object-cover shadow-2xl shrink-0 border-4 border-white/20" />
           )}
-          <div className="text-center md:text-right">
+          <div className="text-center md:text-start">
             <h1 className={`text-4xl md:text-5xl font-black ${headingFont} text-white mb-3 leading-tight`}>{student.name}</h1>
             {about.subtitle && <p className="text-lg text-white/70 mb-4">{about.subtitle}</p>}
             <div className="flex flex-wrap gap-3 justify-center md:justify-start">
@@ -87,7 +87,7 @@ export default function TechStartup({
       <div className="max-w-5xl mx-auto px-6 py-20 space-y-24">
         {/* About */}
         <section id="about">
-          <h2 className={`text-3xl font-black ${headingFont} mb-8`}>{customization?.sectionLabels?.about ?? "אודות"}</h2>
+          <h2 className={`text-3xl font-black ${headingFont} mb-8`}>{customization?.sectionLabels?.about ?? (lang === "en" ? "About" : "אודות")}</h2>
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-[#3b82f6]/10 shadow-sm">
             <h3 className={`text-xl font-bold ${headingFont} mb-4 text-[#3b82f6]`}>{about.title || student.name}</h3>
             {about.body && <p className="text-[#475569] text-lg leading-relaxed whitespace-pre-line">{about.body}</p>}
@@ -97,7 +97,7 @@ export default function TechStartup({
         {/* Projects */}
         {projects.length > 0 && (
           <section id="projects">
-            <h2 className={`text-3xl font-black ${headingFont} mb-10`}>{customization?.sectionLabels?.projects ?? "פרויקטים"}</h2>
+            <h2 className={`text-3xl font-black ${headingFont} mb-10`}>{customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "פרויקטים")}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {projects.map((project) => (
                 <div key={project.id} className="group bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden border border-[#3b82f6]/10 hover:border-[#3b82f6]/30 transition-all shadow-sm hover:shadow-md">
@@ -141,16 +141,16 @@ export default function TechStartup({
         {/* CV */}
         {cvSections.length > 0 && (
           <section id="cv">
-            <h2 className={`text-3xl font-black ${headingFont} mb-10`}>{customization?.sectionLabels?.cv ?? "קורות חיים"}</h2>
+            <h2 className={`text-3xl font-black ${headingFont} mb-10`}>{customization?.sectionLabels?.cv ?? (lang === "en" ? "Resume" : "קורות חיים")}</h2>
             <div className="space-y-10">
               {cvSections.map((section) => (
                 <div key={section.id}>
                   <h3 className={`text-xl font-bold ${headingFont} mb-5 text-[#3b82f6]`}>{section.title}</h3>
-                  <div className="relative pr-8 space-y-6">
-                    <div className="absolute right-2.5 top-1 bottom-0 w-0.5" style={{ background: "linear-gradient(180deg, #3b82f6, #06b6d4)" }} />
+                  <div className="relative ps-8 space-y-6">
+                    <div className="absolute start-2.5 top-1 bottom-0 w-0.5" style={{ background: "linear-gradient(180deg, #3b82f6, #06b6d4)" }} />
                     {section.entries.map((entry, i) => (
                       <div key={i} className="relative">
-                        <div className="absolute -right-[1.375rem] top-1.5 w-2.5 h-2.5 rounded-full bg-[#3b82f6] border-2 border-[#f8fafc]" />
+                        <div className="absolute -start-[1.375rem] top-1.5 w-2.5 h-2.5 rounded-full bg-[#3b82f6] border-2 border-[#f8fafc]" />
                         <div className="bg-white/80 backdrop-blur-sm rounded-xl p-5 border border-[#e2e8f0]">
                           <div className="flex justify-between items-start gap-4">
                             <p className="font-bold text-[#1e293b]">{entry.title}</p>
@@ -172,7 +172,7 @@ export default function TechStartup({
 
         {/* Contact */}
         <footer id="contact" className="border-t border-[#e2e8f0] pt-12">
-          <h2 className={`text-3xl font-black ${headingFont} mb-8`}>{customization?.sectionLabels?.contact ?? "בואו נדבר"}</h2>
+          <h2 className={`text-3xl font-black ${headingFont} mb-8`}>{customization?.sectionLabels?.contact ?? (lang === "en" ? "Let's Talk" : "בואו נדבר")}</h2>
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-[#3b82f6]/10">
             <div className="flex flex-wrap gap-4">
               {contact.email && (
@@ -187,7 +187,7 @@ export default function TechStartup({
               )}
               {contact.website && (
                 <a href={contact.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-[#f1f5f9] text-[#1e293b] px-5 py-2.5 rounded-full hover:bg-[#e2e8f0] transition-colors">
-                  <Globe className="h-4 w-4" /> אתר אישי
+                  <Globe className="h-4 w-4" /> {lang === "en" ? "Website" : "אתר אישי"}
                 </a>
               )}
             </div>

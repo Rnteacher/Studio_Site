@@ -85,7 +85,7 @@ export default function PlayfulPop({
               <div className="absolute -bottom-2 -left-2 w-8 h-8 rounded-full bg-[#6bcb77]" />
             </div>
           )}
-          <div className="text-center md:text-right flex-1">
+          <div className="text-center md:text-start flex-1">
             <h1 className={`${headingFont} text-6xl md:text-8xl font-bold leading-tight`}>
               <span className="text-[#ff6b6b]">{student.name.split(" ")[0]}</span>
               {student.name.includes(" ") && (

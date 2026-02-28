@@ -57,25 +57,25 @@ export default function ChatBubbles({
           )}
           <div className="flex-1">
             <p className={`font-bold ${headingFont} text-sm`}>{student.name}</p>
-            <p className="text-[10px] text-white/60">מחובר/ת</p>
+            <p className="text-[10px] text-white/60">{lang === "en" ? "Online" : "מחובר/ת"}</p>
           </div>
           <div className="flex items-center gap-4">
-            <a href="#about" className="text-xs text-white/50 hover:text-white transition-colors">{customization?.sectionLabels?.about ?? "אודות"}</a>
-            <a href="#projects" className="text-xs text-white/50 hover:text-white transition-colors">{customization?.sectionLabels?.projects ?? "פרויקטים"}</a>
-            <a href="#cv" className="text-xs text-white/50 hover:text-white transition-colors">{customization?.sectionLabels?.cv ?? "קורות חיים"}</a>
+            <a href="#about" className="text-xs text-white/50 hover:text-white transition-colors">{customization?.sectionLabels?.about ?? (lang === "en" ? "About" : "אודות")}</a>
+            <a href="#projects" className="text-xs text-white/50 hover:text-white transition-colors">{customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "פרויקטים")}</a>
+            <a href="#cv" className="text-xs text-white/50 hover:text-white transition-colors">{customization?.sectionLabels?.cv ?? (lang === "en" ? "CV" : "קורות חיים")}</a>
           </div>
         </div>
       </nav>
 
       <div className="max-w-2xl mx-auto px-4 py-4">
-        <DateSeparator text="היום" />
+        <DateSeparator text={lang === "en" ? "Today" : "היום"} />
 
         {/* About — received messages */}
         <section id="about" className="mb-2 scroll-mt-16">
           {/* System message */}
           <div className="flex justify-center my-3">
             <span className="bg-[#ffeeba] text-[#5a5a5a] text-[11px] px-3 py-1 rounded-md shadow-sm">
-              {about.title || (customization?.sectionLabels?.about ?? "אודות")}
+              {about.title || (customization?.sectionLabels?.about ?? (lang === "en" ? "About" : "אודות"))}
             </span>
           </div>
 
@@ -110,7 +110,7 @@ export default function ChatBubbles({
           <section id="projects" className="mb-2 scroll-mt-16">
             <div className="flex justify-center my-3">
               <span className="bg-[#ffeeba] text-[#5a5a5a] text-[11px] px-3 py-1 rounded-md shadow-sm">
-                {customization?.sectionLabels?.projects ?? "פרויקטים"}
+                {customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "פרויקטים")}
               </span>
             </div>
 
@@ -171,7 +171,7 @@ export default function ChatBubbles({
           <section id="cv" className="mb-2 scroll-mt-16">
             <div className="flex justify-center my-3">
               <span className="bg-[#ffeeba] text-[#5a5a5a] text-[11px] px-3 py-1 rounded-md shadow-sm">
-                {customization?.sectionLabels?.cv ?? "קורות חיים"}
+                {customization?.sectionLabels?.cv ?? (lang === "en" ? "CV" : "קורות חיים")}
               </span>
             </div>
 
@@ -210,7 +210,7 @@ export default function ChatBubbles({
         <section id="contact" className="mb-4 scroll-mt-16">
           <div className="flex justify-center my-3">
             <span className="bg-[#ffeeba] text-[#5a5a5a] text-[11px] px-3 py-1 rounded-md shadow-sm">
-              {customization?.sectionLabels?.contact ?? "יצירת קשר"}
+              {customization?.sectionLabels?.contact ?? (lang === "en" ? "Contact" : "יצירת קשר")}
             </span>
           </div>
 
@@ -224,7 +224,7 @@ export default function ChatBubbles({
                 )}
                 <div>
                   <p className="font-bold font-rubik text-sm">{student.name}</p>
-                  <p className="text-[10px] text-[#8a8a8a]">כרטיס איש קשר</p>
+                  <p className="text-[10px] text-[#8a8a8a]">{lang === "en" ? "Contact Card" : "כרטיס איש קשר"}</p>
                 </div>
               </div>
               <div className="p-4 space-y-2">
@@ -240,7 +240,7 @@ export default function ChatBubbles({
                 )}
                 {contact.website && (
                   <a href={contact.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-[#075e54] hover:underline">
-                    <Globe className="h-3.5 w-3.5" /> אתר אישי
+                    <Globe className="h-3.5 w-3.5" /> {lang === "en" ? "Website" : "אתר אישי"}
                   </a>
                 )}
                 {Object.entries(socialLinks).filter(([, v]) => v).map(([key, url]) => (

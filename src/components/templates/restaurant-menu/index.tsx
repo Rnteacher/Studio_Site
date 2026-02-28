@@ -40,10 +40,10 @@ export default function RestaurantMenu({
         <div className="max-w-3xl mx-auto px-6 flex items-center justify-between h-12">
           <span className={`${headingFont} font-bold text-xl text-[#c9a44a]`}>{student.name}</span>
           <div className="flex items-center gap-6">
-            <a href="#about" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.about ?? "אודות"}</a>
-            <a href="#projects" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.projects ?? "עבודות"}</a>
-            <a href="#cv" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.cv ?? "ניסיון"}</a>
-            <a href="#contact" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.contact ?? "הזמנות"}</a>
+            <a href="#about" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.about ?? (lang === "en" ? "About" : "אודות")}</a>
+            <a href="#projects" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "עבודות")}</a>
+            <a href="#cv" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.cv ?? (lang === "en" ? "Experience" : "ניסיון")}</a>
+            <a href="#contact" className="text-xs text-[#c9a44a]/60 hover:text-[#c9a44a] transition-colors">{customization?.sectionLabels?.contact ?? (lang === "en" ? "Reservations" : "הזמנות")}</a>
           </div>
         </div>
       </nav>
@@ -75,7 +75,7 @@ export default function RestaurantMenu({
         {/* About — Chef's Philosophy */}
         <section id="about" className="mb-4 scroll-mt-16">
           <h2 className={`text-center text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>
-            {about.title || "הפילוסופיה שלנו"}
+            {about.title || (lang === "en" ? "Our Philosophy" : "הפילוסופיה שלנו")}
           </h2>
           <div className="text-center text-[#c9a44a]/40 text-xs tracking-[0.3em] mb-6">&#8212; &#8212; &#8212;</div>
           {about.body && (
@@ -91,7 +91,7 @@ export default function RestaurantMenu({
         {projects.length > 0 && (
           <section id="projects" className="mb-4 scroll-mt-16">
             <h2 className={`text-center text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>
-              {customization?.sectionLabels?.projects ?? "התפריט"}
+              {customization?.sectionLabels?.projects ?? (lang === "en" ? "The Menu" : "התפריט")}
             </h2>
             <div className="text-center text-[#c9a44a]/40 text-xs tracking-[0.3em] mb-8">&#8212; &#8212; &#8212;</div>
             <div className="space-y-8">
@@ -145,7 +145,7 @@ export default function RestaurantMenu({
         {cvSections.length > 0 && (
           <section id="cv" className="mb-4 scroll-mt-16">
             <h2 className={`text-center text-3xl font-bold ${headingFont} text-[#c9a44a] mb-2`}>
-              {customization?.sectionLabels?.cv ?? "רשימת היינות"}
+              {customization?.sectionLabels?.cv ?? (lang === "en" ? "Wine List" : "רשימת היינות")}
             </h2>
             <div className="text-center text-[#c9a44a]/40 text-xs tracking-[0.3em] mb-8">&#8212; &#8212; &#8212;</div>
             <div className="space-y-10">
@@ -179,7 +179,7 @@ export default function RestaurantMenu({
 
         {/* Contact — Reservations */}
         <footer id="contact" className="text-center scroll-mt-16">
-          <h2 className="text-3xl font-bold font-amatic-sc text-[#c9a44a] mb-2">להזמנת מקום</h2>
+          <h2 className="text-3xl font-bold font-amatic-sc text-[#c9a44a] mb-2">{customization?.sectionLabels?.contact ?? (lang === "en" ? "Reservations" : "להזמנת מקום")}</h2>
           <div className="text-center text-[#c9a44a]/40 text-xs tracking-[0.3em] mb-6">&#8212; &#8212; &#8212;</div>
           <div className="space-y-3 max-w-sm mx-auto">
             {contact.email && (
@@ -194,7 +194,7 @@ export default function RestaurantMenu({
             )}
             {contact.website && (
               <a href={contact.website} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 text-sm text-[#e8dcc8]/60 hover:text-[#c9a44a] transition-colors">
-                <Globe className="h-4 w-4" /> אתר אישי
+                <Globe className="h-4 w-4" /> {lang === "en" ? "Website" : "אתר אישי"}
               </a>
             )}
           </div>

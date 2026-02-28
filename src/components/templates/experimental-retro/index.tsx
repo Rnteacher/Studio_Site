@@ -17,10 +17,10 @@ export default function ExperimentalRetro({
   const headingFont = customization?.headingFont ? `font-${customization.headingFont}` : 'font-rubik-pixels';
 
   const NAV_ITEMS = [
-    { id: "about", label: customization?.sectionLabels?.about ?? "אודות" },
-    { id: "projects", label: customization?.sectionLabels?.projects ?? "פרויקטים" },
-    { id: "cv", label: customization?.sectionLabels?.cv ?? "קורות חיים" },
-    { id: "contact", label: customization?.sectionLabels?.contact ?? "יצירת קשר" },
+    { id: "about", label: customization?.sectionLabels?.about ?? (lang === "en" ? "About" : "אודות") },
+    { id: "projects", label: customization?.sectionLabels?.projects ?? (lang === "en" ? "Projects" : "פרויקטים") },
+    { id: "cv", label: customization?.sectionLabels?.cv ?? (lang === "en" ? "CV" : "קורות חיים") },
+    { id: "contact", label: customization?.sectionLabels?.contact ?? (lang === "en" ? "Contact" : "יצירת קשר") },
   ];
 
 
@@ -72,7 +72,7 @@ export default function ExperimentalRetro({
               </div>
             )}
 
-            <div className="text-center md:text-right flex-1">
+            <div className="text-center md:text-start flex-1">
               <h1 className={`${headingFont} text-5xl md:text-7xl font-black tracking-tight leading-none`}>
                 {student.name}
               </h1>
@@ -84,7 +84,7 @@ export default function ExperimentalRetro({
                 </div>
               )}
               {about.body && (
-                <div className="mt-8 bg-white border-4 border-black p-6 text-right">
+                <div className="mt-8 bg-white border-4 border-black p-6 text-start">
                   <p className="text-neutral-700 leading-relaxed whitespace-pre-line">
                     {about.body}
                   </p>
@@ -110,7 +110,7 @@ export default function ExperimentalRetro({
             <div className="flex items-center gap-4 mb-12">
               <div className="w-6 h-6 bg-blue-500 border-2 border-black" />
               <h2 className={`${headingFont} text-3xl md:text-4xl font-black uppercase`}>
-                // פרויקטים
+                {lang === "en" ? "// Projects" : "// פרויקטים"}
               </h2>
               <div className="flex-1 border-t-4 border-dashed border-black" />
             </div>
@@ -212,7 +212,7 @@ export default function ExperimentalRetro({
             <div className="flex items-center gap-4 mb-12">
               <div className="w-6 h-6 bg-lime-500 border-2 border-black" />
               <h2 className={`${headingFont} text-3xl md:text-4xl font-black uppercase`}>
-                // קורות חיים
+                {lang === "en" ? "// CV" : "// קורות חיים"}
               </h2>
               <div className="flex-1 border-t-4 border-dashed border-black" />
             </div>
@@ -223,7 +223,7 @@ export default function ExperimentalRetro({
                 <div className="w-3 h-3 rounded-full bg-red-500" />
                 <div className="w-3 h-3 rounded-full bg-yellow-500" />
                 <div className="w-3 h-3 rounded-full bg-green-500" />
-                <span className="text-neutral-500 text-xs mr-4">
+                <span className={`text-neutral-500 text-xs ${lang === "en" ? "ml-4" : "mr-4"}`}>
                   cv.exe -- {student.name}
                 </span>
               </div>
@@ -234,7 +234,7 @@ export default function ExperimentalRetro({
                     <p className="text-lime-400 font-bold text-base mb-4">
                       {">"} {section.title}
                     </p>
-                    <div className="space-y-3 pr-6">
+                    <div className={`space-y-3 ${lang === "en" ? "pl-6" : "pr-6"}`}>
                       {section.entries.map((entry, i) => (
                         <div key={i} className="text-neutral-300">
                           <div className="flex items-start gap-2">
@@ -243,18 +243,18 @@ export default function ExperimentalRetro({
                               {entry.title}
                             </span>
                             {entry.dateRange && (
-                              <span className="text-blue-400 mr-auto text-xs">
+                              <span className={`text-blue-400 ${lang === "en" ? "ml-auto" : "mr-auto"} text-xs`}>
                                 [{entry.dateRange}]
                               </span>
                             )}
                           </div>
                           {entry.subtitle && (
-                            <p className="text-yellow-400/80 text-xs pr-5 mt-0.5">
+                            <p className={`text-yellow-400/80 text-xs ${lang === "en" ? "pl-5" : "pr-5"} mt-0.5`}>
                               -- {entry.subtitle}
                             </p>
                           )}
                           {entry.description && (
-                            <p className="text-neutral-500 text-xs pr-5 mt-1 leading-relaxed">
+                            <p className={`text-neutral-500 text-xs ${lang === "en" ? "pl-5" : "pr-5"} mt-1 leading-relaxed`}>
                               {entry.description}
                             </p>
                           )}
@@ -276,7 +276,7 @@ export default function ExperimentalRetro({
           <div className="flex items-center gap-4 mb-10">
             <div className="w-6 h-6 bg-fuchsia-500 border-2 border-black" />
             <h2 className={`${headingFont} text-3xl md:text-4xl font-black uppercase`}>
-              // יצירת קשר
+              {lang === "en" ? "// Contact" : "// יצירת קשר"}
             </h2>
             <div className="flex-1 border-t-4 border-dashed border-black" />
           </div>
@@ -308,7 +308,7 @@ export default function ExperimentalRetro({
                 className="flex items-center gap-2 bg-white border-4 border-black px-5 py-3 font-mono text-sm font-bold hover:bg-lime-500 hover:text-white hover:shadow-[4px_4px_0_0_rgba(0,0,0,1)] transition-all"
               >
                 <Globe className="h-4 w-4" />
-                אתר
+                {lang === "en" ? "Website" : "אתר"}
               </a>
             )}
           </div>
