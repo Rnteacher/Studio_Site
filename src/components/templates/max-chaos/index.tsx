@@ -235,17 +235,37 @@ export default function MaxChaos({
                         ))}
                       </div>
                     )}
-                    {/* Links */}
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {project.media.map((m) => (
-                        <a key={m.id} href={m.webViewUrl ?? "#"} target="_blank" rel="noopener noreferrer"
-                          className="text-xs underline hover:no-underline"
-                          style={{ color: "var(--t-accent)" }}
-                        >
-                          {m.fileName}
-                        </a>
-                      ))}
-                    </div>
+                    {/* Media thumbnails */}
+                    {project.media.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {project.media.map((m, mi) => (
+                          <a key={m.id} href={m.webViewUrl ?? "#"} target="_blank" rel="noopener noreferrer"
+                            className="shrink-0 hover:scale-110 transition-transform"
+                            style={{ transform: `rotate(${chaos(mi, 10)}deg)` }}
+                          >
+                            {m.thumbnailUrl ? (
+                              <img
+                                src={m.thumbnailUrl}
+                                alt={m.fileName}
+                                className="w-16 h-16 object-cover border-2"
+                                style={{ borderColor: "var(--t-primary)" }}
+                              />
+                            ) : (
+                              <div
+                                className="w-16 h-16 flex items-center justify-center text-[8px] border-2"
+                                style={{
+                                  borderColor: "var(--t-primary)",
+                                  background: "color-mix(in srgb, var(--t-primary) 15%, transparent)",
+                                  color: "var(--t-accent)",
+                                }}
+                              >
+                                {m.fileName.split(".").pop()?.toUpperCase() ?? "FILE"}
+                              </div>
+                            )}
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </article>
               ))}

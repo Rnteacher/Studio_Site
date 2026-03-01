@@ -341,7 +341,7 @@ export default function PolaroidPhotos({
 
                     {/* Extra media thumbnails */}
                     {project.media.length > 1 && (
-                      <div className="flex gap-1.5 mt-2 overflow-x-auto">
+                      <div className="relative z-10 flex gap-1.5 mt-2 overflow-x-auto">
                         {project.media.slice(1, 4).map((m) => (
                           <a
                             key={m.id}
