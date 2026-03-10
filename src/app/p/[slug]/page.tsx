@@ -8,6 +8,16 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+/** Convert old lh3.googleusercontent.com URLs to our proxy route */
+function normalizeThumbnailUrl(url: string | null, driveFileId: string | null): string | null {
+  if (!url) return null;
+  if (url.startsWith("/api/drive/file/")) return url;
+  const match = url.match(/lh3\.googleusercontent\.com\/d\/([a-zA-Z0-9_-]+)/);
+  if (match) return `/api/drive/file/${match[1]}`;
+  if (driveFileId) return `/api/drive/file/${driveFileId}`;
+  return url;
+}
+
 async function getPortfolioData(slug: string) {
   const supabase = await createClient();
 
@@ -61,16 +71,19 @@ async function getPortfolioData(slug: string) {
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     media: ((row.project_media as Record<string, unknown>[]) ?? [])
-      .map((m): ProjectMedia => ({
-        id: m.id as string,
-        projectId: m.project_id as string,
-        driveFileId: (m.drive_file_id as string) ?? null,
-        fileName: m.file_name as string,
-        mimeType: m.mime_type as string,
-        thumbnailUrl: (m.thumbnail_url as string) ?? null,
-        webViewUrl: (m.web_view_url as string) ?? null,
-        sortOrder: m.sort_order as number,
-      }))
+      .map((m): ProjectMedia => {
+        const driveFileId = (m.drive_file_id as string) ?? null;
+        return {
+          id: m.id as string,
+          projectId: m.project_id as string,
+          driveFileId,
+          fileName: m.file_name as string,
+          mimeType: m.mime_type as string,
+          thumbnailUrl: normalizeThumbnailUrl((m.thumbnail_url as string) ?? null, driveFileId),
+          webViewUrl: (m.web_view_url as string) ?? null,
+          sortOrder: m.sort_order as number,
+        };
+      })
       .sort((a, b) => a.sortOrder - b.sortOrder),
   }));
 

@@ -22,14 +22,28 @@ function mapProject(row: Record<string, unknown>): Project {
   };
 }
 
+/** Convert old lh3.googleusercontent.com URLs to our proxy route */
+function normalizeThumbnailUrl(url: string | null, driveFileId: string | null): string | null {
+  if (!url) return null;
+  // Already using our proxy
+  if (url.startsWith("/api/drive/file/")) return url;
+  // Old Google CDN URL — extract file ID and rewrite
+  const match = url.match(/lh3\.googleusercontent\.com\/d\/([a-zA-Z0-9_-]+)/);
+  if (match) return `/api/drive/file/${match[1]}`;
+  // Fallback: if we have a driveFileId, use the proxy
+  if (driveFileId) return `/api/drive/file/${driveFileId}`;
+  return url;
+}
+
 function mapMedia(row: Record<string, unknown>): ProjectMedia {
+  const driveFileId = (row.drive_file_id as string) ?? null;
   return {
     id: row.id as string,
     projectId: row.project_id as string,
-    driveFileId: (row.drive_file_id as string) ?? null,
+    driveFileId,
     fileName: row.file_name as string,
     mimeType: row.mime_type as string,
-    thumbnailUrl: (row.thumbnail_url as string) ?? null,
+    thumbnailUrl: normalizeThumbnailUrl((row.thumbnail_url as string) ?? null, driveFileId),
     webViewUrl: (row.web_view_url as string) ?? null,
     sortOrder: row.sort_order as number,
   };

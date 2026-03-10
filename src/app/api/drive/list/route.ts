@@ -61,15 +61,16 @@ export async function POST(request: Request) {
         .eq("drive_file_id", file.id!)
         .single();
 
+      // Use our own proxy route so images work regardless of Drive sharing settings
+      const thumbnailUrl = file.id ? `/api/drive/file/${file.id}` : null;
+
       if (existing) {
         await supabase
           .from("project_media")
           .update({
             file_name: file.name ?? "",
             mime_type: file.mimeType ?? "",
-            thumbnail_url: file.id
-              ? `https://lh3.googleusercontent.com/d/${file.id}=s800`
-              : null,
+            thumbnail_url: thumbnailUrl,
             web_view_url: file.webViewLink ?? null,
             sort_order: i,
           })
@@ -80,9 +81,7 @@ export async function POST(request: Request) {
           drive_file_id: file.id!,
           file_name: file.name ?? "",
           mime_type: file.mimeType ?? "",
-          thumbnail_url: file.id
-            ? `https://lh3.googleusercontent.com/d/${file.id}=s800`
-            : null,
+          thumbnail_url: thumbnailUrl,
           web_view_url: file.webViewLink ?? null,
           sort_order: i,
         });
