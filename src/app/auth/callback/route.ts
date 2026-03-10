@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -26,13 +25,20 @@ export async function GET(request: Request) {
           return NextResponse.redirect(`${origin}/admin`);
         }
 
-        // Use admin client (bypasses RLS) for student linking & portfolio creation.
-        // The normal anon-key client cannot update a student record whose
-        // user_id is still NULL because RLS policy requires user_id = auth.uid().
-        const admin = createAdminClient();
+        // Try to get an admin client (service role, bypasses RLS).
+        // Falls back to the regular anon-key client if the env var isn't set.
+        let db: ReturnType<typeof import("@supabase/supabase-js").createClient> | Awaited<ReturnType<typeof createClient>>;
+        try {
+          const { createAdminClient } = await import("@/lib/supabase/admin");
+          db = createAdminClient();
+        } catch {
+          // Service role key not available (e.g. not set in Vercel) — use regular client
+          console.warn("SUPABASE_SERVICE_ROLE_KEY not set, falling back to anon client for callback");
+          db = supabase;
+        }
 
         // Verify the user's email exists in the students table
-        const { data: student } = await admin
+        const { data: student } = await db
           .from("students")
           .select("id, user_id")
           .eq("email", user.email ?? "")
@@ -46,30 +52,41 @@ export async function GET(request: Request) {
           );
         }
 
-        // Link student record to this auth user if not yet linked
+        // Link student record to this auth user if not yet linked.
+        // With admin client this always works.
+        // With anon client this only works if user_id is already set to auth.uid().
         if (!student.user_id) {
-          await admin
+          await db
             .from("students")
             .update({ user_id: user.id })
             .eq("id", student.id);
         }
 
-        // Ensure a portfolio exists for this student
-        const { data: existingPortfolio } = await admin
+        // Ensure a portfolio exists — check by student_id first, then by user_id
+        const { data: existingPortfolio } = await db
           .from("portfolios")
           .select("id")
           .eq("student_id", student.id)
           .single();
 
         if (!existingPortfolio) {
-          // No portfolio yet — create one
-          const slug = student.id.replace(/\s+/g, "-").toLowerCase();
-          await admin.from("portfolios").insert({
-            student_id: student.id,
-            user_id: user.id,
-            slug,
-            contact_email: user.email ?? "",
-          });
+          // Also check by user_id (edge case: portfolio exists but student_id mismatch)
+          const { data: userPortfolio } = await db
+            .from("portfolios")
+            .select("id")
+            .eq("user_id", user.id)
+            .single();
+
+          if (!userPortfolio) {
+            // No portfolio at all — create one
+            const slug = student.id.replace(/\s+/g, "-").toLowerCase();
+            await db.from("portfolios").insert({
+              student_id: student.id,
+              user_id: user.id,
+              slug,
+              contact_email: user.email ?? "",
+            });
+          }
         }
 
         return NextResponse.redirect(`${origin}/dashboard`);
