@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -25,14 +26,19 @@ export async function GET(request: Request) {
           return NextResponse.redirect(`${origin}/admin`);
         }
 
+        // Use admin client (bypasses RLS) for student linking & portfolio creation.
+        // The normal anon-key client cannot update a student record whose
+        // user_id is still NULL because RLS policy requires user_id = auth.uid().
+        const admin = createAdminClient();
+
         // Verify the user's email exists in the students table
-        const { data: knownStudent } = await supabase
+        const { data: student } = await admin
           .from("students")
-          .select("id")
+          .select("id, user_id")
           .eq("email", user.email ?? "")
           .single();
 
-        if (!knownStudent) {
+        if (!student) {
           // Email not registered — sign out and redirect with error
           await supabase.auth.signOut();
           return NextResponse.redirect(
@@ -40,38 +46,30 @@ export async function GET(request: Request) {
           );
         }
 
-        // Student flow: ensure portfolio exists
-        const { data: existingPortfolio } = await supabase
+        // Link student record to this auth user if not yet linked
+        if (!student.user_id) {
+          await admin
+            .from("students")
+            .update({ user_id: user.id })
+            .eq("id", student.id);
+        }
+
+        // Ensure a portfolio exists for this student
+        const { data: existingPortfolio } = await admin
           .from("portfolios")
           .select("id")
-          .eq("user_id", user.id)
+          .eq("student_id", student.id)
           .single();
 
         if (!existingPortfolio) {
-          // Try to find a matching student record by email
-          const { data: student } = await supabase
-            .from("students")
-            .select("id")
-            .eq("email", user.email ?? "")
-            .is("user_id", null)
-            .single();
-
-          if (student) {
-            // Link the student record to this auth user
-            await supabase
-              .from("students")
-              .update({ user_id: user.id })
-              .eq("id", student.id);
-
-            // Create a portfolio for this student
-            const slug = student.id.replace(/\s+/g, "-").toLowerCase();
-            await supabase.from("portfolios").insert({
-              student_id: student.id,
-              user_id: user.id,
-              slug,
-              contact_email: user.email ?? "",
-            });
-          }
+          // No portfolio yet — create one
+          const slug = student.id.replace(/\s+/g, "-").toLowerCase();
+          await admin.from("portfolios").insert({
+            student_id: student.id,
+            user_id: user.id,
+            slug,
+            contact_email: user.email ?? "",
+          });
         }
 
         return NextResponse.redirect(`${origin}/dashboard`);
