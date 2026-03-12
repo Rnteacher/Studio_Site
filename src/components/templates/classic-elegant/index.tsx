@@ -83,13 +83,6 @@ export default function ClassicElegant({
             {customization?.sectionLabels?.about ?? "אודות"}
           </h2>
           <div className="flex flex-col md:flex-row gap-10 items-start">
-            {student.image && (
-              <img
-                src={student.image}
-                alt={student.name}
-                className="w-64 h-72 object-cover rounded-xl shadow-md shrink-0 hidden md:block"
-              />
-            )}
             <div className="flex-1">
               <h3 className={`text-2xl font-bold ${headingFont} mb-4`}>
                 {about.title || student.name}
