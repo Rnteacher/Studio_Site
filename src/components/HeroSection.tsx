@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Palette, Music, Camera, Wrench } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import InteractiveBackground from "./InteractiveBackground";
 
@@ -11,28 +11,22 @@ const HeroSection = () => {
   const hero = content?.hero ?? {};
 
   const title = hero.title ?? "סטודיו דוריאן";
+  const scrollToServices = () => {
+    document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <section className="relative overflow-hidden py-20 md:py-32">
+    <section className="relative flex min-h-[calc(100svh-4.25rem)] items-center overflow-hidden py-6 md:py-8">
       <InteractiveBackground />
 
-      <div className="container mx-auto px-4 text-center relative z-10">
-        {/* Creative icons row */}
-        <div className="flex justify-center gap-4 mb-8 opacity-60">
-          <Palette className="h-6 w-6 text-primary" />
-          <Music className="h-6 w-6 text-heading" />
-          <Camera className="h-6 w-6 text-primary" />
-          <Wrench className="h-6 w-6 text-heading" />
-        </div>
-
-        <img alt={title} className="h-36 md:h-48 w-auto mx-auto mb-6 mix-blend-multiply" src="/lovable-uploads/26cde093-9e8f-43ac-b26a-eb2b64ea0e5e.png" />
-        <h1 className="font-rubik text-5xl md:text-7xl font-extrabold text-heading mb-6 leading-tight">
+      <div className="container mx-auto px-4 pb-10 text-center relative z-10">
+        <h1 className="font-rubik text-5xl md:text-7xl font-extrabold text-heading mb-4 md:mb-5 leading-tight">
           {title}
         </h1>
-        <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-6 md:mb-7 leading-relaxed">
           {hero.subtitle ?? "כישרונות צעירים. שירותים אמיתיים. השפעה אמיתית."}
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8 md:mb-10">
           <Button asChild size="lg" className="text-lg px-8 bg-primary hover:bg-heading">
             <a href="#services">{hero.cta_services ?? "גלו את השירותים שלנו"}</a>
           </Button>
@@ -46,16 +40,16 @@ const HeroSection = () => {
           <div className="absolute inset-0 bg-heading/10 rounded-2xl rotate-1 scale-[1.02]" />
           <div className="absolute inset-0 bg-card rounded-2xl -rotate-[0.5deg] border border-border" />
 
-          <div className="relative z-10 p-8 md:p-10 text-foreground">
-            <p className="text-xl md:text-2xl font-extrabold leading-snug mb-3 tracking-tight text-heading">
+          <div className="relative z-10 p-6 md:p-7 text-foreground">
+            <p className="text-xl md:text-2xl font-extrabold leading-snug mb-2 tracking-tight text-heading">
               {hero.mission ?? "סטודיו דוריאן מחבר בין יכולות של נוער"}
               <br />
               <span className="text-primary">{hero.mission_line2 ?? "לבין צרכים של העולם האמיתי."}</span>
             </p>
-            <p className="text-sm md:text-base leading-relaxed text-muted-foreground mb-6 max-w-xl mx-auto text-center">
+            <p className="text-sm md:text-base leading-relaxed text-muted-foreground mb-4 max-w-xl mx-auto text-center">
               {hero.mission_sub ?? "אנחנו מציעים שירותים מקצועיים לעמותות ולעסקים קטנים. מתוך רצון ללמוד, להתפתח ולהשפיע."}
             </p>
-            <div className="flex flex-wrap gap-2 mb-5 justify-center">
+            <div className="flex flex-wrap gap-2 mb-4 justify-center">
               <span className="bg-soft-bg/60 px-4 py-1 rounded-sm text-xs font-bold uppercase tracking-widest border-r-2 border-primary text-heading">{hero.badge1_text ?? "עובדים עם קהילה"}</span>
               <span className="bg-soft-bg/60 px-4 py-1 rounded-sm text-xs font-bold uppercase tracking-widest border-r-2 border-primary text-heading">{hero.badge2_text ?? "לומדים דרך אחריות"}</span>
             </div>
@@ -65,6 +59,14 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+      <button
+        type="button"
+        onClick={scrollToServices}
+        aria-label="גללו לשירותים שלנו"
+        className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 rounded-full border border-primary/30 bg-card/70 p-2.5 text-primary shadow-sm backdrop-blur-sm transition hover:-translate-x-1/2 hover:-translate-y-1 hover:border-primary/60 hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 md:bottom-5"
+      >
+        <ChevronDown className="h-6 w-6" aria-hidden="true" />
+      </button>
     </section>);
 
 };

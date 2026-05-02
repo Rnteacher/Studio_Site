@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "node --require ./scripts/node-readlink-eisdir-compat.cjs ./node_modules/next/dist/bin/next build",
     "start": "next start",
     "lint": "next lint"
   },
