@@ -130,3 +130,29 @@
   - Second `npm run build` - passed; build still prints the known `Playpen Sans Hebrew` font override warning.
 - Manual verification:
   - Not exercised in-browser in this turn because no admin session/data flow was opened; implementation compiles and builds successfully.
+
+## 2026-05-02 Update - Local Admin Login Redirect
+
+- Changed files:
+  - `src/lib/authRedirect.ts`
+  - `src/hooks/useAuth.ts`
+  - `src/app/auth/callback/route.ts`
+  - `src/middleware.ts`
+  - `docs/state/PROJECT_STATE.md`
+- Cause:
+  - The Google OAuth call was already passing a browser-origin callback URL, but the legacy `/admin/login` middleware redirect ran before the client page could redirect and normalized local `127.0.0.1` requests to `localhost`.
+  - If login still returns to production after this code fix, the remaining likely cause is external Supabase Auth redirect URL configuration falling back to the project Site URL; the local callback must be allowed in Supabase Auth redirect URLs.
+- Fix:
+  - Added `src/lib/authRedirect.ts` to centralize auth callback URL construction.
+  - OAuth login now uses the browser origin via `window.location.origin` through the helper.
+  - The auth callback route now derives post-login redirects from the incoming request origin.
+  - Middleware no longer server-redirects `/admin/login`; the existing client page redirects relatively to `/auth/login`, preserving the current browser origin.
+  - Protected `/admin` and `/dashboard` middleware redirects remain unchanged in behavior.
+- Verification:
+  - `npx tsc --noEmit` - passed.
+  - `npm run build` - passed.
+  - Local dev server at `http://127.0.0.1:3000`:
+    - `GET /admin/login` returns 200 instead of redirecting to `localhost` or production.
+    - Browser opened `http://127.0.0.1:3000/admin/login` and client-side navigation landed on `http://127.0.0.1:3000/auth/login`.
+    - Clicking Google login produced a Google/Supabase OAuth URL containing `redirect_to=http://127.0.0.1:3000/auth/callback`.
+  - Full Google account completion/admin page load was not completed because it requires an interactive Google login session.

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, createContext, useContext, type ReactNode } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { getAuthCallbackUrl, getBrowserOrigin } from "@/lib/authRedirect";
 import type { User, Session } from "@supabase/supabase-js";
 import React from "react";
 
@@ -126,7 +127,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: getAuthCallbackUrl(getBrowserOrigin()),
       },
     });
   };

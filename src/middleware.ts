@@ -1,6 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
+function redirectToPath(request: NextRequest, pathname: string) {
+  const url = request.nextUrl.clone();
+  url.pathname = pathname;
+  return NextResponse.redirect(url);
+}
+
 export async function middleware(request: NextRequest) {
   try {
     let supabaseResponse = NextResponse.next({ request });
@@ -31,28 +37,19 @@ export async function middleware(request: NextRequest) {
       data: { user },
     } = await supabase.auth.getUser();
 
-    // Redirect old /admin/login to unified login
-    if (request.nextUrl.pathname.startsWith("/admin/login")) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/auth/login";
-      return NextResponse.redirect(url);
-    }
+    const isAdminLogin = request.nextUrl.pathname.startsWith("/admin/login");
 
     // Protect /admin routes
-    if (request.nextUrl.pathname.startsWith("/admin")) {
+    if (request.nextUrl.pathname.startsWith("/admin") && !isAdminLogin) {
       if (!user) {
-        const url = request.nextUrl.clone();
-        url.pathname = "/auth/login";
-        return NextResponse.redirect(url);
+        return redirectToPath(request, "/auth/login");
       }
     }
 
     // Protect /dashboard routes (require auth)
     if (request.nextUrl.pathname.startsWith("/dashboard")) {
       if (!user) {
-        const url = request.nextUrl.clone();
-        url.pathname = "/auth/login";
-        return NextResponse.redirect(url);
+        return redirectToPath(request, "/auth/login");
       }
     }
 
